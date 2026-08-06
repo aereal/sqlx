@@ -149,6 +149,7 @@ type TableReference struct {
 	Unpivot *UnpivotClause
 	// MatchRecognize is the SQL:2016 row-pattern recognition clause (Snowflake, Oracle).
 	MatchRecognize *MatchRecognizeClause
+	Start, End     models.Location
 }
 
 func (t *TableReference) statementNode() {}

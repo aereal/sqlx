@@ -29,7 +29,7 @@ func (p *Parser) parseUpdateStatement() (ast.Statement, error) {
 	// We've already consumed the UPDATE token in matchType
 
 	// Parse table name (supports schema.table qualification and double-quoted identifiers)
-	tableName, err := p.parseQualifiedName()
+	tableName, _, _, err := p.parseQualifiedName()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}

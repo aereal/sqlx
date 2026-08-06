@@ -102,7 +102,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		if p.isType(models.TokenTypeTable) {
 			show.ShowType = "CREATE TABLE"
 			p.advance() // Consume TABLE
-			name, err := p.parseQualifiedName()
+			name, _, _, err := p.parseQualifiedName()
 			if err != nil {
 				return nil, p.expectedError("table name")
 			}
@@ -110,7 +110,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		} else {
 			show.ShowType = "CREATE " + strings.ToUpper(p.currentToken.Token.Value)
 			p.advance()
-			name, err := p.parseQualifiedName()
+			name, _, _, err := p.parseQualifiedName()
 			if err != nil {
 				return nil, p.expectedError("object name")
 			}
@@ -121,7 +121,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		p.advance()
 		if p.isType(models.TokenTypeFrom) {
 			p.advance()
-			name, err := p.parseQualifiedName()
+			name, _, _, err := p.parseQualifiedName()
 			if err != nil {
 				return nil, p.expectedError("table name")
 			}
@@ -132,7 +132,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		p.advance()
 		if p.isType(models.TokenTypeFrom) {
 			p.advance()
-			name, err := p.parseQualifiedName()
+			name, _, _, err := p.parseQualifiedName()
 			if err != nil {
 				return nil, p.expectedError("table name")
 			}
@@ -186,7 +186,7 @@ func (p *Parser) parseDescribeStatement() (ast.Statement, error) {
 		p.advance()
 	}
 
-	name, err := p.parseQualifiedName()
+	name, _, _, err := p.parseQualifiedName()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}
@@ -204,7 +204,7 @@ func (p *Parser) parseReplaceStatement() (ast.Statement, error) {
 	p.advance()
 
 	// Parse table name
-	tableName, err := p.parseQualifiedName()
+	tableName, _, _, err := p.parseQualifiedName()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}

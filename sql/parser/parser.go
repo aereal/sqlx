@@ -808,7 +808,7 @@ func (p *Parser) parseSnowflakeUseStatement() (ast.Statement, error) {
 		rawParts = append(rawParts, strings.ToUpper(p.currentToken.Token.Value))
 		p.advance()
 	}
-	name, err := p.parseQualifiedName()
+	name, _, _, err := p.parseQualifiedName()
 	if err != nil {
 		return nil, p.expectedError("name after USE")
 	}
@@ -1085,33 +1085,35 @@ func (p *Parser) parseStringLiteral() string {
 
 // parseQualifiedName parses a potentially schema-qualified name (e.g., schema.table or db.schema.table).
 // Returns the full dotted name as a string. Supports up to 3-part names.
-func (p *Parser) parseQualifiedName() (string, error) {
+func (p *Parser) parseQualifiedName() (string, models.Location, models.Location, error) {
 	if !p.isIdentifier() && !p.isNonReservedKeyword() {
-		return "", p.expectedError("identifier")
+		return "", models.Location{}, models.Location{}, p.expectedError("identifier")
 	}
 	name := p.currentToken.Token.Value
+	start := p.currentLocation()
 	p.advance()
 
 	// Check for schema.table or db.schema.table
 	for p.isType(models.TokenTypePeriod) {
 		p.advance() // Consume .
 		if !p.isIdentifier() && !p.isNonReservedKeyword() {
-			return "", p.expectedError("identifier after .")
+			return "", models.Location{}, models.Location{}, p.expectedError("identifier after .")
 		}
 		name = name + "." + p.currentToken.Token.Value
 		p.advance()
 	}
+	end := p.currentLocation()
 
-	return name, nil
+	return name, start, end, nil
 }
 
 // Accepts IDENT or non-reserved keywords that can be used as table names
 func (p *Parser) parseTableReference() (*ast.TableReference, error) {
-	name, err := p.parseQualifiedName()
+	name, start, end, err := p.parseQualifiedName()
 	if err != nil {
 		return nil, err
 	}
-	return &ast.TableReference{Name: name}, nil
+	return &ast.TableReference{Name: name, Start: start, End: end}, nil
 }
 
 // isNonReservedKeyword checks if current token is a non-reserved keyword

@@ -128,7 +128,7 @@ func (p *Parser) parseCreateStatement() (ast.Statement, error) {
 				}
 			}
 			// Object name (qualified identifier)
-			name, _ := p.parseQualifiedName()
+			name, _, _, _ := p.parseQualifiedName()
 			if name != "" {
 				rawParts = append(rawParts, name)
 			}
@@ -184,7 +184,7 @@ func (p *Parser) parseCreateTable(temporary bool) (*ast.CreateTableStatement, er
 	}
 
 	// Parse table name (supports schema.table qualification and double-quoted identifiers)
-	createTableName, err := p.parseQualifiedName()
+	createTableName, _, _, err := p.parseQualifiedName()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}
@@ -670,7 +670,7 @@ func (p *Parser) parseDropStatement() (*ast.DropStatement, error) {
 
 	// Parse object names (can be comma-separated, supports schema.name qualification)
 	for {
-		dropName, err := p.parseQualifiedName()
+		dropName, _, _, err := p.parseQualifiedName()
 		if err != nil {
 			return nil, p.expectedError("object name")
 		}
@@ -707,7 +707,7 @@ func (p *Parser) parseTruncateStatement() (*ast.TruncateStatement, error) {
 
 	// Parse table names (can be comma-separated, supports schema.table qualification)
 	for {
-		truncTableName, err := p.parseQualifiedName()
+		truncTableName, _, _, err := p.parseQualifiedName()
 		if err != nil {
 			return nil, p.expectedError("table name")
 		}
