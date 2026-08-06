@@ -84,7 +84,8 @@ func TestSelectStatementPosition(t *testing.T) {
 		t.Fatalf("expected *ast.SelectStatement, got %T", tree.Statements[0])
 	}
 
-	assertPosEqual(t, "SELECT.Pos", sel.Pos, 1, 1)
+	assertPosEqual(t, "SELECT.Start", sel.Start, 1, 1)
+	assertPosEqual(t, "SELECT.End", sel.End, 1, 27)
 }
 
 func TestSelectStatementPositionMultiLine(t *testing.T) {
@@ -106,13 +107,15 @@ func TestSelectStatementPositionMultiLine(t *testing.T) {
 	}
 
 	// Both must have non-zero positions
-	assertPos(t, "SELECT1.Pos", sel1.Pos)
-	assertPos(t, "SELECT2.Pos", sel2.Pos)
+	assertPos(t, "SELECT1.Start", sel1.Start)
+	assertPos(t, "SELECT2.Start", sel2.Start)
+	assertPos(t, "SELECT1.End", sel1.End)
+	assertPos(t, "SELECT2.End", sel2.End)
 
 	// The second SELECT should be on a later line than the first
-	if sel2.Pos.Line <= sel1.Pos.Line {
+	if sel2.Start.Line <= sel1.Start.Line {
 		t.Errorf("second SELECT.Pos.Line (%d) should be > first (%d)",
-			sel2.Pos.Line, sel1.Pos.Line)
+			sel2.Start.Line, sel1.Start.Line)
 	}
 }
 
@@ -348,7 +351,8 @@ func TestMultipleStatementPositions(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected *ast.SelectStatement, got %T", tree.Statements[0])
 	}
-	assertPosEqual(t, "SELECT.Pos", sel.Pos, 1, 1)
+	assertPosEqual(t, "SELECT.Start", sel.Start, 1, 1)
+	assertPosEqual(t, "SELECT.End", sel.End, 1, 9)
 
 	// Statement 2: INSERT on line 2
 	ins, ok := tree.Statements[1].(*ast.InsertStatement)
@@ -395,9 +399,9 @@ func TestPositionsWithoutPositionTracking(t *testing.T) {
 
 	// With unified token types, positions are always available from TokenWithSpan spans.
 	// ParseFromModelTokens now inherently carries position info.
-	if sel.Pos.Line == 0 && sel.Pos.Column == 0 {
+	if sel.Start.Line == 0 && sel.Start.Column == 0 {
 		t.Errorf("expected non-zero position with unified tokens, got line=%d col=%d",
-			sel.Pos.Line, sel.Pos.Column)
+			sel.Start.Line, sel.Start.Column)
 	}
 }
 

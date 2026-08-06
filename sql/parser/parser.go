@@ -620,8 +620,8 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 			return nil, err
 		}
 		if ss, ok := stmt.(*ast.SelectStatement); ok {
-			if ss.Pos.IsZero() {
-				ss.Pos = stmtPos
+			if ss.Start.IsZero() {
+				ss.Start = stmtPos
 			}
 		}
 		// ClickHouse trailing SETTINGS k=v [, k=v]... on SELECT. Parse-only;
@@ -635,6 +635,11 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 					break
 				}
 				p.advance()
+			}
+		}
+		if ss, ok := stmt.(*ast.SelectStatement); ok {
+			if ss.End.IsZero() {
+				ss.End = p.currentLocation()
 			}
 		}
 		return stmt, nil

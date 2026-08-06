@@ -144,7 +144,8 @@ type SelectStatement struct {
 	Offset    *int
 	Fetch     *FetchClause    // SQL-99 FETCH FIRST/NEXT clause (F861, F862)
 	For       *ForClause      // Row-level locking clause (SQL:2003, PostgreSQL, MySQL)
-	Pos       models.Location // Source position of the SELECT keyword (1-based line and column)
+	Start     models.Location // Source position of the SELECT keyword (1-based line and column)
+	End       models.Location
 }
 
 func (s *SelectStatement) statementNode()       {}

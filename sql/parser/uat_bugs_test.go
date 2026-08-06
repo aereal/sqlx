@@ -135,9 +135,9 @@ func TestBug1_SuccessfulParseDoesNotIntroducePositionRegression(t *testing.T) {
 	}
 
 	// Position should be populated (line 1, col 1 for SELECT)
-	if sel.Pos.Line != 1 || sel.Pos.Column != 1 {
+	if sel.Start.Line != 1 || sel.Start.Column != 1 {
 		t.Errorf("expected SELECT at line=1 col=1, got line=%d col=%d",
-			sel.Pos.Line, sel.Pos.Column)
+			sel.Start.Line, sel.Start.Column)
 	}
 }
 
