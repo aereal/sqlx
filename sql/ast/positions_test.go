@@ -154,7 +154,8 @@ func TestUpdateStatementPosition(t *testing.T) {
 		t.Fatalf("expected *ast.UpdateStatement, got %T", tree.Statements[0])
 	}
 
-	assertPosEqual(t, "UPDATE.Pos", upd.Pos, 1, 1)
+	assertPosEqual(t, "UPDATE.Start", upd.Start, 1, 1)
+	assertPosEqual(t, "UPDATE.End", upd.End, 1, 43)
 }
 
 // -----------------------------------------------------------------------------

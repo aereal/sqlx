@@ -664,8 +664,11 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 			return nil, err
 		}
 		if us, ok := stmt.(*ast.UpdateStatement); ok {
-			if us.Pos.IsZero() {
-				us.Pos = stmtPos
+			if us.Start.IsZero() {
+				us.Start = stmtPos
+			}
+			if us.End.IsZero() {
+				us.End = p.currentLocation()
 			}
 		}
 		return stmt, nil

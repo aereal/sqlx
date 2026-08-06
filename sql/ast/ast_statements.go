@@ -271,7 +271,8 @@ type UpdateStatement struct {
 	From        []TableReference
 	Where       Expression
 	Returning   []Expression
-	Pos         models.Location // Source position of the UPDATE keyword (1-based line and column)
+	Start       models.Location // Source position of the UPDATE keyword (1-based line and column)
+	End         models.Location
 }
 
 // GetUpdates returns Assignments for backward compatibility.
