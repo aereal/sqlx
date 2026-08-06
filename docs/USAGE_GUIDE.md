@@ -35,9 +35,9 @@ Go 1.21+ or higher is required.
 
 ```go
 import (
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/sql/parser"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/models"
 )
 ```
 
@@ -52,7 +52,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 func main() {
@@ -102,7 +102,7 @@ package main
 import (
     "fmt"
     "log"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -139,8 +139,8 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func ParseSQL(sql string) error {
@@ -363,7 +363,7 @@ GoSQLX fully supports SQL-99 window functions with PARTITION BY, ORDER BY, and f
 
 ```go
 import (
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 // Ranking functions
@@ -509,7 +509,7 @@ LATERAL allows subqueries in FROM clause to reference columns from preceding tab
 
 ```go
 import (
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 // LATERAL with implicit syntax
@@ -842,7 +842,7 @@ GoSQLX v1.6.0 includes a built-in security scanner (`pkg/sql/security`) for dete
 ```go
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/security"
+    "github.com/aereal/sqlx/sql/security"
 )
 
 func CheckForInjection(sql string) {
@@ -922,7 +922,7 @@ func ValidateUserQuery(userInput string) error {
 
 ```go
 import (
-    "github.com/aereal/sqlx/pkg/sql/security"
+    "github.com/aereal/sqlx/sql/security"
 )
 
 func AdvancedSecurityCheck(sql string) (*security.ScanResult, error) {

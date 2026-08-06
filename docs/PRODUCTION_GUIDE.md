@@ -59,7 +59,7 @@ CMD ["./app"]
 package main
 
 import (
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -86,7 +86,7 @@ package sqlprocessor
 import (
     "context"
     "time"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 type SQLProcessor struct {
@@ -338,7 +338,7 @@ func (p *SQLProcessor) ProcessWithSecurity(sql []byte) ([]interface{}, error) {
 GoSQLX includes a built-in security scanner for detecting SQL injection patterns:
 
 ```go
-import "github.com/aereal/sqlx/pkg/sql/security"
+import "github.com/aereal/sqlx/sql/security"
 
 func (p *SQLProcessor) ScanForInjection(sql []byte) error {
     // Parse SQL first

@@ -149,8 +149,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/aereal/sqlx/pkg/gosqlx"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/sql/ast"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
@@ -396,7 +396,7 @@ package gosqlxgorm
 import (
 	"sync"
 
-	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/gosqlx"
 	"gorm.io/gorm"
 )
 
@@ -510,8 +510,8 @@ func stmtTypeName(stmt interface{}) string {
 ```go
 import (
     "sync"
-    "github.com/aereal/sqlx/pkg/gosqlx"
-    "github.com/aereal/sqlx/pkg/sql/ast"
+    "github.com/aereal/sqlx/gosqlx"
+    "github.com/aereal/sqlx/sql/ast"
     "gorm.io/gorm"
 )
 

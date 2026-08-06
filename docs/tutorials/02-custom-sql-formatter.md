@@ -156,9 +156,9 @@ import (
     "fmt"
     "strings"
 
-    "github.com/aereal/sqlx/pkg/sql/ast"
-    "github.com/aereal/sqlx/pkg/sql/parser"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 // Formatter handles SQL formatting with custom rules

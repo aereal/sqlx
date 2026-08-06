@@ -13,13 +13,13 @@ Interactive Playground: https://gosqlx.dev/playground/
 
 ## Core API
 
-- [Package gosqlx](https://pkg.go.dev/github.com/aereal/sqlx/pkg/gosqlx): High-level entry point - `Parse()`, `Validate()`, `Format()`, `ParseWithDialect()`, `ParseWithRecovery()`
-- [Package parser](https://pkg.go.dev/github.com/aereal/sqlx/pkg/sql/parser): Recursive-descent parser with one-token lookahead and object pooling
-- [Package tokenizer](https://pkg.go.dev/github.com/aereal/sqlx/pkg/sql/tokenizer): Zero-copy SQL lexer with full UTF-8 support
-- [Package ast](https://pkg.go.dev/github.com/aereal/sqlx/pkg/sql/ast): AST node types and visitor pattern
-- [Package security](https://pkg.go.dev/github.com/aereal/sqlx/pkg/sql/security): SQL injection scanner - tautology, UNION, time-based, comment-bypass patterns
+- [Package gosqlx](https://pkg.go.dev/github.com/aereal/sqlx/gosqlx): High-level entry point - `Parse()`, `Validate()`, `Format()`, `ParseWithDialect()`, `ParseWithRecovery()`
+- [Package parser](https://pkg.go.dev/github.com/aereal/sqlx/sql/parser): Recursive-descent parser with one-token lookahead and object pooling
+- [Package tokenizer](https://pkg.go.dev/github.com/aereal/sqlx/sql/tokenizer): Zero-copy SQL lexer with full UTF-8 support
+- [Package ast](https://pkg.go.dev/github.com/aereal/sqlx/sql/ast): AST node types and visitor pattern
+- [Package security](https://pkg.go.dev/github.com/aereal/sqlx/sql/security): SQL injection scanner - tautology, UNION, time-based, comment-bypass patterns
 - [Package linter](https://pkg.go.dev/github.com/aereal/sqlx/pkg/linter): 10 built-in lint rules (L001–L010)
-- [Package transform](https://pkg.go.dev/github.com/aereal/sqlx/pkg/transform): Programmatic SQL rewriting - add WHERE, columns, JOINs, pagination
+- [Package transform](https://pkg.go.dev/github.com/aereal/sqlx/transform): Programmatic SQL rewriting - add WHERE, columns, JOINs, pagination
 - [Package lsp](https://pkg.go.dev/github.com/aereal/sqlx/pkg/lsp): Language Server Protocol server for IDE integration
 
 ## Documentation
@@ -53,7 +53,7 @@ Interactive Playground: https://gosqlx.dev/playground/
 ## Quick Start
 
 ```go
-import "github.com/aereal/sqlx/pkg/gosqlx"
+import "github.com/aereal/sqlx/gosqlx"
 
 // Parse - returns *ast.AST
 tree, err := gosqlx.Parse("SELECT u.name, COUNT(o.id) FROM users u JOIN orders o ON u.id = o.user_id GROUP BY u.name")

@@ -17,8 +17,8 @@ package main
 import (
 	"testing"
 
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func TestExample(t *testing.T) {

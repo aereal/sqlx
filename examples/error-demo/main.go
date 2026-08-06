@@ -17,8 +17,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/aereal/sqlx/pkg/errors"
-	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/errors"
+	"github.com/aereal/sqlx/models"
 )
 
 func main() {

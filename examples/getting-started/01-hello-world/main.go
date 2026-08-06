@@ -21,7 +21,7 @@
 
 package main
 
-import "github.com/aereal/sqlx/pkg/gosqlx"
+import "github.com/aereal/sqlx/gosqlx"
 
 func main() {
 	ast, _ := gosqlx.Parse("SELECT * FROM users")

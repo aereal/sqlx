@@ -162,7 +162,7 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -211,8 +211,8 @@ package main
 import (
     "fmt"
     "strings"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 func main() {
@@ -290,7 +290,7 @@ import (
     "os"
     "path/filepath"
     "sync"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func validateDirectory(directory string) map[string]bool {
@@ -425,7 +425,7 @@ package main
 import (
     "encoding/json"
     "net/http"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 type ValidateRequest struct {
@@ -569,7 +569,7 @@ package main
 import (
     "fmt"
     "strings"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -741,7 +741,7 @@ import (
     "fmt"
     "os"
     "sync"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {

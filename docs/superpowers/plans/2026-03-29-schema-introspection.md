@@ -1155,7 +1155,7 @@ import (
 	"testing"
 
 	_ "modernc.org/sqlite"
-	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/gosqlx"
 	sqschema "github.com/aereal/sqlx/pkg/schema/sqlite"
 )
 

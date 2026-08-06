@@ -23,9 +23,9 @@ v1.14.0 is the largest dialect-coverage release in the project's history. Headli
 
 ```go
 import (
-    "github.com/aereal/sqlx/pkg/gosqlx"
-    "github.com/aereal/sqlx/pkg/sql/keywords"
-    "github.com/aereal/sqlx/pkg/transform"
+    "github.com/aereal/sqlx/gosqlx"
+    "github.com/aereal/sqlx/sql/keywords"
+    "github.com/aereal/sqlx/transform"
 )
 
 tree, _ := gosqlx.ParseWithDialect("SELECT * FROM users u", keywords.DialectPostgreSQL)
@@ -49,8 +49,8 @@ postgres := transform.FormatSQLWithDialect(stmt, keywords.DialectPostgreSQL)
 
 ```go
 import (
-    "github.com/aereal/sqlx/pkg/gosqlx"
-    "github.com/aereal/sqlx/pkg/sql/keywords"
+    "github.com/aereal/sqlx/gosqlx"
+    "github.com/aereal/sqlx/sql/keywords"
 )
 
 result, err := gosqlx.Transpile(
@@ -72,7 +72,7 @@ gosqlx transpile --from postgresql --to sqlite "SELECT * FROM users WHERE id = A
 ```go
 import (
     "context"
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
     "github.com/aereal/sqlx/pkg/schema/postgres"
 )
 
@@ -90,7 +90,7 @@ Also available: `pkg/schema/mysql` and `pkg/schema/sqlite`.
 #### Query fingerprinting
 
 ```go
-import "github.com/aereal/sqlx/pkg/fingerprint"
+import "github.com/aereal/sqlx/fingerprint"
 
 norm := fingerprint.Normalize("SELECT * FROM users WHERE id = 123")
 // norm: "SELECT * FROM users WHERE id = ?"
@@ -214,7 +214,7 @@ The legacy string-based `token.Type` system has been completely removed. All tok
 
 ```go
 // BEFORE (v1.7.0)
-import "github.com/aereal/sqlx/pkg/sql/token"
+import "github.com/aereal/sqlx/sql/token"
 
 tok := token.Token{
     Type:      token.SELECT,              // string-based
@@ -223,8 +223,8 @@ tok := token.Token{
 }
 
 // AFTER (v1.8.0)
-import "github.com/aereal/sqlx/pkg/sql/token"
-import "github.com/aereal/sqlx/pkg/models"
+import "github.com/aereal/sqlx/sql/token"
+import "github.com/aereal/sqlx/models"
 
 tok := token.Token{
     Type:    models.TokenTypeSelect,      // int-based (now primary)
@@ -341,7 +341,7 @@ err = parser.ValidateWithDialect(sql, "mysql")
 The new `pkg/transform/` package is purely additive:
 
 ```go
-import "github.com/aereal/sqlx/pkg/transform"
+import "github.com/aereal/sqlx/transform"
 
 stmt, _ := transform.ParseSQL("SELECT * FROM orders")
 transform.AddWhere(stmt, "tenant_id = 42")

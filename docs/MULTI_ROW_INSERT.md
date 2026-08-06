@@ -34,7 +34,7 @@ VALUES
 ### Basic Multi-Row INSERT
 
 ```go
-import "github.com/aereal/sqlx/pkg/gosqlx"
+import "github.com/aereal/sqlx/gosqlx"
 
 sql := `INSERT INTO users (name, email) VALUES
     ('John', 'john@example.com'),

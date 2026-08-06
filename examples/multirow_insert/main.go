@@ -18,8 +18,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/aereal/sqlx/pkg/gosqlx"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 func main() {

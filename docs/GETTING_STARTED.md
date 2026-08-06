@@ -110,7 +110,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 func main() {
@@ -156,7 +156,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 func main() {
@@ -226,7 +226,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/aereal/sqlx/pkg/sql/security"
+    "github.com/aereal/sqlx/sql/security"
 )
 
 func main() {
@@ -294,7 +294,7 @@ import (
     "log"
     "time"
 
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 func main() {

@@ -19,9 +19,9 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/aereal/sqlx/pkg/sql/ast"
-	"github.com/aereal/sqlx/pkg/sql/parser"
-	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/sql/ast"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {

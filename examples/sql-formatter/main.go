@@ -20,7 +20,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {

@@ -45,7 +45,7 @@ UNION-based injection detection is now split into two patterns to eliminate fals
 This split eliminates false-positive CRITICAL alerts on legitimate multi-query application code using `UNION`.
 
 ```go
-import "github.com/aereal/sqlx/pkg/sql/security"
+import "github.com/aereal/sqlx/sql/security"
 
 scanner := security.NewScanner()
 result := scanner.Scan(ast)

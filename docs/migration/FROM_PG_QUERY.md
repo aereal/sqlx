@@ -179,8 +179,8 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func main() {
@@ -253,8 +253,8 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 func main() {
@@ -329,7 +329,7 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -412,7 +412,7 @@ package main
 
 import (
     "sync"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -475,7 +475,7 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -535,9 +535,9 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/ast"
-    "github.com/aereal/sqlx/pkg/sql/parser"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -631,8 +631,8 @@ package main
 import (
     "crypto/sha256"
     "encoding/hex"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 type QueryCache struct {
@@ -731,7 +731,7 @@ import (
     "fmt"
     "os"
     "path/filepath"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 type MigrationValidator struct {
@@ -949,8 +949,8 @@ func ParseQuery(sql string) (*QueryInfo, error) {
 ```go
 // parser.go
 import (
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func ParseQuery(sql string, dialect string) (*QueryInfo, error) {

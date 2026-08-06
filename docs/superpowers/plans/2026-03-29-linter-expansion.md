@@ -61,8 +61,8 @@ import (
 
 	"github.com/aereal/sqlx/pkg/linter"
 	"github.com/aereal/sqlx/pkg/linter/rules/safety"
-	"github.com/aereal/sqlx/pkg/sql/parser"
-	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func makeContext(t *testing.T, sql string) *linter.Context {
@@ -172,8 +172,8 @@ package safety
 
 import (
 	"github.com/aereal/sqlx/pkg/linter"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // DeleteWithoutWhereRule (L011) flags DELETE statements that have no WHERE clause.
@@ -228,8 +228,8 @@ package safety
 
 import (
 	"github.com/aereal/sqlx/pkg/linter"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // UpdateWithoutWhereRule (L012) flags UPDATE statements that have no WHERE clause.
@@ -285,8 +285,8 @@ import (
 	"strings"
 
 	"github.com/aereal/sqlx/pkg/linter"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // DropWithoutConditionRule (L013) flags DROP TABLE/INDEX/VIEW without IF EXISTS.
@@ -352,8 +352,8 @@ package safety
 
 import (
 	"github.com/aereal/sqlx/pkg/linter"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // TruncateTableRule (L014) warns when TRUNCATE TABLE is used in non-DDL contexts.
@@ -406,8 +406,8 @@ import (
 	"strings"
 
 	"github.com/aereal/sqlx/pkg/linter"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // SelectIntoOutfileRule (L015) flags SELECT ... INTO OUTFILE / INTO DUMPFILE.
@@ -501,8 +501,8 @@ import (
 
 	"github.com/aereal/sqlx/pkg/linter"
 	"github.com/aereal/sqlx/pkg/linter/rules/performance"
-	"github.com/aereal/sqlx/pkg/sql/parser"
-	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func makeCtx(t *testing.T, sql string) *linter.Context {
@@ -594,8 +594,8 @@ package performance
 
 import (
 	"github.com/aereal/sqlx/pkg/linter"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // SelectStarRule (L016) flags SELECT * usage in non-trivial queries.
@@ -654,8 +654,8 @@ import (
 	"strings"
 
 	"github.com/aereal/sqlx/pkg/linter"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // LeadingWildcardRule (L018) flags LIKE patterns with a leading wildcard.

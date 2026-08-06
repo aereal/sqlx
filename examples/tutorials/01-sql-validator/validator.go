@@ -20,8 +20,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/aereal/sqlx/pkg/sql/parser"
-	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 // ValidationResult holds the result of validating a single SQL file

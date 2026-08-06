@@ -206,7 +206,7 @@ The existing `wasm/main.go` exposes 4 functions (`gosqlxParse`, `gosqlxFormat`, 
 
 Add to `wasm/main.go`:
 ```go
-import "github.com/aereal/sqlx/pkg/sql/keywords"
+import "github.com/aereal/sqlx/sql/keywords"
 
 var dialectMap = map[string]string{
     "generic":    keywords.DialectGeneric,
@@ -228,7 +228,7 @@ Modify each registered function to accept `(sql, dialect)` instead of `(sql)`. W
 ```go
 import (
     "github.com/aereal/sqlx/pkg/advisor"
-    "github.com/aereal/sqlx/pkg/sql/security"
+    "github.com/aereal/sqlx/sql/security"
 )
 
 // Register: js.Global().Set("gosqlxAnalyze", js.FuncOf(analyze))

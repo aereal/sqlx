@@ -175,8 +175,8 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func main() {
@@ -247,8 +247,8 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 func main() {
@@ -329,9 +329,9 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/ast"
-    "github.com/aereal/sqlx/pkg/sql/parser"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -412,8 +412,8 @@ package main
 import (
     "fmt"
     "strings"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func main() {
@@ -492,8 +492,8 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 func main() {
@@ -648,7 +648,7 @@ package main
 
 import (
     "sync"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 type ParseResult struct {
@@ -731,8 +731,8 @@ package main
 import (
     "encoding/json"
     "net/http"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 type QueryRequest struct {
@@ -929,8 +929,8 @@ public class QueryAnalyzerService {
 package analyzer
 
 import (
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 type QueryAnalysis struct {

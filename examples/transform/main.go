@@ -26,8 +26,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/aereal/sqlx/pkg/sql/ast"
-	"github.com/aereal/sqlx/pkg/transform"
+	"github.com/aereal/sqlx/sql/ast"
+	"github.com/aereal/sqlx/transform"
 )
 
 func main() {

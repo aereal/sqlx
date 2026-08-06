@@ -22,10 +22,10 @@ import (
 	"os"
 	"strings"
 
-	"github.com/aereal/sqlx/pkg/errors"
-	"github.com/aereal/sqlx/pkg/models"
-	"github.com/aereal/sqlx/pkg/sql/parser"
-	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/errors"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {

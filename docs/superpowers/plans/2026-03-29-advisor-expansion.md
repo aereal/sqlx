@@ -62,8 +62,8 @@ import (
 	"testing"
 
 	"github.com/aereal/sqlx/pkg/advisor"
-	"github.com/aereal/sqlx/pkg/gosqlx"
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 func analyzeWith(t *testing.T, sql string, rule advisor.Rule) []advisor.Suggestion {

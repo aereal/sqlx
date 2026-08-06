@@ -46,7 +46,7 @@ github.com/aereal/sqlx/
 
 ## High-Level API
 
-### Package: `github.com/aereal/sqlx/pkg/gosqlx`
+### Package: `github.com/aereal/sqlx/gosqlx`
 
 The high-level API provides convenient functions with automatic object pool management.
 
@@ -141,7 +141,7 @@ if err := gosqlx.ValidateMultiple(queries); err != nil {
 
 ## Tokenizer API
 
-### Package: `github.com/aereal/sqlx/pkg/sql/tokenizer`
+### Package: `github.com/aereal/sqlx/sql/tokenizer`
 
 ### Functions
 
@@ -218,7 +218,7 @@ tokens, err := tkz.TokenizeContext(ctx, []byte("SELECT * FROM users"))
 
 ## Parser API
 
-### Package: `github.com/aereal/sqlx/pkg/sql/parser`
+### Package: `github.com/aereal/sqlx/sql/parser`
 
 ### Functions
 
@@ -278,7 +278,7 @@ Reset parser state for reuse.
 
 ## AST API
 
-### Package: `github.com/aereal/sqlx/pkg/sql/ast`
+### Package: `github.com/aereal/sqlx/sql/ast`
 
 ### Core Interfaces
 
@@ -876,7 +876,7 @@ fmt.Printf("Tables: %v\n", collector.Tables)
 
 ## Keywords Package
 
-### Package: `github.com/aereal/sqlx/pkg/sql/keywords`
+### Package: `github.com/aereal/sqlx/sql/keywords`
 
 ### Core Types
 
@@ -963,7 +963,7 @@ suggestions := keywords.GetSuggestions("SEL", 5)
 
 ## Models
 
-### Package: `github.com/aereal/sqlx/pkg/models`
+### Package: `github.com/aereal/sqlx/models`
 
 ### Core Types
 
@@ -1020,7 +1020,7 @@ Get string representation.
 
 ## Error Handling
 
-### Package: `github.com/aereal/sqlx/pkg/errors`
+### Package: `github.com/aereal/sqlx/errors`
 
 ### Types
 
@@ -1204,7 +1204,7 @@ type PoolStats struct {
 
 ## Security Package
 
-### Package: `github.com/aereal/sqlx/pkg/sql/security`
+### Package: `github.com/aereal/sqlx/sql/security`
 
 The security package provides SQL injection pattern detection and security scanning.
 
@@ -2065,9 +2065,9 @@ import (
     "log"
     "time"
 
-    "github.com/aereal/sqlx/pkg/gosqlx"
-    "github.com/aereal/sqlx/pkg/sql/ast"
-    "github.com/aereal/sqlx/pkg/sql/security"
+    "github.com/aereal/sqlx/gosqlx"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/security"
     "github.com/aereal/sqlx/pkg/linter"
     "github.com/aereal/sqlx/pkg/linter/rules"
     "github.com/aereal/sqlx/pkg/metrics"

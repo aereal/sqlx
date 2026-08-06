@@ -781,8 +781,8 @@ See [pkg/sql/security/scanner.go](/Users/ajitpratapsingh/dev/GoSQLX/pkg/sql/secu
 
 ```go
 import (
-    "github.com/aereal/sqlx/pkg/errors"
-    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/errors"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 p := parser.NewParser()

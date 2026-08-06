@@ -68,7 +68,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aereal/sqlx/pkg/transform"
+	"github.com/aereal/sqlx/transform"
 )
 
 func TestAddSetClause_Basic(t *testing.T) {
@@ -193,7 +193,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // AddSetClause returns a Rule that appends a new assignment to the SET clause
@@ -339,7 +339,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/aereal/sqlx/pkg/transform"
+	"github.com/aereal/sqlx/transform"
 )
 
 func TestAddReturning_OnInsert(t *testing.T) {
@@ -413,7 +413,7 @@ Expected: `undefined: transform.AddReturning`
 package transform
 
 import (
-	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // getReturning returns a pointer to the Returning field for supported statements

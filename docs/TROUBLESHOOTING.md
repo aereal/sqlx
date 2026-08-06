@@ -623,7 +623,7 @@ func BenchmarkLinter(b *testing.B) {
 
 **Solutions:**
 ```go
-import "github.com/aereal/sqlx/pkg/sql/security"
+import "github.com/aereal/sqlx/sql/security"
 
 // Solution 1: Use parameterized queries (recommended)
 func SafeUnionQuery(userID int) string {
@@ -930,7 +930,7 @@ parser:
 
 **Code Solution:**
 ```go
-import "github.com/aereal/sqlx/pkg/sql/parser"
+import "github.com/aereal/sqlx/sql/parser"
 
 func ParseComplexQuery(sql string) error {
     p := parser.NewParser()
@@ -1748,7 +1748,7 @@ func TestParser(sql string) {
 ### Security Scanning
 
 ```go
-import "github.com/aereal/sqlx/pkg/sql/security"
+import "github.com/aereal/sqlx/sql/security"
 
 func CheckSQLSecurity(sql string) {
     scanner := security.NewScanner()
@@ -2017,7 +2017,7 @@ gosqlx security scan query.sql
 
 Or programmatically:
 ```go
-import "github.com/aereal/sqlx/pkg/sql/security"
+import "github.com/aereal/sqlx/sql/security"
 
 scanner := security.NewScanner()
 result := scanner.Scan(sqlQuery)

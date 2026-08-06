@@ -69,7 +69,7 @@ package main
 
 import (
     "fmt"
-    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 func main() {

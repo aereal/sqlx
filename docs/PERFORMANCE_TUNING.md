@@ -194,8 +194,8 @@ package main
 import (
     "os"
     "runtime/pprof"
-    "github.com/aereal/sqlx/pkg/sql/tokenizer"
-    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func profileCPU() {
