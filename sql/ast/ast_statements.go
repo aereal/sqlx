@@ -357,7 +357,8 @@ type DeleteStatement struct {
 	Using     []TableReference
 	Where     Expression
 	Returning []Expression
-	Pos       models.Location // Source position of the DELETE keyword (1-based line and column)
+	Start     models.Location // Source position of the DELETE keyword (1-based line and column)
+	End       models.Location
 }
 
 func (d *DeleteStatement) statementNode()      {}

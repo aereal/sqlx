@@ -680,8 +680,11 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 			return nil, err
 		}
 		if ds, ok := stmt.(*ast.DeleteStatement); ok {
-			if ds.Pos.IsZero() {
-				ds.Pos = stmtPos
+			if ds.Start.IsZero() {
+				ds.Start = stmtPos
+			}
+			if ds.End.IsZero() {
+				ds.End = p.currentLocation()
 			}
 		}
 		return stmt, nil
