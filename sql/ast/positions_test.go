@@ -135,7 +135,8 @@ func TestInsertStatementPosition(t *testing.T) {
 		t.Fatalf("expected *ast.InsertStatement, got %T", tree.Statements[0])
 	}
 
-	assertPosEqual(t, "INSERT.Pos", ins.Pos, 1, 1)
+	assertPosEqual(t, "INSERT.Start", ins.Start, 1, 1)
+	assertPosEqual(t, "INSERT.End", ins.End, 1, 49)
 }
 
 // -----------------------------------------------------------------------------
@@ -361,7 +362,8 @@ func TestMultipleStatementPositions(t *testing.T) {
 	if !ok {
 		t.Fatalf("expected *ast.InsertStatement, got %T", tree.Statements[1])
 	}
-	assertPosEqual(t, "INSERT.Pos", ins.Pos, 2, 1)
+	assertPosEqual(t, "INSERT.Start", ins.Start, 2, 1)
+	assertPosEqual(t, "INSERT.End", ins.End, 2, 29)
 
 	// Statement 3: DELETE on line 3
 	del, ok := tree.Statements[2].(*ast.DeleteStatement)

@@ -217,7 +217,8 @@ type InsertStatement struct {
 	Returning      []Expression
 	OnConflict     *OnConflict
 	OnDuplicateKey *UpsertClause   // MySQL: ON DUPLICATE KEY UPDATE
-	Pos            models.Location // Source position of the INSERT keyword (1-based line and column)
+	Start          models.Location // Source position of the INSERT keyword (1-based line and column)
+	End            models.Location
 }
 
 func (i *InsertStatement) statementNode()      {}
