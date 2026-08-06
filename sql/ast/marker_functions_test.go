@@ -39,7 +39,7 @@ func TestMarkerFunctions_StatementNodes(t *testing.T) {
 		},
 		{
 			name:      "UpdateStatement",
-			statement: &UpdateStatement{TableName: "test"},
+			statement: &UpdateStatement{Table: TableReference{Name: "test"}},
 			wantType:  "UPDATE",
 		},
 		{

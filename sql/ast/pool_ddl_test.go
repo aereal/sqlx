@@ -882,7 +882,7 @@ func TestReleaseASTMixedDMLAndDDL(t *testing.T) {
 		a.Statements = append(a.Statements, ins)
 
 		upd := GetUpdateStatement()
-		upd.TableName = "products"
+		upd.Table.Name = "products"
 		a.Statements = append(a.Statements, upd)
 
 		del := GetDeleteStatement()

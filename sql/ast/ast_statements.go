@@ -266,7 +266,7 @@ func (v Values) Children() []Node {
 // UpdateStatement represents an UPDATE SQL statement
 type UpdateStatement struct {
 	With        *WithClause
-	TableName   string
+	Table       TableReference
 	Alias       string
 	Assignments []UpdateExpression // SET clause assignments
 	From        []TableReference

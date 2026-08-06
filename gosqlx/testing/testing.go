@@ -344,8 +344,8 @@ func extractTablesFromNode(node ast.Node, tables map[string]bool) {
 			tables[n.Table.Name] = true
 		}
 	case *ast.UpdateStatement:
-		if n.TableName != "" && !isSyntheticTableName(n.TableName) {
-			tables[n.TableName] = true
+		if n.Table.Name != "" && !isSyntheticTableName(n.Table.Name) {
+			tables[n.Table.Name] = true
 		}
 	case *ast.DeleteStatement:
 		if n.TableName != "" && !isSyntheticTableName(n.TableName) {

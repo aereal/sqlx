@@ -228,7 +228,7 @@ func TestRenderInsert_Nil(t *testing.T) {
 
 func TestRenderUpdate_Readable(t *testing.T) {
 	stmt := &ast.UpdateStatement{
-		TableName: "users",
+		Table: ast.TableReference{Name: "users"},
 		Assignments: []ast.UpdateExpression{
 			{Column: &ast.Identifier{Name: "name"}, Value: &ast.LiteralValue{Value: "'Bob'"}},
 		},
@@ -256,7 +256,7 @@ func TestRenderUpdate_AllClauses(t *testing.T) {
 		With: &ast.WithClause{CTEs: []*ast.CommonTableExpr{
 			{Name: "c", Statement: &ast.SelectStatement{Columns: []ast.Expression{&ast.Identifier{Name: "x"}}}},
 		}},
-		TableName:   "t",
+		Table:       ast.TableReference{Name: "t"},
 		Alias:       "tt",
 		Assignments: []ast.UpdateExpression{{Column: &ast.Identifier{Name: "x"}, Value: &ast.LiteralValue{Value: "1"}}},
 		From:        []ast.TableReference{{Name: "other"}},

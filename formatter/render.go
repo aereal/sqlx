@@ -452,7 +452,7 @@ func renderUpdate(u *ast.UpdateStatement, opts ast.FormatOptions) string {
 
 	sb.WriteString(f.kw("UPDATE"))
 	sb.WriteString(" ")
-	sb.WriteString(u.TableName)
+	sb.WriteString(u.Table.Name)
 	if u.Alias != "" {
 		sb.WriteString(" ")
 		sb.WriteString(u.Alias)

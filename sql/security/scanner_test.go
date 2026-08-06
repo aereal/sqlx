@@ -288,7 +288,7 @@ func TestScan_UpdateWithTautology(t *testing.T) {
 
 	// UPDATE users SET admin=1 WHERE 1=1
 	updateStmt := &ast.UpdateStatement{
-		TableName: "users",
+		Table: ast.TableReference{Name: "users"},
 		Assignments: []ast.UpdateExpression{
 			{Column: &ast.Identifier{Name: "admin"}, Value: &ast.LiteralValue{Value: "1", Type: "INTEGER"}},
 		},

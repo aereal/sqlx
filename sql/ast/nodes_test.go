@@ -605,7 +605,7 @@ func TestUpdateStatement(t *testing.T) {
 		{
 			name: "simple UPDATE",
 			stmt: &UpdateStatement{
-				TableName: "users",
+				Table: TableReference{Name: "users"},
 				Assignments: []UpdateExpression{
 					{Column: &Identifier{Name: "name"}, Value: &LiteralValue{Value: "Jane"}},
 				},
@@ -616,7 +616,7 @@ func TestUpdateStatement(t *testing.T) {
 		{
 			name: "UPDATE with WHERE",
 			stmt: &UpdateStatement{
-				TableName: "users",
+				Table: TableReference{Name: "users"},
 				Assignments: []UpdateExpression{
 					{Column: &Identifier{Name: "email"}, Value: &LiteralValue{Value: "new@example.com"}},
 				},

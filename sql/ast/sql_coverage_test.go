@@ -713,7 +713,7 @@ func TestUpdateStatement_WithFromReturning(t *testing.T) {
 		With: &WithClause{CTEs: []*CommonTableExpr{
 			{Name: "c", Statement: &SelectStatement{Columns: []Expression{&Identifier{Name: "x"}}}},
 		}},
-		TableName:   "t",
+		Table:       TableReference{Name: "t"},
 		Alias:       "tt",
 		Assignments: []UpdateExpression{{Column: &Identifier{Name: "x"}, Value: &LiteralValue{Value: "1"}}},
 		From:        []TableReference{{Name: "other"}},

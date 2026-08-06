@@ -213,8 +213,8 @@ func TestParserUpdate(t *testing.T) {
 	if !ok {
 		t.Fatal("expected UpdateStatement")
 	}
-	if stmt.TableName != "users" {
-		t.Fatalf("expected table name 'users', got %q", stmt.TableName)
+	if stmt.Table.Name != "users" {
+		t.Fatalf("expected table name 'users', got %q", stmt.Table.Name)
 	}
 	if len(stmt.Assignments) != 1 {
 		t.Fatalf("expected 1 update, got %d", len(stmt.Assignments))

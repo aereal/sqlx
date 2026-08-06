@@ -342,7 +342,7 @@ func TestSpanMethods(t *testing.T) {
 
 	t.Run("UpdateStatement span", func(t *testing.T) {
 		update := &UpdateStatement{
-			TableName: "users",
+			Table: TableReference{Name: "users"},
 		}
 		span := update.Span()
 		if span.Start.Line != 0 {

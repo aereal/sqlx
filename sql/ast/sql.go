@@ -711,7 +711,7 @@ func (u *UpdateStatement) SQL() string {
 	}
 
 	sb.WriteString("UPDATE ")
-	sb.WriteString(u.TableName)
+	sb.WriteString(u.Table.Name)
 	if u.Alias != "" {
 		sb.WriteString(" ")
 		sb.WriteString(u.Alias)

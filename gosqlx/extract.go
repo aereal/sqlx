@@ -362,8 +362,8 @@ func (tc *tableCollector) collectFromNode(node ast.Node) {
 			tc.collectFromNode(n.With)
 		}
 	case *ast.UpdateStatement:
-		if n.TableName != "" {
-			tc.tables[n.TableName] = true
+		if n.Table.Name != "" {
+			tc.tables[n.Table.Name] = true
 		}
 		for _, from := range n.From {
 			if from.Name != "" {
@@ -446,8 +446,8 @@ func (qtc *qualifiedTableCollector) collectFromNode(node ast.Node) {
 			qtc.collectFromNode(n.With)
 		}
 	case *ast.UpdateStatement:
-		if n.TableName != "" {
-			qtc.addTable(n.TableName)
+		if n.Table.Name != "" {
+			qtc.addTable(n.Table.Name)
 		}
 		for _, from := range n.From {
 			if from.Name != "" {

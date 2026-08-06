@@ -184,8 +184,9 @@ func PutUpdateStatement(stmt *UpdateStatement) {
 	}
 	stmt.Returning = stmt.Returning[:0]
 
+	stmt.Table = TableReference{}
+
 	// ── Scalars ────────────────────────────────────────────────────────
-	stmt.TableName = ""
 	stmt.Alias = ""
 
 	// Return to pool
