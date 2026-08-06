@@ -17,8 +17,6 @@ package tokenizer
 import (
 	"bytes"
 	"sync"
-
-	"github.com/aereal/sqlx/pkg/metrics"
 )
 
 // bufferPool is used to reuse bytes.Buffer instances during tokenization.
@@ -76,8 +74,6 @@ var tokenizerPool = sync.Pool{
 // Memory Management: Always pair with PutTokenizer() using defer to ensure
 // the instance is returned to the pool, even if errors occur.
 //
-// Metrics: Records pool get operations for monitoring pool efficiency.
-//
 // Example:
 //
 //	tkz := tokenizer.GetTokenizer()
@@ -93,10 +89,6 @@ var tokenizerPool = sync.Pool{
 // rather than allocating new ones, providing significant performance benefits.
 func GetTokenizer() *Tokenizer {
 	t := tokenizerPool.Get().(*Tokenizer)
-
-	// Record pool metrics
-	metrics.RecordPoolGet(true) // Assume from pool (New() creates if empty)
-	metrics.RecordNamedPoolGet("tokenizer")
 
 	return t
 }
@@ -118,8 +110,6 @@ func GetTokenizer() *Tokenizer {
 //
 // Nil Safety: Safely ignores nil tokenizers (no-op).
 //
-// Metrics: Records pool put operations for monitoring pool efficiency.
-//
 // State Reset:
 //   - Input reference cleared (enables GC of SQL bytes)
 //   - Position tracking reset to initial state
@@ -130,10 +120,6 @@ func PutTokenizer(t *Tokenizer) {
 	if t != nil {
 		t.Reset()
 		tokenizerPool.Put(t)
-
-		// Record pool return
-		metrics.RecordPoolPut()
-		metrics.RecordNamedPoolPut("tokenizer")
 	}
 }
 

@@ -20,7 +20,6 @@ import (
 	"sync"
 
 	goerrors "github.com/aereal/sqlx/pkg/errors"
-	"github.com/aereal/sqlx/pkg/metrics"
 	"github.com/aereal/sqlx/pkg/models"
 	"github.com/aereal/sqlx/pkg/sql/ast"
 	"github.com/aereal/sqlx/pkg/sql/dialect"
@@ -85,7 +84,6 @@ var parserPool = sync.Pool{
 //
 // Thread Safety: Safe for concurrent calls - each goroutine gets its own instance.
 func GetParser() *Parser {
-	metrics.RecordNamedPoolGet("parser")
 	return parserPool.Get().(*Parser)
 }
 
@@ -107,7 +105,6 @@ func PutParser(p *Parser) {
 	if p != nil {
 		p.Reset()
 		parserPool.Put(p)
-		metrics.RecordNamedPoolPut("parser")
 	}
 }
 

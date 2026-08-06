@@ -1,4 +1,0 @@
-# Typo at the top level — catches `rulez:` style mistakes via KnownFields.
-rulez:
-  L001:
-    enabled: true

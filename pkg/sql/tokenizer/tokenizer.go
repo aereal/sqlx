@@ -20,11 +20,9 @@ import (
 	"fmt"
 	"log/slog"
 	"strings"
-	"time"
 	"unicode/utf8"
 
 	"github.com/aereal/sqlx/pkg/errors"
-	"github.com/aereal/sqlx/pkg/metrics"
 	"github.com/aereal/sqlx/pkg/models"
 	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
@@ -420,13 +418,9 @@ func NewWithKeywords(kw *keywords.Keywords) (*Tokenizer, error) {
 //	tokens, _ := tkz.Tokenize([]byte(sql))
 //	// Correctly tokenizes Unicode identifiers and string literals
 func (t *Tokenizer) Tokenize(input []byte) ([]models.TokenWithSpan, error) {
-	// Record start time for metrics
-	startTime := time.Now()
-
 	// Validate input size to prevent DoS attacks
 	if len(input) > MaxInputSize {
 		err := errors.InputTooLargeError(int64(len(input)), MaxInputSize, models.Location{Line: 1, Column: 0})
-		metrics.RecordTokenization(time.Since(startTime), len(input), err)
 		return nil, err
 	}
 
@@ -510,9 +504,6 @@ func (t *Tokenizer) Tokenize(input []byte) ([]models.TokenWithSpan, error) {
 	}()
 
 	if tokenErr != nil {
-		// Record metrics for failed tokenization
-		duration := time.Since(startTime)
-		metrics.RecordTokenization(duration, len(input), tokenErr)
 		return nil, tokenErr
 	}
 
@@ -522,10 +513,6 @@ func (t *Tokenizer) Tokenize(input []byte) ([]models.TokenWithSpan, error) {
 		Start: t.getCurrentPosition(),
 		End:   t.getCurrentPosition(),
 	})
-
-	// Record metrics for successful tokenization
-	duration := time.Since(startTime)
-	metrics.RecordTokenization(duration, len(input), nil)
 
 	return tokens, nil
 }
@@ -553,13 +540,9 @@ func (t *Tokenizer) TokenizeContext(ctx context.Context, input []byte) ([]models
 		return nil, err
 	}
 
-	// Record start time for metrics
-	startTime := time.Now()
-
 	// Validate input size to prevent DoS attacks
 	if len(input) > MaxInputSize {
 		err := errors.InputTooLargeError(int64(len(input)), MaxInputSize, models.Location{Line: 1, Column: 0})
-		metrics.RecordTokenization(time.Since(startTime), len(input), err)
 		return nil, err
 	}
 
@@ -650,9 +633,6 @@ func (t *Tokenizer) TokenizeContext(ctx context.Context, input []byte) ([]models
 	}()
 
 	if tokenErr != nil {
-		// Record metrics for failed tokenization
-		duration := time.Since(startTime)
-		metrics.RecordTokenization(duration, len(input), tokenErr)
 		return nil, tokenErr
 	}
 
@@ -662,10 +642,6 @@ func (t *Tokenizer) TokenizeContext(ctx context.Context, input []byte) ([]models
 		Start: t.getCurrentPosition(),
 		End:   t.getCurrentPosition(),
 	})
-
-	// Record metrics for successful tokenization
-	duration := time.Since(startTime)
-	metrics.RecordTokenization(duration, len(input), nil)
 
 	return tokens, nil
 }

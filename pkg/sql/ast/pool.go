@@ -23,8 +23,6 @@ package ast
 import (
 	"sync"
 	"sync/atomic"
-
-	"github.com/aereal/sqlx/pkg/metrics"
 )
 
 // poolLeakCount counts expressions that exceeded PutExpression's iterative
@@ -465,7 +463,6 @@ var (
 //
 // See also: ReleaseAST(), GetSelectStatement(), GetInsertStatement()
 func NewAST() *AST {
-	metrics.RecordNamedPoolGet("ast")
 	return astPool.Get().(*AST)
 }
 
@@ -531,7 +528,6 @@ func ReleaseAST(ast *AST) {
 	}
 
 	// Return to pool
-	metrics.RecordNamedPoolPut("ast")
 	astPool.Put(ast)
 }
 

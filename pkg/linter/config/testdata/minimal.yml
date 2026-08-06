@@ -1,4 +1,0 @@
-# Minimal config — only overrides one rule.
-rules:
-  L001:
-    severity: error
