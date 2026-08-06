@@ -84,8 +84,8 @@ func TestParser_InsertMultiRow_Basic(t *testing.T) {
 			}
 
 			// Check table name
-			if stmt.TableName != tt.expectedTable {
-				t.Errorf("expected table name %q, got %q", tt.expectedTable, stmt.TableName)
+			if stmt.Table.Name != tt.expectedTable {
+				t.Errorf("expected table name %q, got %q", tt.expectedTable, stmt.Table.Name)
 			}
 
 			// Check number of rows

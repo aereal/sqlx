@@ -120,25 +120,25 @@ func TestInsertStatementSQL(t *testing.T) {
 		{
 			name: "simple insert",
 			stmt: &InsertStatement{
-				TableName: "users",
-				Columns:   []Expression{&Identifier{Name: "name"}, &Identifier{Name: "email"}},
-				Values:    [][]Expression{{&LiteralValue{Value: "Alice", Type: "STRING"}, &LiteralValue{Value: "alice@example.com", Type: "STRING"}}},
+				Table:   TableReference{Name: "users"},
+				Columns: []Expression{&Identifier{Name: "name"}, &Identifier{Name: "email"}},
+				Values:  [][]Expression{{&LiteralValue{Value: "Alice", Type: "STRING"}, &LiteralValue{Value: "alice@example.com", Type: "STRING"}}},
 			},
 			want: "INSERT INTO users (name, email) VALUES ('Alice', 'alice@example.com')",
 		},
 		{
 			name: "multi-row insert",
 			stmt: &InsertStatement{
-				TableName: "users",
-				Columns:   []Expression{&Identifier{Name: "name"}},
-				Values:    [][]Expression{{&LiteralValue{Value: "Alice", Type: "STRING"}}, {&LiteralValue{Value: "Bob", Type: "STRING"}}},
+				Table:   TableReference{Name: "users"},
+				Columns: []Expression{&Identifier{Name: "name"}},
+				Values:  [][]Expression{{&LiteralValue{Value: "Alice", Type: "STRING"}}, {&LiteralValue{Value: "Bob", Type: "STRING"}}},
 			},
 			want: "INSERT INTO users (name) VALUES ('Alice'), ('Bob')",
 		},
 		{
 			name: "insert with on conflict do nothing",
 			stmt: &InsertStatement{
-				TableName:  "users",
+				Table:      TableReference{Name: "users"},
 				Columns:    []Expression{&Identifier{Name: "email"}},
 				Values:     [][]Expression{{&LiteralValue{Value: "a@b.com", Type: "STRING"}}},
 				OnConflict: &OnConflict{Target: []Expression{&Identifier{Name: "email"}}, Action: OnConflictAction{DoNothing: true}},

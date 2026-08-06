@@ -119,7 +119,7 @@ func TestPutArraySliceExpression(t *testing.T) {
 func TestReleaseStatements(t *testing.T) {
 	stmts := []Statement{
 		&SelectStatement{Columns: []Expression{&Identifier{Name: "a"}}},
-		&InsertStatement{TableName: "t"},
+		&InsertStatement{Table: TableReference{Name: "t"}},
 		&UpdateStatement{TableName: "t", Assignments: []UpdateExpression{{Column: &Identifier{Name: "x"}, Value: &LiteralValue{Value: "1"}}}},
 		&DeleteStatement{TableName: "t"},
 	}

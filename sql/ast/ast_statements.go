@@ -209,7 +209,7 @@ func (s SelectStatement) Children() []Node {
 // InsertStatement represents an INSERT SQL statement
 type InsertStatement struct {
 	With           *WithClause
-	TableName      string
+	Table          TableReference
 	Columns        []Expression
 	Output         []Expression    // SQL Server OUTPUT clause columns
 	Values         [][]Expression  // Multi-row support: each inner slice is one row of values

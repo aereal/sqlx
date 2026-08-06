@@ -34,7 +34,7 @@ func TestMarkerFunctions_StatementNodes(t *testing.T) {
 		},
 		{
 			name:      "InsertStatement",
-			statement: &InsertStatement{TableName: "test"},
+			statement: &InsertStatement{Table: TableReference{Name: "test"}},
 			wantType:  "INSERT",
 		},
 		{

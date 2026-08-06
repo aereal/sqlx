@@ -878,7 +878,7 @@ func TestReleaseASTMixedDMLAndDDL(t *testing.T) {
 		a.Statements = append(a.Statements, sel)
 
 		ins := GetInsertStatement()
-		ins.TableName = "orders"
+		ins.Table.Name = "orders"
 		a.Statements = append(a.Statements, ins)
 
 		upd := GetUpdateStatement()
@@ -978,7 +978,7 @@ func TestReleaseStatementsMixedDDL(t *testing.T) {
 		&AlterStatement{Name: "r1"},
 		// DML
 		&SelectStatement{TableName: "users"},
-		&InsertStatement{TableName: "orders"},
+		&InsertStatement{Table: TableReference{Name: "orders"}},
 	}
 
 	// Should not panic

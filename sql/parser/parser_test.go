@@ -15,9 +15,9 @@
 package parser
 
 import (
-	"github.com/aereal/sqlx/models"
 	"testing"
 
+	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
 	"github.com/aereal/sqlx/sql/token"
 )
@@ -169,8 +169,8 @@ func TestParserInsert(t *testing.T) {
 	if !ok {
 		t.Fatal("expected InsertStatement")
 	}
-	if stmt.TableName != "users" {
-		t.Fatalf("expected table name 'users', got %q", stmt.TableName)
+	if stmt.Table.Name != "users" {
+		t.Fatalf("expected table name 'users', got %q", stmt.Table.Name)
 	}
 	if len(stmt.Columns) != 2 {
 		t.Fatalf("expected 2 columns, got %d", len(stmt.Columns))

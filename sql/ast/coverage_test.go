@@ -307,7 +307,7 @@ func TestSpanMethods(t *testing.T) {
 
 	t.Run("InsertStatement span with columns and values", func(t *testing.T) {
 		insert := &InsertStatement{
-			TableName: "users",
+			Table: TableReference{Name: "users"},
 			Columns: []Expression{
 				&Identifier{Name: "id"},
 				&Identifier{Name: "name"},
@@ -326,7 +326,7 @@ func TestSpanMethods(t *testing.T) {
 
 	t.Run("InsertStatement span with Query", func(t *testing.T) {
 		insert := &InsertStatement{
-			TableName: "archive",
+			Table: TableReference{Name: "archive"},
 			Query: &SelectStatement{
 				Columns: []Expression{
 					&Identifier{Name: "*"},
@@ -529,7 +529,7 @@ func TestReleaseASTWithContent(t *testing.T) {
 				},
 			},
 			&InsertStatement{
-				TableName: "users",
+				Table: TableReference{Name: "users"},
 			},
 		}
 		ReleaseAST(ast)
@@ -842,7 +842,7 @@ func TestInsertStatementChildrenCoverage(t *testing.T) {
 			With: &WithClause{
 				CTEs: []*CommonTableExpr{{Name: "temp"}},
 			},
-			TableName: "users",
+			Table:     TableReference{Name: "users"},
 			Columns:   []Expression{&Identifier{Name: "id"}},
 			Values:    [][]Expression{{&LiteralValue{Value: 1}}},
 			Query:     &SelectStatement{},
@@ -859,7 +859,7 @@ func TestInsertStatementChildrenCoverage(t *testing.T) {
 
 	t.Run("minimal insert", func(t *testing.T) {
 		insert := &InsertStatement{
-			TableName: "users",
+			Table: TableReference{Name: "users"},
 		}
 		children := insert.Children()
 		if children == nil {

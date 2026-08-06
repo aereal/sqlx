@@ -119,7 +119,7 @@ func PutInsertStatement(stmt *InsertStatement) {
 		stmt.OnDuplicateKey = nil
 	}
 
-	stmt.TableName = ""
+	stmt.Table = TableReference{}
 
 	// Return to pool
 	insertStmtPool.Put(stmt)

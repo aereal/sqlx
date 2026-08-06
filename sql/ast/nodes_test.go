@@ -554,9 +554,9 @@ func TestInsertStatement(t *testing.T) {
 		{
 			name: "INSERT with values",
 			stmt: &InsertStatement{
-				TableName: "users",
-				Columns:   []Expression{&Identifier{Name: "name"}, &Identifier{Name: "email"}},
-				Values:    [][]Expression{{&LiteralValue{Value: "John"}, &LiteralValue{Value: "john@example.com"}}},
+				Table:   TableReference{Name: "users"},
+				Columns: []Expression{&Identifier{Name: "name"}, &Identifier{Name: "email"}},
+				Values:  [][]Expression{{&LiteralValue{Value: "John"}, &LiteralValue{Value: "john@example.com"}}},
 			},
 			wantLiteral: "INSERT",
 			minChildren: 2,
@@ -564,9 +564,9 @@ func TestInsertStatement(t *testing.T) {
 		{
 			name: "INSERT with SELECT",
 			stmt: &InsertStatement{
-				TableName: "users",
-				Columns:   []Expression{&Identifier{Name: "name"}},
-				Query:     &SelectStatement{},
+				Table:   TableReference{Name: "users"},
+				Columns: []Expression{&Identifier{Name: "name"}},
+				Query:   &SelectStatement{},
 			},
 			wantLiteral: "INSERT",
 			minChildren: 1,

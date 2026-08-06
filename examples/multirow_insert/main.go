@@ -39,7 +39,7 @@ func main() {
 	}
 
 	insertStmt := astResult.Statements[0].(*ast.InsertStatement)
-	fmt.Printf("Table: %s\n", insertStmt.TableName)
+	fmt.Printf("Table: %s\n", insertStmt.Table.Name)
 	fmt.Printf("Columns: %d\n", len(insertStmt.Columns))
 	fmt.Printf("Rows: %d\n", len(insertStmt.Values))
 	fmt.Println()
@@ -59,7 +59,7 @@ func main() {
 	}
 
 	insertStmt2 := astResult2.Statements[0].(*ast.InsertStatement)
-	fmt.Printf("Table: %s\n", insertStmt2.TableName)
+	fmt.Printf("Table: %s\n", insertStmt2.Table.Name)
 	fmt.Printf("Rows: %d\n", len(insertStmt2.Values))
 	fmt.Printf("Has ON CONFLICT: %t\n", insertStmt2.OnConflict != nil)
 	fmt.Println()
@@ -79,7 +79,7 @@ func main() {
 	}
 
 	insertStmt3 := astResult3.Statements[0].(*ast.InsertStatement)
-	fmt.Printf("Table: %s\n", insertStmt3.TableName)
+	fmt.Printf("Table: %s\n", insertStmt3.Table.Name)
 	fmt.Printf("Rows: %d\n", len(insertStmt3.Values))
 	fmt.Printf("RETURNING columns: %d\n", len(insertStmt3.Returning))
 	fmt.Println()
@@ -102,7 +102,7 @@ func main() {
 	}
 
 	insertStmt4 := astResult4.Statements[0].(*ast.InsertStatement)
-	fmt.Printf("Table: %s\n", insertStmt4.TableName)
+	fmt.Printf("Table: %s\n", insertStmt4.Table.Name)
 	fmt.Printf("Rows: %d\n", len(insertStmt4.Values))
 	fmt.Printf("Values per row: %d\n", len(insertStmt4.Values[0]))
 	fmt.Println()

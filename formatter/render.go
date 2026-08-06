@@ -394,7 +394,7 @@ func renderInsert(i *ast.InsertStatement, opts ast.FormatOptions) string {
 
 	sb.WriteString(f.kw("INSERT INTO"))
 	sb.WriteString(" ")
-	sb.WriteString(i.TableName)
+	sb.WriteString(i.Table.Name)
 
 	if len(i.Columns) > 0 {
 		sb.WriteString(" (")

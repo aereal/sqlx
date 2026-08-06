@@ -500,8 +500,8 @@ func TestCTEWithMaterialized(t *testing.T) {
 func TestOnConflictSQL(t *testing.T) {
 	// DO NOTHING
 	stmt := &InsertStatement{
-		TableName: "t",
-		Values:    [][]Expression{{&LiteralValue{Value: "1"}}},
+		Table:  TableReference{Name: "t"},
+		Values: [][]Expression{{&LiteralValue{Value: "1"}}},
 		OnConflict: &OnConflict{
 			Target:     []Expression{&Identifier{Name: "id"}},
 			Constraint: "pk",
@@ -515,8 +515,8 @@ func TestOnConflictSQL(t *testing.T) {
 
 	// DO UPDATE with WHERE
 	stmt2 := &InsertStatement{
-		TableName: "t",
-		Values:    [][]Expression{{&LiteralValue{Value: "1"}}},
+		Table:  TableReference{Name: "t"},
+		Values: [][]Expression{{&LiteralValue{Value: "1"}}},
 		OnConflict: &OnConflict{
 			Target: []Expression{&Identifier{Name: "id"}},
 			Action: OnConflictAction{
@@ -696,7 +696,7 @@ func TestInsertStatement_WithQuery(t *testing.T) {
 		With: &WithClause{CTEs: []*CommonTableExpr{
 			{Name: "c", Statement: &SelectStatement{Columns: []Expression{&Identifier{Name: "x"}}}},
 		}},
-		TableName: "t",
+		Table:     TableReference{Name: "t"},
 		Query:     &SelectStatement{Columns: []Expression{&Identifier{Name: "a"}}},
 		Returning: []Expression{&Identifier{Name: "id"}},
 	}

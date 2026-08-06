@@ -165,8 +165,8 @@ func TestRenderSelect_Nil(t *testing.T) {
 
 func TestRenderInsert_Readable(t *testing.T) {
 	stmt := &ast.InsertStatement{
-		TableName: "users",
-		Columns:   []ast.Expression{&ast.Identifier{Name: "name"}, &ast.Identifier{Name: "age"}},
+		Table:   ast.TableReference{Name: "users"},
+		Columns: []ast.Expression{&ast.Identifier{Name: "name"}, &ast.Identifier{Name: "age"}},
 		Values: [][]ast.Expression{
 			{&ast.LiteralValue{Value: "'Alice'"}, &ast.LiteralValue{Value: "30"}},
 		},
@@ -189,7 +189,7 @@ func TestRenderInsert_WithQuery(t *testing.T) {
 		With: &ast.WithClause{CTEs: []*ast.CommonTableExpr{
 			{Name: "c", Statement: &ast.SelectStatement{Columns: []ast.Expression{&ast.Identifier{Name: "x"}}}},
 		}},
-		TableName: "t",
+		Table:     ast.TableReference{Name: "t"},
 		Columns:   []ast.Expression{&ast.Identifier{Name: "a"}},
 		Query:     &ast.SelectStatement{Columns: []ast.Expression{&ast.Identifier{Name: "x"}}},
 		Returning: []ast.Expression{&ast.Identifier{Name: "id"}},
@@ -204,8 +204,8 @@ func TestRenderInsert_WithQuery(t *testing.T) {
 
 func TestRenderInsert_OnConflict(t *testing.T) {
 	stmt := &ast.InsertStatement{
-		TableName: "t",
-		Values:    [][]ast.Expression{{&ast.LiteralValue{Value: "1"}}},
+		Table:  ast.TableReference{Name: "t"},
+		Values: [][]ast.Expression{{&ast.LiteralValue{Value: "1"}}},
 		OnConflict: &ast.OnConflict{
 			Target: []ast.Expression{&ast.Identifier{Name: "id"}},
 			Action: ast.OnConflictAction{DoNothing: true},

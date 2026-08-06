@@ -30,7 +30,7 @@ func TestInsertStatementPool(t *testing.T) {
 		}
 
 		// Use it
-		stmt.TableName = "users"
+		stmt.Table.Name = "users"
 		stmt.Columns = []Expression{
 			&Identifier{Name: "name"},
 			&Identifier{Name: "email"},
@@ -47,8 +47,8 @@ func TestInsertStatementPool(t *testing.T) {
 		PutInsertStatement(stmt)
 
 		// Verify it was cleaned
-		if stmt.TableName != "" {
-			t.Errorf("TableName not cleared, got %v", stmt.TableName)
+		if stmt.Table.Name != "" {
+			t.Errorf("Table.Name not cleared, got %v", stmt.Table.Name)
 		}
 		if len(stmt.Columns) != 0 {
 			t.Errorf("Columns not cleared, len = %d", len(stmt.Columns))
@@ -206,7 +206,7 @@ func TestPoolReuse(t *testing.T) {
 	t.Run("InsertStatement reuse", func(t *testing.T) {
 		// Get first statement
 		stmt1 := GetInsertStatement()
-		stmt1.TableName = "test"
+		stmt1.Table.Name = "test"
 
 		// Return it
 		PutInsertStatement(stmt1)
@@ -218,8 +218,8 @@ func TestPoolReuse(t *testing.T) {
 		}
 
 		// Should be clean
-		if stmt2.TableName != "" {
-			t.Errorf("Reused statement not clean, TableName = %v", stmt2.TableName)
+		if stmt2.Table.Name != "" {
+			t.Errorf("Reused statement not clean, Table.Name = %v", stmt2.Table.Name)
 		}
 
 		PutInsertStatement(stmt2)
@@ -386,7 +386,7 @@ func TestMemoryLeaks_InsertStatementPool(t *testing.T) {
 	for i := 0; i < iterations; i++ {
 		stmt := GetInsertStatement()
 
-		stmt.TableName = "users"
+		stmt.Table.Name = "users"
 		stmt.Columns = append(stmt.Columns, &Identifier{Name: "name"}, &Identifier{Name: "email"})
 		// Values is now [][]Expression for multi-row support
 		stmt.Values = append(stmt.Values, []Expression{&LiteralValue{Value: "John"}, &LiteralValue{Value: "john@test.com"}})

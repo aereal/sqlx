@@ -105,8 +105,8 @@ func TestParser_InsertOnConflict_Extended(t *testing.T) {
 				t.Fatalf("Expected InsertStatement, got %T", result.Statements[0])
 			}
 
-			if insertStmt.TableName != tt.wantTableName {
-				t.Errorf("TableName = %v, want %v", insertStmt.TableName, tt.wantTableName)
+			if insertStmt.Table.Name != tt.wantTableName {
+				t.Errorf("Table.Name = %v, want %v", insertStmt.Table.Name, tt.wantTableName)
 			}
 
 			if insertStmt.OnConflict == nil {

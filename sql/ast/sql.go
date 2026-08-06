@@ -659,7 +659,7 @@ func (i *InsertStatement) SQL() string {
 	}
 
 	sb.WriteString("INSERT INTO ")
-	sb.WriteString(i.TableName)
+	sb.WriteString(i.Table.Name)
 
 	if len(i.Columns) > 0 {
 		sb.WriteString(" (")

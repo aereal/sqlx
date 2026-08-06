@@ -50,8 +50,8 @@ func TestIssue179_BasicMultiRowInsert(t *testing.T) {
 	}
 
 	// Verify table name
-	if insertStmt.TableName != "users" {
-		t.Errorf("expected table name 'users', got %q", insertStmt.TableName)
+	if insertStmt.Table.Name != "users" {
+		t.Errorf("expected table name 'users', got %q", insertStmt.Table.Name)
 	}
 
 	// Verify column count

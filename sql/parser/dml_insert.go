@@ -38,7 +38,7 @@ func (p *Parser) parseInsertStatement() (ast.Statement, error) {
 	p.advance() // Consume INTO
 
 	// Parse table name (supports schema.table qualification and double-quoted identifiers)
-	tableName, _, _, err := p.parseQualifiedName()
+	tableRef, err := p.parseTableReference()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}
@@ -96,8 +96,8 @@ func (p *Parser) parseInsertStatement() (ast.Statement, error) {
 			p.advance() // Consume format name
 		}
 		return &ast.InsertStatement{
-			TableName: tableName,
-			Columns:   columns,
+			Table:   *tableRef,
+			Columns: columns,
 		}, nil
 	}
 
@@ -229,7 +229,7 @@ func (p *Parser) parseInsertStatement() (ast.Statement, error) {
 
 	// Create INSERT statement
 	return &ast.InsertStatement{
-		TableName:      tableName,
+		Table:          *tableRef,
 		Columns:        columns,
 		Output:         outputCols,
 		Values:         values,
