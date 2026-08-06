@@ -282,8 +282,8 @@ func TestRenderUpdate_Nil(t *testing.T) {
 
 func TestRenderDelete_Readable(t *testing.T) {
 	stmt := &ast.DeleteStatement{
-		TableName: "users",
-		Where:     &ast.BinaryExpression{Left: &ast.Identifier{Name: "id"}, Operator: "=", Right: &ast.LiteralValue{Value: "1"}},
+		Table: ast.TableReference{Name: "users"},
+		Where: &ast.BinaryExpression{Left: &ast.Identifier{Name: "id"}, Operator: "=", Right: &ast.LiteralValue{Value: "1"}},
 	}
 
 	result := fmtStmt(stmt, ast.ReadableStyle())
@@ -300,7 +300,7 @@ func TestRenderDelete_AllClauses(t *testing.T) {
 		With: &ast.WithClause{CTEs: []*ast.CommonTableExpr{
 			{Name: "c", Statement: &ast.SelectStatement{Columns: []ast.Expression{&ast.Identifier{Name: "x"}}}},
 		}},
-		TableName: "t",
+		Table:     ast.TableReference{Name: "t"},
 		Alias:     "tt",
 		Using:     []ast.TableReference{{Name: "other"}},
 		Where:     &ast.Identifier{Name: "true"},

@@ -352,7 +352,7 @@ func TestSpanMethods(t *testing.T) {
 
 	t.Run("DeleteStatement span", func(t *testing.T) {
 		del := &DeleteStatement{
-			TableName: "logs",
+			Table: TableReference{Name: "logs"},
 		}
 		span := del.Span()
 		if span.Start.Line != 0 {

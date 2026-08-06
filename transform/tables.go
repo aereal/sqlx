@@ -57,8 +57,8 @@ func ReplaceTable(oldName, newName string) Rule {
 			s.Where = replaceTableInExpr(s.Where, oldName, newName)
 			return nil
 		case *ast.DeleteStatement:
-			if strings.EqualFold(s.TableName, oldName) {
-				s.TableName = newName
+			if strings.EqualFold(s.Table.Name, oldName) {
+				s.Table.Name = newName
 			}
 			s.Where = replaceTableInExpr(s.Where, oldName, newName)
 			return nil
@@ -94,7 +94,7 @@ func AddTableAlias(tableName, alias string) Rule {
 			}
 			return nil
 		case *ast.DeleteStatement:
-			if strings.EqualFold(s.TableName, tableName) {
+			if strings.EqualFold(s.Table.Name, tableName) {
 				s.Alias = alias
 			}
 			return nil

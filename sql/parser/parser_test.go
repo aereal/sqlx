@@ -250,8 +250,8 @@ func TestParserDelete(t *testing.T) {
 	if !ok {
 		t.Fatal("expected DeleteStatement")
 	}
-	if stmt.TableName != "users" {
-		t.Fatalf("expected table name 'users', got %q", stmt.TableName)
+	if stmt.Table.Name != "users" {
+		t.Fatalf("expected table name 'users', got %q", stmt.Table.Name)
 	}
 	if stmt.Where == nil {
 		t.Fatal("expected WHERE clause, got nil")

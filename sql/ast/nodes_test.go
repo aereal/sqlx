@@ -659,7 +659,7 @@ func TestDeleteStatement(t *testing.T) {
 		{
 			name: "DELETE without WHERE",
 			stmt: &DeleteStatement{
-				TableName: "users",
+				Table: TableReference{Name: "users"},
 			},
 			wantLiteral: "DELETE",
 			minChildren: 0,
@@ -667,8 +667,8 @@ func TestDeleteStatement(t *testing.T) {
 		{
 			name: "DELETE with WHERE",
 			stmt: &DeleteStatement{
-				TableName: "users",
-				Where:     &BinaryExpression{Operator: "="},
+				Table: TableReference{Name: "users"},
+				Where: &BinaryExpression{Operator: "="},
 			},
 			wantLiteral: "DELETE",
 			minChildren: 1,

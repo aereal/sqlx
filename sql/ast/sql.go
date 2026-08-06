@@ -762,7 +762,7 @@ func (d *DeleteStatement) SQL() string {
 	}
 
 	sb.WriteString("DELETE FROM ")
-	sb.WriteString(d.TableName)
+	sb.WriteString(d.Table.Name)
 	if d.Alias != "" {
 		sb.WriteString(" ")
 		sb.WriteString(d.Alias)

@@ -121,7 +121,7 @@ func TestReleaseStatements(t *testing.T) {
 		&SelectStatement{Columns: []Expression{&Identifier{Name: "a"}}},
 		&InsertStatement{Table: TableReference{Name: "t"}},
 		&UpdateStatement{Table: TableReference{Name: "t"}, Assignments: []UpdateExpression{{Column: &Identifier{Name: "x"}, Value: &LiteralValue{Value: "1"}}}},
-		&DeleteStatement{TableName: "t"},
+		&DeleteStatement{Table: TableReference{Name: "t"}},
 	}
 	ReleaseStatements(stmts) // should not panic
 }

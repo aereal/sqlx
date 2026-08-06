@@ -33,7 +33,7 @@ func (p *Parser) parseDeleteStatement() (ast.Statement, error) {
 	p.advance() // Consume FROM
 
 	// Parse table name (supports schema.table qualification and double-quoted identifiers)
-	tableName, _, _, err := p.parseQualifiedName()
+	tableRef, err := p.parseTableReference()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}
@@ -70,7 +70,7 @@ func (p *Parser) parseDeleteStatement() (ast.Statement, error) {
 
 	// Create DELETE statement
 	return &ast.DeleteStatement{
-		TableName: tableName,
+		Table:     *tableRef,
 		Where:     whereClause,
 		Returning: returning,
 	}, nil

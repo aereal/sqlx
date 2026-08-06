@@ -312,7 +312,7 @@ func TestScan_DeleteWithTautology(t *testing.T) {
 
 	// DELETE FROM users WHERE 1=1
 	deleteStmt := &ast.DeleteStatement{
-		TableName: "users",
+		Table: ast.TableReference{Name: "users"},
 		Where: &ast.BinaryExpression{
 			Left:     &ast.LiteralValue{Value: "1", Type: "INTEGER"},
 			Operator: "=",

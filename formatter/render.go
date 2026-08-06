@@ -513,7 +513,7 @@ func renderDelete(d *ast.DeleteStatement, opts ast.FormatOptions) string {
 
 	sb.WriteString(f.kw("DELETE FROM"))
 	sb.WriteString(" ")
-	sb.WriteString(d.TableName)
+	sb.WriteString(d.Table.Name)
 	if d.Alias != "" {
 		sb.WriteString(" ")
 		sb.WriteString(d.Alias)

@@ -275,8 +275,8 @@ func TestSchemaQualified_DELETE(t *testing.T) {
 			if !ok {
 				t.Fatalf("expected DeleteStatement, got %T", tree.Statements[0])
 			}
-			if stmt.TableName != tt.tableName {
-				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.TableName)
+			if stmt.Table.Name != tt.tableName {
+				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table.Name)
 			}
 		})
 	}

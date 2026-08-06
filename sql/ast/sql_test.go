@@ -169,8 +169,8 @@ func TestUpdateStatementSQL(t *testing.T) {
 
 func TestDeleteStatementSQL(t *testing.T) {
 	stmt := &DeleteStatement{
-		TableName: "users",
-		Where:     &BinaryExpression{Left: &Identifier{Name: "id"}, Operator: "=", Right: &LiteralValue{Value: 1, Type: "INTEGER"}},
+		Table: TableReference{Name: "users"},
+		Where: &BinaryExpression{Left: &Identifier{Name: "id"}, Operator: "=", Right: &LiteralValue{Value: 1, Type: "INTEGER"}},
 	}
 	want := "DELETE FROM users WHERE id = 1"
 	if got := stmt.SQL(); got != want {

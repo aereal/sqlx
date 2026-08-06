@@ -353,7 +353,7 @@ func (c CreateTableStatement) Children() []Node {
 // DeleteStatement represents a DELETE SQL statement
 type DeleteStatement struct {
 	With      *WithClause
-	TableName string
+	Table     TableReference
 	Alias     string
 	Using     []TableReference
 	Where     Expression

@@ -44,7 +44,7 @@ func TestMarkerFunctions_StatementNodes(t *testing.T) {
 		},
 		{
 			name:      "DeleteStatement",
-			statement: &DeleteStatement{TableName: "test"},
+			statement: &DeleteStatement{Table: TableReference{Name: "test"}},
 			wantType:  "DELETE",
 		},
 		{

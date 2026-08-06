@@ -118,7 +118,7 @@ func TestDeleteStatementPool(t *testing.T) {
 		}
 
 		// Use it
-		stmt.TableName = "users"
+		stmt.Table.Name = "users"
 		stmt.Where = &BinaryExpression{
 			Left:     &Identifier{Name: "id"},
 			Operator: "=",
@@ -129,8 +129,8 @@ func TestDeleteStatementPool(t *testing.T) {
 		PutDeleteStatement(stmt)
 
 		// Verify it was cleaned
-		if stmt.TableName != "" {
-			t.Errorf("TableName not cleared, got %v", stmt.TableName)
+		if stmt.Table.Name != "" {
+			t.Errorf("TableName not cleared, got %v", stmt.Table.Name)
 		}
 		if stmt.Where != nil {
 			t.Errorf("Where not cleared, got %v", stmt.Where)
@@ -510,7 +510,7 @@ func TestMemoryLeaks_DeleteStatementPool(t *testing.T) {
 	for i := 0; i < iterations; i++ {
 		stmt := GetDeleteStatement()
 
-		stmt.TableName = "users"
+		stmt.Table.Name = "users"
 		stmt.Where = &BinaryExpression{
 			Left:     &Identifier{Name: "id"},
 			Operator: "=",

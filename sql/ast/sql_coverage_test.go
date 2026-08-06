@@ -733,7 +733,7 @@ func TestDeleteStatement_WithUsingReturning(t *testing.T) {
 		With: &WithClause{CTEs: []*CommonTableExpr{
 			{Name: "c", Statement: &SelectStatement{Columns: []Expression{&Identifier{Name: "x"}}}},
 		}},
-		TableName: "t",
+		Table:     TableReference{Name: "t"},
 		Alias:     "tt",
 		Using:     []TableReference{{Name: "other"}},
 		Where:     &Identifier{Name: "true"},
