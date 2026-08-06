@@ -4,7 +4,7 @@ Supported IDEs: IntelliJ IDEA, GoLand, DataGrip, WebStorm, PyCharm, and others (
 
 ## Prerequisites
 
-- [GoSQLX](https://github.com/ajitpratap0/GoSQLX) installed and available on your `$PATH`
+- [GoSQLX](https://github.com/aereal/sqlx) installed and available on your `$PATH`
 - JetBrains IDE version **2023.2** or later (built-in LSP support)
 
 ## Configuration

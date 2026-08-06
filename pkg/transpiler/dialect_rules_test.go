@@ -17,8 +17,8 @@ package transpiler_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/transpiler"
 )
 
 func TestRulesFor_MySQLToPostgres_NonEmpty(t *testing.T) {

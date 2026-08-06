@@ -21,8 +21,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // TestingT is an interface wrapper around *testing.T to allow for mocking in tests.

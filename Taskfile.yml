@@ -287,7 +287,7 @@ tasks:
       - echo "Generating documentation..."
       - |
         if command -v godoc > /dev/null; then
-          echo "Starting godoc server at http://localhost:6060/pkg/github.com/ajitpratap0/GoSQLX/"
+          echo "Starting godoc server at http://localhost:6060/pkg/github.com/aereal/sqlx/"
           godoc -http=:6060
         else
           echo "godoc not installed. Run: go install golang.org/x/tools/cmd/godoc@latest"

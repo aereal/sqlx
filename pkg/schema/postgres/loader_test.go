@@ -27,7 +27,7 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	pgschema "github.com/ajitpratap0/GoSQLX/pkg/schema/postgres"
+	pgschema "github.com/aereal/sqlx/pkg/schema/postgres"
 )
 
 // isDockerAvailable checks whether the Docker daemon is reachable.

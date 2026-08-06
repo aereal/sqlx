@@ -14,7 +14,7 @@
 
 package gosqlx
 
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+import "github.com/aereal/sqlx/pkg/sql/ast"
 
 // WalkBy traverses the tree in depth-first, pre-order fashion and invokes fn
 // for every node whose concrete type is T. Children of the matched node are

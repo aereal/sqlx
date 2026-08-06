@@ -17,9 +17,9 @@ package parser_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 func parseOracle(t *testing.T, sql string) *ast.AST {

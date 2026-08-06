@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // DefaultRules returns the default set of all built-in optimization rules.

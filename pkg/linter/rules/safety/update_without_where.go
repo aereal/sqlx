@@ -15,8 +15,8 @@
 package safety
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // UpdateWithoutWhereRule (L012) flags UPDATE statements that have no WHERE clause.

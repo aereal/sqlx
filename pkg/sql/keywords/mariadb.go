@@ -14,7 +14,7 @@
 
 package keywords
 
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/models"
 
 // MARIADB_SPECIFIC contains MariaDB-specific SQL keywords beyond the MySQL base.
 // When DialectMariaDB is active, both MYSQL_SPECIFIC and MARIADB_SPECIFIC are loaded

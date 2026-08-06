@@ -18,8 +18,8 @@ import (
 	"strings"
 	"unicode"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // CaseStyle represents the preferred keyword case style for SQL keywords.

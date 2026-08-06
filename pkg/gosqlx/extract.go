@@ -51,14 +51,14 @@
 // functions, and all arithmetic/logical operators.
 //
 // If you encounter parsing issues with SQL queries that should be supported,
-// please report them at: https://github.com/ajitpratap0/GoSQLX/issues
+// please report them at: https://github.com/aereal/sqlx/issues
 package gosqlx
 
 import (
 	"fmt"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // QualifiedName represents a fully qualified table or column name with optional schema.

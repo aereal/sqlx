@@ -20,7 +20,7 @@ package gosqlx
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // TestParse_IntervalExpression_Simple tests basic INTERVAL expression parsing

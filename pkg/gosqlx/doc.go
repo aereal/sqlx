@@ -310,7 +310,7 @@
 //
 // SQL security scanning:
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+//	import "github.com/aereal/sqlx/pkg/sql/security"
 //
 //	func checkSQLSafety(query string) error {
 //	    scanner := security.NewScanner()
@@ -360,7 +360,7 @@
 // The gosqlx CLI tool provides command-line access to parsing functionality:
 //
 //	# Install CLI
-//	go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+//	go install github.com/aereal/sqlx/cmd/gosqlx@latest
 //
 //	# Validate SQL
 //	gosqlx validate "SELECT * FROM users WHERE active = true"
@@ -470,9 +470,9 @@
 //
 // Contributions are welcome! See the project repository for contribution guidelines.
 //
-// Repository: https://github.com/ajitpratap0/GoSQLX
-// Issues: https://github.com/ajitpratap0/GoSQLX/issues
-// Discussions: https://github.com/ajitpratap0/GoSQLX/discussions
+// Repository: https://github.com/aereal/sqlx
+// Issues: https://github.com/aereal/sqlx/issues
+// Discussions: https://github.com/aereal/sqlx/discussions
 //
 // # License
 //

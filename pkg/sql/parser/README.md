@@ -23,8 +23,8 @@ The `parser` package provides a production-ready, recursive descent SQL parser t
 package main
 
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/token"
+    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/pkg/sql/token"
 )
 
 func main() {

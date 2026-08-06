@@ -22,10 +22,10 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/config"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/config"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // CLIAnalyzerOptions contains configuration for the SQL analyzer CLI

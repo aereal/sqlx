@@ -294,9 +294,9 @@ We welcome documentation improvements! To contribute:
 If you can't find what you need:
 
 1. **Search**: Use GitHub's search in the repository
-2. **Issues**: Check [existing issues](https://github.com/ajitpratap0/GoSQLX/issues)
-3. **Ask**: Open a [new issue](https://github.com/ajitpratap0/GoSQLX/issues/new)
-4. **Discuss**: Join [discussions](https://github.com/ajitpratap0/GoSQLX/discussions)
+2. **Issues**: Check [existing issues](https://github.com/aereal/sqlx/issues)
+3. **Ask**: Open a [new issue](https://github.com/aereal/sqlx/issues/new)
+4. **Discuss**: Join [discussions](https://github.com/aereal/sqlx/discussions)
 
 ## Documentation Updates
 

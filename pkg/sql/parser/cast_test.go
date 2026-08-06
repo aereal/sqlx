@@ -18,11 +18,11 @@
 package parser
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/token"
 )
 
 // TestParser_CastExpression_Simple tests basic CAST expression parsing

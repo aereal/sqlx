@@ -23,7 +23,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/errors"
+	"github.com/aereal/sqlx/pkg/errors"
 )
 
 func TestBug3_HintGrammar_NoKeywordSuffix(t *testing.T) {

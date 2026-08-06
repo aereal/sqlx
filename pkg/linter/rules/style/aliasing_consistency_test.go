@@ -17,9 +17,9 @@ package style
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // makeASTCtx produces a Context with tokens and AST populated, so AST-based

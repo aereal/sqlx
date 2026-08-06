@@ -19,8 +19,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/security"
 )
 
 // SQLAnalyzer provides deep AST-based analysis of SQL queries

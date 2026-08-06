@@ -154,7 +154,7 @@ gosqlx lsp  # Uses defaults
 ```go
 import (
     "context"
-    "github.com/ajitpratap0/GoSQLX/pkg/lsp"
+    "github.com/aereal/sqlx/pkg/lsp"
     "log"
 )
 
@@ -264,8 +264,8 @@ linter:
 **Verify Diagnostics Programmatically:**
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/lsp"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
+    "github.com/aereal/sqlx/pkg/lsp"
+    "github.com/aereal/sqlx/pkg/linter"
 )
 
 func TestDiagnostics(sqlContent string) {
@@ -412,7 +412,7 @@ gosqlx lint --fix --rules L001,L002,L003 query.sql
 **Programmatic Auto-Fix:**
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter"
     "os"
 )
 
@@ -623,7 +623,7 @@ func BenchmarkLinter(b *testing.B) {
 
 **Solutions:**
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+import "github.com/aereal/sqlx/pkg/sql/security"
 
 // Solution 1: Use parameterized queries (recommended)
 func SafeUnionQuery(userID int) string {
@@ -930,7 +930,7 @@ parser:
 
 **Code Solution:**
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+import "github.com/aereal/sqlx/pkg/sql/parser"
 
 func ParseComplexQuery(sql string) error {
     p := parser.NewParser()
@@ -1465,7 +1465,7 @@ func ProcessManyQueries(queries []string) {
 
 **Diagnosis:**
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+import "github.com/aereal/sqlx/pkg/metrics"
 
 func DiagnosePoolPerformance() {
     snapshot := metrics.GetSnapshot()
@@ -1748,7 +1748,7 @@ func TestParser(sql string) {
 ### Security Scanning
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+import "github.com/aereal/sqlx/pkg/sql/security"
 
 func CheckSQLSecurity(sql string) {
     scanner := security.NewScanner()
@@ -2017,7 +2017,7 @@ gosqlx security scan query.sql
 
 Or programmatically:
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+import "github.com/aereal/sqlx/pkg/sql/security"
 
 scanner := security.NewScanner()
 result := scanner.Scan(sqlQuery)
@@ -2236,7 +2236,7 @@ If experiencing performance problems:
 
 1. **Collect Metrics:**
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+import "github.com/aereal/sqlx/pkg/metrics"
 
 snapshot := metrics.GetSnapshot()
 log.Printf("Pool hit rate: %.2f%%",
@@ -2257,7 +2257,7 @@ grep -n "GetTokenizer()" *.go | grep -v "defer"
 
 ### Community Support
 
-- **GitHub Issues**: https://github.com/ajitpratap0/GoSQLX/issues
+- **GitHub Issues**: https://github.com/aereal/sqlx/issues
 - **Discussions**: Use GitHub Discussions for questions
 - **Examples**: Check closed issues for similar problems
 - **Contributing**: See CONTRIBUTING.md for guidelines

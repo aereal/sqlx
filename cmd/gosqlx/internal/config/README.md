@@ -82,7 +82,7 @@ type AnalyzeConfig struct {
 ### Loading Configuration
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/config"
+import "github.com/aereal/sqlx/cmd/gosqlx/internal/config"
 
 // Load from default locations (with precedence)
 cfg, err := config.LoadDefault()
@@ -321,7 +321,7 @@ go test -run TestLoadDefault ./cmd/gosqlx/internal/config/
 The `schema.go` file defines the complete configuration schema with validation functions:
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/config"
+import "github.com/aereal/sqlx/cmd/gosqlx/internal/config"
 
 // Validate individual settings
 err := config.ValidateDialect("mysql")

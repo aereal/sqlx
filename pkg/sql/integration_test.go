@@ -23,8 +23,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // SQLTestFile represents a test file with metadata

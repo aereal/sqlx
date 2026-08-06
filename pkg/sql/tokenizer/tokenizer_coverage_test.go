@@ -20,8 +20,8 @@ import (
 	"log/slog"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 // TestBacktickIdentifiers tests MySQL-style backtick identifiers

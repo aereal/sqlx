@@ -17,7 +17,7 @@ package transform
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // SetLimit returns a Rule that sets (or replaces) the LIMIT clause of a SELECT

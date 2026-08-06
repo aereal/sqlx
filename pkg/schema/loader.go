@@ -20,8 +20,8 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // LoadCatalogFromDDL parses DDL statements from sql and builds a Catalog.

@@ -44,7 +44,7 @@
 //
 // Enable metrics collection:
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+//	import "github.com/aereal/sqlx/pkg/metrics"
 //
 //	// Enable metrics tracking
 //	metrics.Enable()

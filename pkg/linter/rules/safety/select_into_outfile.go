@@ -17,8 +17,8 @@ package safety
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // SelectIntoOutfileRule (L015) flags SELECT ... INTO OUTFILE / INTO DUMPFILE patterns.

@@ -20,13 +20,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/fingerprint"
-	"github.com/ajitpratap0/GoSQLX/pkg/formatter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+	"github.com/aereal/sqlx/pkg/fingerprint"
+	"github.com/aereal/sqlx/pkg/formatter"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/transpiler"
 )
 
 // Version is the current GoSQLX library version.

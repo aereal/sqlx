@@ -17,7 +17,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // tw is a test helper that builds a TokenWithSpan with zero-value span.

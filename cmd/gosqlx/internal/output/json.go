@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"strings"
 
-	goerrors "github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	goerrors "github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // JSONValidationOutput represents the JSON output format for validation command.

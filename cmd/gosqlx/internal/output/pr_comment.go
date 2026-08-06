@@ -114,7 +114,7 @@ func FormatPRComment(result *ValidationResult) string {
 
 	// Footer
 	sb.WriteString("---\n")
-	sb.WriteString("*Powered by [GoSQLX](https://github.com/ajitpratap0/GoSQLX) - ")
+	sb.WriteString("*Powered by [GoSQLX](https://github.com/aereal/sqlx) - ")
 	sb.WriteString("Ultra-fast SQL validation (100x faster than SQLFluff)*\n")
 
 	return sb.String()

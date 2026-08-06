@@ -27,7 +27,7 @@ import (
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 
-	myschema "github.com/ajitpratap0/GoSQLX/pkg/schema/mysql"
+	myschema "github.com/aereal/sqlx/pkg/schema/mysql"
 )
 
 // isDockerAvailable checks whether the Docker daemon is reachable.

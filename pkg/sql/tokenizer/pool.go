@@ -18,7 +18,7 @@ import (
 	"bytes"
 	"sync"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/metrics"
+	"github.com/aereal/sqlx/pkg/metrics"
 )
 
 // bufferPool is used to reuse bytes.Buffer instances during tokenization.

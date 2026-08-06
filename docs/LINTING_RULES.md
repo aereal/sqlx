@@ -403,7 +403,7 @@ linter:
 ## Programmatic API
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/linter"
+import "github.com/aereal/sqlx/pkg/linter"
 
 // Create linter with default rules
 l := linter.New()
@@ -450,7 +450,7 @@ jobs:
       - uses: actions/setup-go@v4
         with:
           go-version: '1.21'
-      - run: go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+      - run: go install github.com/aereal/sqlx/cmd/gosqlx@latest
       - run: gosqlx lint --fail-on-warn *.sql
 ```
 

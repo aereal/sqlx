@@ -15,7 +15,7 @@
 package transform
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // getReturning returns a pointer to the Returning slice for supported DML

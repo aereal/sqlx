@@ -17,10 +17,10 @@ package safety_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/safety"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/safety"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 func makeContext(t *testing.T, sql string) *linter.Context {

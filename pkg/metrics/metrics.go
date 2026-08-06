@@ -33,7 +33,7 @@
 //
 // Enable metrics collection:
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+//	import "github.com/aereal/sqlx/pkg/metrics"
 //
 //	// Enable metrics tracking
 //	metrics.Enable()
@@ -223,7 +223,7 @@ import (
 	"sync/atomic"
 	"time"
 
-	sqlerrors "github.com/ajitpratap0/GoSQLX/pkg/errors"
+	sqlerrors "github.com/aereal/sqlx/pkg/errors"
 )
 
 // errorBucket is the fallback key used when an error has no structured

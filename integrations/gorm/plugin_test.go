@@ -3,7 +3,7 @@ package gosqlxgorm_test
 import (
 	"testing"
 
-	gosqlxgorm "github.com/ajitpratap0/GoSQLX/integrations/gorm"
+	gosqlxgorm "github.com/aereal/sqlx/integrations/gorm"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"

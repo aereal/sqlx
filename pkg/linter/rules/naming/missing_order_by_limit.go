@@ -15,8 +15,8 @@
 package naming
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // MissingOrderByLimitRule (L028) flags queries that use LIMIT/OFFSET without ORDER BY.

@@ -31,7 +31,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // ErrorCode represents a unique error code for programmatic handling.
@@ -134,7 +134,7 @@ const (
 //	  6 |
 //
 //	Hint: Expected FROM keyword after SELECT clause
-//	Help: https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md
+//	Help: https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md
 //
 // Thread Safety: Error instances are immutable after creation. Methods like
 // WithContext, WithHint return new Error instances and are safe for concurrent use.
@@ -200,7 +200,7 @@ type ErrorContext struct {
 //	               ^^^^
 //
 //	Hint: Did you mean 'FROM' instead of 'FORM'?
-//	Help: https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md
+//	Help: https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md
 //
 // This method is called automatically when the error is printed or logged.
 func (e *Error) Error() string {
@@ -327,7 +327,7 @@ func (e *Error) Unwrap() error {
 //	    "unexpected token: COMMA",
 //	    models.Location{Line: 5, Column: 20},
 //	)
-//	// err.HelpURL is automatically set to https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md
+//	// err.HelpURL is automatically set to https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md
 //
 // The error can be enhanced with additional context:
 //
@@ -337,7 +337,7 @@ func NewError(code ErrorCode, message string, location models.Location) *Error {
 		Code:     code,
 		Message:  message,
 		Location: location,
-		HelpURL:  fmt.Sprintf("https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md#%s", code),
+		HelpURL:  fmt.Sprintf("https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md#%s", code),
 	}
 }
 

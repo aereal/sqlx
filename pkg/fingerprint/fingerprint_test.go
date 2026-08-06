@@ -18,7 +18,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/fingerprint"
+	"github.com/aereal/sqlx/pkg/fingerprint"
 )
 
 func TestNormalize_ReplacesStringLiterals(t *testing.T) {

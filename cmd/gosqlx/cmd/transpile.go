@@ -22,8 +22,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 var transpileCmd = &cobra.Command{

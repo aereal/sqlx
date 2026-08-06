@@ -20,8 +20,8 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	sqschema "github.com/ajitpratap0/GoSQLX/pkg/schema/sqlite"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	sqschema "github.com/aereal/sqlx/pkg/schema/sqlite"
 )
 
 func TestGoSQLX_LoadSchema(t *testing.T) {

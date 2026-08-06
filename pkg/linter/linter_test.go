@@ -20,7 +20,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Mock rule for testing

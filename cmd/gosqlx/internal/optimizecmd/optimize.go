@@ -24,8 +24,8 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/cmdutil"
-	"github.com/ajitpratap0/GoSQLX/pkg/advisor"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/cmdutil"
+	"github.com/aereal/sqlx/pkg/advisor"
 )
 
 // NewCmd returns the optimize cobra.Command.

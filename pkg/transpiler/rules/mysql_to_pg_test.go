@@ -18,8 +18,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/transpiler"
 )
 
 // transpileMyToPg is a test helper that runs Transpile MySQL→PostgreSQL.

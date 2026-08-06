@@ -22,10 +22,10 @@ package ast_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // parseWithPositions is a test helper that tokenizes and parses SQL with

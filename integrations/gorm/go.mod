@@ -1,9 +1,9 @@
-module github.com/ajitpratap0/GoSQLX/integrations/gorm
+module github.com/aereal/sqlx/integrations/gorm
 
 go 1.26.1
 
 require (
-	github.com/ajitpratap0/GoSQLX v1.14.0
+	github.com/aereal/sqlx v1.14.0
 	gorm.io/driver/sqlite v1.5.6
 	gorm.io/gorm v1.25.10
 )
@@ -14,4 +14,4 @@ require (
 	github.com/mattn/go-sqlite3 v1.14.22 // indirect
 )
 
-replace github.com/ajitpratap0/GoSQLX => ../../
+replace github.com/aereal/sqlx => ../../

@@ -302,7 +302,7 @@
 //	    "flag"
 //	    "log"
 //
-//	    "github.com/ajitpratap0/GoSQLX/pkg/config"
+//	    "github.com/aereal/sqlx/pkg/config"
 //	)
 //
 //	func main() {
@@ -336,7 +336,7 @@
 //	import (
 //	    "log"
 //
-//	    "github.com/ajitpratap0/GoSQLX/pkg/config"
+//	    "github.com/aereal/sqlx/pkg/config"
 //	)
 //
 //	func handleInitialize(initOptions interface{}) {

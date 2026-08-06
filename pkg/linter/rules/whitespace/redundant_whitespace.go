@@ -18,8 +18,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // RedundantWhitespaceRule (L010) detects and removes multiple consecutive spaces

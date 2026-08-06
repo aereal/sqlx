@@ -7,14 +7,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
-const tracerName = "github.com/ajitpratap0/GoSQLX"
+const tracerName = "github.com/aereal/sqlx"
 
 // InstrumentedParse parses SQL and records a span with statement metadata.
 // The returned AST is the same as gosqlx.Parse(); the span is recorded on tp.

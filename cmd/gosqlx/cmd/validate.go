@@ -20,10 +20,10 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/config"
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/output"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/config"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/output"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/sql/parser"
 )
 
 var (

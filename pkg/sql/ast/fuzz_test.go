@@ -17,9 +17,9 @@ package ast_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/formatter"
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/formatter"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // FuzzFormat fuzzes the AST formatter by parsing arbitrary SQL then formatting.

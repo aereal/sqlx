@@ -4,7 +4,7 @@ import (
 	"context"
 	"testing"
 
-	gosqlxotel "github.com/ajitpratap0/GoSQLX/integrations/opentelemetry"
+	gosqlxotel "github.com/aereal/sqlx/integrations/opentelemetry"
 	"go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 )

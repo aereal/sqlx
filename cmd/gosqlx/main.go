@@ -18,7 +18,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/cmd"
+	"github.com/aereal/sqlx/cmd/gosqlx/cmd"
 )
 
 // main is the entry point for the gosqlx CLI application.

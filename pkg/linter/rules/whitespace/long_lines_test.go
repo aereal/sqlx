@@ -18,7 +18,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter"
 )
 
 func TestLongLinesRule_Check(t *testing.T) {

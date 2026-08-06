@@ -17,7 +17,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/sql/token"
 )
 
 // BenchmarkParseWithRecovery_AllValid benchmarks recovery parsing with no errors.

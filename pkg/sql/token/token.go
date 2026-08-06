@@ -14,7 +14,7 @@
 
 package token
 
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/models"
 
 // Token represents a lexical token in SQL source code.
 //

@@ -17,7 +17,7 @@ package rules
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // PgSerialToIntegerPK rewrites PostgreSQL SERIAL/BIGSERIAL/SMALLSERIAL to

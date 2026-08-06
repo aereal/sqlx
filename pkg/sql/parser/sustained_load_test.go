@@ -22,7 +22,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // TestSustainedLoad_Tokenization10Seconds validates sustained tokenization performance

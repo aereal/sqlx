@@ -14,7 +14,7 @@
 
 package keywords
 
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/models"
 
 // SNOWFLAKE_SPECIFIC contains Snowflake-specific keywords and extensions.
 // These keywords are recognized when using DialectSnowflake.

@@ -60,9 +60,9 @@
 //
 //	import (
 //	    "fmt"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/linter"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
+//	    "github.com/aereal/sqlx/pkg/linter"
+//	    "github.com/aereal/sqlx/pkg/linter/rules/whitespace"
+//	    "github.com/aereal/sqlx/pkg/linter/rules/keywords"
 //	)
 //
 //	func main() {
@@ -252,10 +252,10 @@
 // Typical production configuration with commonly used rules:
 //
 //	import (
-//	    "github.com/ajitpratap0/GoSQLX/pkg/linter"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/style"
+//	    "github.com/aereal/sqlx/pkg/linter"
+//	    "github.com/aereal/sqlx/pkg/linter/rules/whitespace"
+//	    "github.com/aereal/sqlx/pkg/linter/rules/keywords"
+//	    "github.com/aereal/sqlx/pkg/linter/rules/style"
 //	)
 //
 //	func NewProductionLinter() *linter.Linter {

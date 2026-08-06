@@ -1,13 +1,13 @@
 # gosqlx - High-Level SQL Parsing API
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/ajitpratap0/GoSQLX/pkg/gosqlx.svg)](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/gosqlx)
+[![Go Reference](https://pkg.go.dev/badge/github.com/aereal/sqlx/pkg/gosqlx.svg)](https://pkg.go.dev/github.com/aereal/sqlx/pkg/gosqlx)
 
 The `gosqlx` package provides a convenient, high-level API for SQL parsing in GoSQLX. It wraps the lower-level tokenizer and parser APIs to provide a simple, ergonomic interface for common operations with automatic object pool management.
 
 ## Quick Start
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+import "github.com/aereal/sqlx/pkg/gosqlx"
 
 // Parse SQL in one line
 ast, err := gosqlx.Parse("SELECT * FROM users WHERE active = true")
@@ -33,7 +33,7 @@ if err := gosqlx.Validate("SELECT * FROM users"); err != nil {
 ## Installation
 
 ```bash
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 ## API Reference
@@ -288,8 +288,8 @@ If you're currently using the low-level tokenizer and parser APIs directly, migr
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/parser"
 )
 
 func parseSQL(sql string) (*ast.AST, error) {
@@ -321,7 +321,7 @@ func parseSQL(sql string) (*ast.AST, error) {
 ### After (High-Level API)
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+import "github.com/aereal/sqlx/pkg/gosqlx"
 
 func parseSQL(sql string) (*ast.AST, error) {
     return gosqlx.Parse(sql)
@@ -459,7 +459,7 @@ For advanced use cases requiring fine-grained control:
 
 ## Contributing
 
-Contributions are welcome! Please see the main [GoSQLX repository](https://github.com/ajitpratap0/GoSQLX) for contribution guidelines.
+Contributions are welcome! Please see the main [GoSQLX repository](https://github.com/aereal/sqlx) for contribution guidelines.
 
 ## License
 

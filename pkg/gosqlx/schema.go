@@ -17,7 +17,7 @@ package gosqlx
 import (
 	"database/sql"
 
-	dbschema "github.com/ajitpratap0/GoSQLX/pkg/schema/db"
+	dbschema "github.com/aereal/sqlx/pkg/schema/db"
 )
 
 // LoadSchema connects to a live database and returns its schema metadata.
@@ -28,8 +28,8 @@ import (
 //
 //	import (
 //	    _ "modernc.org/sqlite"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-//	    sqschema "github.com/ajitpratap0/GoSQLX/pkg/schema/sqlite"
+//	    "github.com/aereal/sqlx/pkg/gosqlx"
+//	    sqschema "github.com/aereal/sqlx/pkg/schema/sqlite"
 //	)
 //
 //	db, _ := sql.Open("sqlite", ":memory:")
@@ -40,7 +40,7 @@ import (
 //
 //	import (
 //	    _ "github.com/lib/pq"
-//	    pgschema "github.com/ajitpratap0/GoSQLX/pkg/schema/postgres"
+//	    pgschema "github.com/aereal/sqlx/pkg/schema/postgres"
 //	)
 //
 //	db, _ := sql.Open("postgres", "host=localhost user=app dbname=mydb sslmode=disable")

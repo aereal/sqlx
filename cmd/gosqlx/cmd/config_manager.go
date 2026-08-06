@@ -23,7 +23,7 @@ import (
 
 	"gopkg.in/yaml.v3"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/config"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/config"
 )
 
 // ConfigManagerOptions contains configuration for config management

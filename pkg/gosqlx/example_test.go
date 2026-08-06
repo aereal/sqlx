@@ -20,7 +20,7 @@ import (
 	"log"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/gosqlx"
 )
 
 // ExampleParse demonstrates basic SQL parsing.

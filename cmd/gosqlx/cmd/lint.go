@@ -23,12 +23,12 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/style"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
-	sqlsecurity "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/keywords"
+	"github.com/aereal/sqlx/pkg/linter/rules/style"
+	"github.com/aereal/sqlx/pkg/linter/rules/whitespace"
+	sqlsecurity "github.com/aereal/sqlx/pkg/sql/security"
 )
 
 var (

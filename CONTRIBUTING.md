@@ -48,7 +48,7 @@ git clone https://github.com/YOUR_USERNAME/GoSQLX.git
 cd GoSQLX
 
 # 3. Add upstream remote
-git remote add upstream https://github.com/ajitpratap0/GoSQLX.git
+git remote add upstream https://github.com/aereal/sqlx.git
 
 # 4. Install dependencies
 go mod download

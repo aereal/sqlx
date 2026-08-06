@@ -31,7 +31,7 @@ package parser
 import (
 	"sync"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // kwBufPool is a small byte-buffer pool used to avoid allocations during

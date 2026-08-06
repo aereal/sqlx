@@ -40,8 +40,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	gosqlxmcp "github.com/ajitpratap0/GoSQLX/pkg/mcp"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	gosqlxmcp "github.com/aereal/sqlx/pkg/mcp"
 	mcpserver "github.com/mark3labs/mcp-go/server"
 )
 

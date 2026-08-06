@@ -15,7 +15,7 @@
 package ast
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // WithClause represents a WITH clause in a SQL statement.

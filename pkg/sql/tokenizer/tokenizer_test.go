@@ -18,8 +18,8 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 func TestTokenizer_ScientificNotation(t *testing.T) {

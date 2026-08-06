@@ -19,9 +19,9 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // tableMapPool reuses map[string]string allocations for table alias resolution.

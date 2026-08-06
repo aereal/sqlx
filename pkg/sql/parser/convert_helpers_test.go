@@ -19,8 +19,8 @@
 package parser
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/token"
 )
 
 // convertModelTokens converts a []models.TokenWithSpan to []token.Token.

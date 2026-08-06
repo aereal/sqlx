@@ -59,11 +59,11 @@
 //
 // Install via go install:
 //
-//	go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+//	go install github.com/aereal/sqlx/cmd/gosqlx@latest
 //
 // Or build from source:
 //
-//	git clone https://github.com/ajitpratap0/GoSQLX.git
+//	git clone https://github.com/aereal/sqlx.git
 //	cd GoSQLX
 //	task build:cli
 //	sudo cp build/gosqlx /usr/local/bin/
@@ -481,7 +481,7 @@
 //	    steps:
 //	      - uses: actions/checkout@v3
 //	      - name: Install GoSQLX
-//	        run: go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+//	        run: go install github.com/aereal/sqlx/cmd/gosqlx@latest
 //	      - name: Validate SQL files
 //	        run: gosqlx validate -r ./sql/
 //	      - name: Check SQL formatting
@@ -498,7 +498,7 @@
 //	sql-validation:
 //	  image: golang:1.24
 //	  script:
-//	    - go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+//	    - go install github.com/aereal/sqlx/cmd/gosqlx@latest
 //	    - gosqlx validate -r ./sql/
 //	    - gosqlx format --check ./sql/*.sql
 //	    - gosqlx lint -r ./sql/
@@ -661,6 +661,6 @@
 // # Support
 //
 // For issues and feature requests:
-//   - GitHub: https://github.com/ajitpratap0/GoSQLX/issues
-//   - Documentation: https://github.com/ajitpratap0/GoSQLX/tree/main/docs
+//   - GitHub: https://github.com/aereal/sqlx/issues
+//   - Documentation: https://github.com/aereal/sqlx/tree/main/docs
 package main

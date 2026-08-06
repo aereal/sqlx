@@ -15,7 +15,7 @@
 package parser
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/dialect"
+	"github.com/aereal/sqlx/pkg/sql/dialect"
 )
 
 // DialectTyped returns the parser's active dialect as a typed

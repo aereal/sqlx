@@ -15,7 +15,7 @@
 package ast
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // QueryExpression is a Statement that can appear as the source of INSERT ... SELECT.

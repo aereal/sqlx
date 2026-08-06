@@ -17,8 +17,8 @@ package lsp
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // TestCreateDiagnosticFromError_WithStructuredError tests that error codes

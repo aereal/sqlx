@@ -15,10 +15,10 @@
 package parser
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/sql/token"
 )
 
 // TODO(v2-cleanup): This file contains coverage-push tests that overlap with

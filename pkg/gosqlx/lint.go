@@ -15,13 +15,13 @@
 package gosqlx
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/naming"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/performance"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/safety"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/style"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/keywords"
+	"github.com/aereal/sqlx/pkg/linter/rules/naming"
+	"github.com/aereal/sqlx/pkg/linter/rules/performance"
+	"github.com/aereal/sqlx/pkg/linter/rules/safety"
+	"github.com/aereal/sqlx/pkg/linter/rules/style"
+	"github.com/aereal/sqlx/pkg/linter/rules/whitespace"
 )
 
 // LintResult represents the result of linting a SQL string.

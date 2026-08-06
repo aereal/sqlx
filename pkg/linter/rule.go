@@ -15,7 +15,7 @@
 package linter
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Severity represents the severity level of a lint violation.

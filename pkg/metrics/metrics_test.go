@@ -20,8 +20,8 @@ import (
 	"testing"
 	"time"
 
-	sqlerrors "github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	sqlerrors "github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 func TestMetricsBasicFunctionality(t *testing.T) {

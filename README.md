@@ -7,7 +7,7 @@
 ### Parse SQL at the speed of Go
 
 [![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?style=for-the-badge&logo=go)](https://go.dev)
-[![Release](https://img.shields.io/github/v/release/ajitpratap0/GoSQLX?style=for-the-badge&color=orange)](https://github.com/ajitpratap0/GoSQLX/releases)
+[![Release](https://img.shields.io/github/v/release/ajitpratap0/GoSQLX?style=for-the-badge&color=orange)](https://github.com/aereal/sqlx/releases)
 [![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=for-the-badge)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
 
@@ -17,11 +17,11 @@
 [![Glama MCP Server](https://glama.ai/mcp/servers/ajitpratap0/GoSQLX/badges/score.svg)](https://glama.ai/mcp/servers/ajitpratap0/GoSQLX)
 [![Lint Action](https://img.shields.io/badge/Lint%20Action-GitHub-blue?style=for-the-badge&logo=github)](https://github.com/marketplace/actions/gosqlx-lint-action)
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/ajitpratap0/GoSQLX/test.yml?branch=main&label=Tests&style=flat-square)](https://github.com/ajitpratap0/GoSQLX/actions)
-[![Go Report](https://goreportcard.com/badge/github.com/ajitpratap0/GoSQLX?style=flat-square)](https://goreportcard.com/report/github.com/ajitpratap0/GoSQLX)
-[![GoDoc](https://pkg.go.dev/badge/github.com/ajitpratap0/GoSQLX?style=flat-square)](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX)
-[![Stars](https://img.shields.io/github/stars/ajitpratap0/GoSQLX?style=social)](https://github.com/ajitpratap0/GoSQLX)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ajitpratap0/GoSQLX/badge)](https://securityscorecards.dev/viewer/?uri=github.com/ajitpratap0/GoSQLX)
+[![Tests](https://img.shields.io/github/actions/workflow/status/ajitpratap0/GoSQLX/test.yml?branch=main&label=Tests&style=flat-square)](https://github.com/aereal/sqlx/actions)
+[![Go Report](https://goreportcard.com/badge/github.com/aereal/sqlx?style=flat-square)](https://goreportcard.com/report/github.com/aereal/sqlx)
+[![GoDoc](https://pkg.go.dev/badge/github.com/aereal/sqlx?style=flat-square)](https://pkg.go.dev/github.com/aereal/sqlx)
+[![Stars](https://img.shields.io/github/stars/ajitpratap0/GoSQLX?style=social)](https://github.com/aereal/sqlx)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/aereal/sqlx/badge)](https://securityscorecards.dev/viewer/?uri=github.com/aereal/sqlx)
 
 <br/>
 
@@ -61,7 +61,7 @@ fmt.Println(tree.Format(gosqlx.WithIndent(2), gosqlx.WithUppercaseKeywords(true)
 ## Get Started in 60 Seconds
 
 ```bash
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 ```go
@@ -69,7 +69,7 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+    "github.com/aereal/sqlx/pkg/gosqlx"
 )
 
 func main() {
@@ -110,12 +110,12 @@ func main() {
 
 ### 📦 Go Library
 ```bash
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 ### 🖥️ CLI Tool
 ```bash
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+go install github.com/aereal/sqlx/cmd/gosqlx@latest
 gosqlx validate "SELECT * FROM users"
 gosqlx format query.sql
 gosqlx lint query.sql
@@ -182,7 +182,7 @@ claude mcp add --transport http gosqlx \
 GoSQLX is built by contributors like you. Whether it's a bug fix, new feature, documentation improvement, or just a typo - every contribution matters.
 
 ```bash
-git clone https://github.com/ajitpratap0/GoSQLX.git && cd GoSQLX
+git clone https://github.com/aereal/sqlx.git && cd GoSQLX
 task check    # fmt → vet → lint → test (with race detection)
 ```
 
@@ -201,9 +201,9 @@ GoSQLX is downloaded and cloned by developers worldwide -- 595 unique cloners in
 
 | Project / Company | Use Case |
 |---|---|
-| *Your project here* | [Add yourself via PR](https://github.com/ajitpratap0/GoSQLX/edit/main/README.md) or [tell us in Discussions](https://github.com/ajitpratap0/GoSQLX/discussions) |
+| *Your project here* | [Add yourself via PR](https://github.com/aereal/sqlx/edit/main/README.md) or [tell us in Discussions](https://github.com/aereal/sqlx/discussions) |
 
-Using GoSQLX at work? Building something cool with it? Share your story in [GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions) -- it helps the community grow and motivates continued development.
+Using GoSQLX at work? Building something cool with it? Share your story in [GitHub Discussions](https://github.com/aereal/sqlx/discussions) -- it helps the community grow and motivates continued development.
 
 <br/>
 
@@ -213,8 +213,8 @@ Using GoSQLX at work? Building something cool with it? Share your story in [GitH
 
 **Got questions? Ideas? Found a bug?**
 
-<a href="https://github.com/ajitpratap0/GoSQLX/discussions"><img src="https://img.shields.io/badge/💬_Discussions-Ask_&_Share-purple?style=for-the-badge" alt="Discussions"></a>
-<a href="https://github.com/ajitpratap0/GoSQLX/issues/new/choose"><img src="https://img.shields.io/badge/🐛_Issues-Report_&_Request-red?style=for-the-badge" alt="Issues"></a>
+<a href="https://github.com/aereal/sqlx/discussions"><img src="https://img.shields.io/badge/💬_Discussions-Ask_&_Share-purple?style=for-the-badge" alt="Discussions"></a>
+<a href="https://github.com/aereal/sqlx/issues/new/choose"><img src="https://img.shields.io/badge/🐛_Issues-Report_&_Request-red?style=for-the-badge" alt="Issues"></a>
 <a href="https://gosqlx.dev/blog/"><img src="https://img.shields.io/badge/📝_Blog-Release_Notes-green?style=for-the-badge" alt="Blog"></a>
 
 </div>

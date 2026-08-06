@@ -131,7 +131,7 @@ runs:
       run: |
         # Check if we're in the GoSQLX repository (for testing)
         # When using "uses: ./", GITHUB_WORKSPACE contains the repo
-        if [ -f "$GITHUB_WORKSPACE/go.mod" ] && grep -q "module github.com/ajitpratap0/GoSQLX" "$GITHUB_WORKSPACE/go.mod" 2>/dev/null; then
+        if [ -f "$GITHUB_WORKSPACE/go.mod" ] && grep -q "module github.com/aereal/sqlx" "$GITHUB_WORKSPACE/go.mod" 2>/dev/null; then
           echo "Building GoSQLX from source (local repository)..."
           cd "$GITHUB_WORKSPACE"
           mkdir -p "$HOME/go/bin"
@@ -149,10 +149,10 @@ runs:
 
           if [ "$VERSION" = "latest" ]; then
             echo "Installing latest GoSQLX..."
-            go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+            go install github.com/aereal/sqlx/cmd/gosqlx@latest
           else
             echo "Installing GoSQLX $VERSION..."
-            go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@"$VERSION"
+            go install github.com/aereal/sqlx/cmd/gosqlx@"$VERSION"
           fi
           echo "GoSQLX installed successfully"
         fi
@@ -333,7 +333,7 @@ runs:
                         }
                     }
                 }
-                sb.WriteString("---\n*Powered by [GoSQLX](https://github.com/ajitpratap0/GoSQLX) - Ultra-fast SQL validation (100x faster than SQLFluff)*\n")
+                sb.WriteString("---\n*Powered by [GoSQLX](https://github.com/aereal/sqlx) - Ultra-fast SQL validation (100x faster than SQLFluff)*\n")
             }
             return sb.String()
         }

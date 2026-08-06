@@ -32,7 +32,7 @@ package ast
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Test SpannedNode

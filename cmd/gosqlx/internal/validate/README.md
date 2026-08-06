@@ -18,7 +18,7 @@ The `validate` package implements defense-in-depth security measures to protect 
 ### Basic Usage
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/validate"
+import "github.com/aereal/sqlx/cmd/gosqlx/internal/validate"
 
 // Validate a file with default security settings
 err := validate.ValidateInputFile("/path/to/query.sql")

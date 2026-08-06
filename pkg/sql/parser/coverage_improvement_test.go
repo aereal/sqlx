@@ -19,13 +19,13 @@
 package parser
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // parseSQLHelper tokenizes and parses SQL, returning the AST tree.

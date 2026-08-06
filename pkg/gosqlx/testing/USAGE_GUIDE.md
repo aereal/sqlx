@@ -7,8 +7,8 @@
 ```go
 import (
     "testing"
-    gosqlxtesting "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+    gosqlxtesting "github.com/aereal/sqlx/pkg/gosqlx/testing"
+    "github.com/aereal/sqlx/pkg/sql/ast"
 )
 ```
 
@@ -51,8 +51,8 @@ package repository
 
 import (
     "testing"
-    gosqlxtesting "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+    gosqlxtesting "github.com/aereal/sqlx/pkg/gosqlx/testing"
+    "github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // UserRepository contains SQL queries for user operations
@@ -118,7 +118,7 @@ package analytics
 
 import (
     "testing"
-    gosqlxtesting "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
+    gosqlxtesting "github.com/aereal/sqlx/pkg/gosqlx/testing"
 )
 
 // AnalyticsQueries contains complex SQL for analytics
@@ -217,7 +217,7 @@ package migrations
 
 import (
     "testing"
-    gosqlxtesting "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
+    gosqlxtesting "github.com/aereal/sqlx/pkg/gosqlx/testing"
 )
 
 func TestMigration_001_CreateUsersTable(t *testing.T) {
@@ -255,7 +255,7 @@ import (
     "testing"
     "fmt"
     "strings"
-    gosqlxtesting "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
+    gosqlxtesting "github.com/aereal/sqlx/pkg/gosqlx/testing"
 )
 
 // QueryBuilder builds dynamic SQL queries

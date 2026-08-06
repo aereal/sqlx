@@ -21,7 +21,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/metrics"
+	"github.com/aereal/sqlx/pkg/metrics"
 )
 
 // statsCmd shows current object pool utilization counters.

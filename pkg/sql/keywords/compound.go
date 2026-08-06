@@ -14,7 +14,7 @@
 
 package keywords
 
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/models"
 
 // IsCompoundKeyword checks if a string is a compound keyword
 func (k *Keywords) IsCompoundKeyword(s string) bool {

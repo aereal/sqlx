@@ -28,7 +28,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 func TestSchemaQualified_SELECT(t *testing.T) {

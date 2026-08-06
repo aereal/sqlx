@@ -17,8 +17,8 @@ package testing_test
 import (
 	"testing"
 
-	gosqlxtesting "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	gosqlxtesting "github.com/aereal/sqlx/pkg/gosqlx/testing"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // ExampleAssertValidSQL demonstrates validating SQL syntax in tests.

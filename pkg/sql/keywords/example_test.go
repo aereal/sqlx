@@ -17,8 +17,8 @@ package keywords_test
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 // Example demonstrates basic keyword detection and token type identification.

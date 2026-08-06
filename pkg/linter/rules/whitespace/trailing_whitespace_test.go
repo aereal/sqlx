@@ -17,7 +17,7 @@ package whitespace
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter"
 )
 
 func TestTrailingWhitespaceRule_Check(t *testing.T) {

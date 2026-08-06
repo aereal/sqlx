@@ -8,7 +8,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 func TestValidateListDialects(t *testing.T) {

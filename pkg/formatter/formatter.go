@@ -42,7 +42,7 @@
 //
 // # Basic Usage
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/formatter"
+//	import "github.com/aereal/sqlx/pkg/formatter"
 //
 //	// One-shot formatting with default options
 //	out, err := formatter.FormatString("select id,name from users where id=1")
@@ -93,10 +93,10 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // Options configures SQL formatting behaviour.

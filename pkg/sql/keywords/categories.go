@@ -17,7 +17,7 @@ package keywords
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // KeywordCategory represents a category of SQL keywords mapped to their token types.

@@ -23,8 +23,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // TestConcurrencyPoolExhaustion_10K_Tokenizer_Goroutines tests tokenizer pool behavior

@@ -171,7 +171,7 @@
 //	//   2 |
 //	//
 //	// Hint: Did you mean 'FROM' instead of 'FORM'?
-//	// Help: https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md
+//	// Help: https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md
 //
 //	// Brief summary for logging
 //	summary := errors.FormatErrorSummary(err)

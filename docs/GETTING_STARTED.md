@@ -21,12 +21,12 @@ Welcome! This guide will get you parsing SQL in under 5 minutes. No prior experi
 
 ### Option A: Install CLI Tool (Recommended)
 ```bash
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+go install github.com/aereal/sqlx/cmd/gosqlx@latest
 ```
 
 ### Option B: Library Only
 ```bash
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 **Verify installation:**
@@ -110,7 +110,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+    "github.com/aereal/sqlx/pkg/gosqlx"
 )
 
 func main() {
@@ -130,7 +130,7 @@ func main() {
 **Run it:**
 ```bash
 go mod init myproject
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 go run main.go
 ```
 
@@ -156,7 +156,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+    "github.com/aereal/sqlx/pkg/gosqlx"
 )
 
 func main() {
@@ -226,7 +226,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+    "github.com/aereal/sqlx/pkg/sql/security"
 )
 
 func main() {
@@ -257,7 +257,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter"
 )
 
 func main() {
@@ -294,7 +294,7 @@ import (
     "log"
     "time"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+    "github.com/aereal/sqlx/pkg/gosqlx"
 )
 
 func main() {
@@ -429,7 +429,7 @@ gosqlx lsp --log /tmp/lsp.log
 - **[Linting Rules](/docs/linting-rules)** - All 30 linting rules reference
 - **[Configuration](/docs/configuration)** - Configuration file (.gosqlx.yml) guide
 - **[API Reference](/docs/api-reference)** - Complete API documentation
-- **[Examples](https://github.com/ajitpratap0/GoSQLX/tree/main/examples)** - Real-world code examples
+- **[Examples](https://github.com/aereal/sqlx/tree/main/examples)** - Real-world code examples
 
 ### v1.14.0 Feature Guides:
 - **Dialect-Aware Transforms:**
@@ -495,7 +495,7 @@ export PATH="$PATH:$(go env GOPATH)/bin"
 **Solution:** Run `go mod tidy` to download dependencies:
 ```bash
 go mod init myproject
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 go mod tidy
 ```
 
@@ -507,8 +507,8 @@ gosqlx validate "your SQL here"
 
 ### Need Help?
 - **[Troubleshooting Guide](/docs/troubleshooting)** - Common issues and solutions
-- **[GitHub Issues](https://github.com/ajitpratap0/GoSQLX/issues)** - Report bugs or ask questions
-- **[Discussions](https://github.com/ajitpratap0/GoSQLX/discussions)** - Community Q&A
+- **[GitHub Issues](https://github.com/aereal/sqlx/issues)** - Report bugs or ask questions
+- **[Discussions](https://github.com/aereal/sqlx/discussions)** - Community Q&A
 
 ---
 

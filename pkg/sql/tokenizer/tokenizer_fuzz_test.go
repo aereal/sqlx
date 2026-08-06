@@ -19,7 +19,7 @@ import (
 	"testing"
 	"unicode/utf8"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // FuzzTokenizer performs comprehensive fuzz testing on the tokenizer to detect:

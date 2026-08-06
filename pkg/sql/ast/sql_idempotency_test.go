@@ -17,7 +17,7 @@ package ast_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/gosqlx"
 )
 
 // TestSQL_Idempotency verifies that parse(sql) → .SQL() → parse → .SQL() produces

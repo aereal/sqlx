@@ -22,7 +22,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/output"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/output"
 )
 
 // TestValidator_ValidateFile tests single file validation

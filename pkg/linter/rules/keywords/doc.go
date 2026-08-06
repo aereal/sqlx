@@ -68,7 +68,7 @@
 //
 // Enforce uppercase keywords (most common):
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
+//	import "github.com/aereal/sqlx/pkg/linter/rules/keywords"
 //
 //	rule := keywords.NewKeywordCaseRule(keywords.CaseUpper)
 //	violations, _ := rule.Check(ctx)

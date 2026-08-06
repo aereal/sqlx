@@ -21,7 +21,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 // invalidSyntaxSQL is deliberately malformed in a way the parser rejects

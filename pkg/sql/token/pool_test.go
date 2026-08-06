@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // TestTokenPool tests basic token pool operations

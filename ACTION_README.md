@@ -1,7 +1,7 @@
 # GoSQLX GitHub Action
 
 [![GitHub Marketplace](https://img.shields.io/badge/Marketplace-GoSQLX%20Validator-blue.svg?colorA=24292e&colorB=0366d6&style=flat&longCache=true&logo=github)](https://github.com/marketplace/actions/gosqlx-sql-validator)
-[![GitHub Release](https://img.shields.io/github/release/ajitpratap0/GoSQLX.svg?style=flat)](https://github.com/ajitpratap0/GoSQLX/releases)
+[![GitHub Release](https://img.shields.io/github/release/ajitpratap0/GoSQLX.svg?style=flat)](https://github.com/aereal/sqlx/releases)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache--2.0-blue.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 
 Ultra-fast SQL validation, linting, and formatting for your CI/CD pipelines. **100-1000x faster** than traditional SQL linters like SQLFluff.
@@ -355,7 +355,7 @@ Add status badges to your README:
 ### Custom Badge
 
 ```markdown
-[![GoSQLX](https://img.shields.io/badge/validated%20with-GoSQLX-blue)](https://github.com/ajitpratap0/GoSQLX)
+[![GoSQLX](https://img.shields.io/badge/validated%20with-GoSQLX-blue)](https://github.com/aereal/sqlx)
 ```
 
 ## Troubleshooting
@@ -389,7 +389,7 @@ Test the action behavior locally:
 
 ```bash
 # Install GoSQLX
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+go install github.com/aereal/sqlx/cmd/gosqlx@latest
 
 # Validate files
 gosqlx validate **/*.sql
@@ -406,8 +406,8 @@ gosqlx analyze --all query.sql
 We welcome contributions! Please see:
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines
-- [GitHub Issues](https://github.com/ajitpratap0/GoSQLX/issues) for bugs/features
-- [Discussions](https://github.com/ajitpratap0/GoSQLX/discussions) for questions
+- [GitHub Issues](https://github.com/aereal/sqlx/issues) for bugs/features
+- [Discussions](https://github.com/aereal/sqlx/discussions) for questions
 
 ## Performance Metrics
 
@@ -439,9 +439,9 @@ Apache License 2.0 - see [LICENSE](LICENSE) file for details.
 
 ## Support
 
-- **Documentation**: [github.com/ajitpratap0/GoSQLX](https://github.com/ajitpratap0/GoSQLX)
-- **Issues**: [GitHub Issues](https://github.com/ajitpratap0/GoSQLX/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions)
+- **Documentation**: [github.com/aereal/sqlx](https://github.com/aereal/sqlx)
+- **Issues**: [GitHub Issues](https://github.com/aereal/sqlx/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/aereal/sqlx/discussions)
 
 ## Acknowledgments
 

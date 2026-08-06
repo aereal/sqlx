@@ -23,7 +23,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/validate"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/validate"
 	"golang.org/x/term"
 )
 

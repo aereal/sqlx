@@ -21,7 +21,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // TestParse_BetweenWithArithmeticExpressions tests BETWEEN with arithmetic via high-level API

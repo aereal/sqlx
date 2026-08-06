@@ -68,7 +68,7 @@ const (
 package main
 
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+    "github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 func main() {

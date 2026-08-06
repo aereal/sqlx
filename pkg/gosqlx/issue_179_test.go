@@ -21,7 +21,7 @@ package gosqlx
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // TestIssue179_BasicMultiRowInsert tests basic multi-row INSERT parsing via gosqlx API

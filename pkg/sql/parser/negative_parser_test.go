@@ -17,13 +17,13 @@ package parser
 import (
 	"context"
 	"fmt"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 	"strings"
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // TestNegativeParser_MalformedSQL tests that the parser returns errors (not panics)

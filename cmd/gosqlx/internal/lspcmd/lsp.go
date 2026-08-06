@@ -22,7 +22,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/lsp"
+	"github.com/aereal/sqlx/pkg/lsp"
 	"github.com/spf13/cobra"
 )
 

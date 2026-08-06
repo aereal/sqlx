@@ -20,11 +20,11 @@ import (
 	"fmt"
 	"strings"
 
-	goerrors "github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	goerrors "github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // Validate checks whether the given SQL string is syntactically valid without

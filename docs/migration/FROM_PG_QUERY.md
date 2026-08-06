@@ -174,13 +174,13 @@ func main() {
 
 #### GoSQLX (Go)
 ```go
-// go get github.com/ajitpratap0/GoSQLX
+// go get github.com/aereal/sqlx
 package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/parser"
 )
 
 func main() {
@@ -253,8 +253,8 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/models"
 )
 
 func main() {
@@ -329,7 +329,7 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 func main() {
@@ -412,7 +412,7 @@ package main
 
 import (
     "sync"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 func main() {
@@ -475,7 +475,7 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 func main() {
@@ -535,9 +535,9 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/ast"
+    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 func main() {
@@ -631,8 +631,8 @@ package main
 import (
     "crypto/sha256"
     "encoding/hex"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/models"
 )
 
 type QueryCache struct {
@@ -731,7 +731,7 @@ import (
     "fmt"
     "os"
     "path/filepath"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 type MigrationValidator struct {
@@ -859,7 +859,7 @@ ORDER BY order_count DESC
 
 ### Phase 2: Proof of Concept (Week 1-2)
 - [ ] Install Go 1.21+ if not already present
-- [ ] Install GoSQLX: `go get github.com/ajitpratap0/GoSQLX`
+- [ ] Install GoSQLX: `go get github.com/aereal/sqlx`
 - [ ] Test parsing your PostgreSQL queries
 - [ ] Implement custom normalization if needed
 - [ ] Benchmark performance improvement
@@ -949,8 +949,8 @@ func ParseQuery(sql string) (*QueryInfo, error) {
 ```go
 // parser.go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/parser"
 )
 
 func ParseQuery(sql string, dialect string) (*QueryInfo, error) {
@@ -1102,8 +1102,8 @@ For heavy PL/pgSQL use, keep pg_query or contribute PL/pgSQL support to GoSQLX.
 - **[API Reference](../API_REFERENCE.md)** - Complete API documentation
 
 ### Community Support
-- **[GitHub Issues](https://github.com/ajitpratap0/GoSQLX/issues)** - Report bugs or request features
-- **[GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions)** - Ask questions
+- **[GitHub Issues](https://github.com/aereal/sqlx/issues)** - Report bugs or request features
+- **[GitHub Discussions](https://github.com/aereal/sqlx/discussions)** - Ask questions
 - **[Examples Directory](../../examples/)** - Real-world code examples
 
 ### Migration Support

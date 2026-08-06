@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"unicode/utf8"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // StringLiteralReader handles reading of string literals with proper escape sequence handling

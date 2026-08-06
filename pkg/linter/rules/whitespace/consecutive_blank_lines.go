@@ -17,8 +17,8 @@ package whitespace
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // ConsecutiveBlankLinesRule (L003) detects and fixes excessive consecutive blank lines.

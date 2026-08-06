@@ -20,7 +20,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // FuzzParse fuzzes the full parse pipeline (tokenizer + token conversion + parser)

@@ -17,7 +17,7 @@ package style
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter"
 )
 
 func TestCommaPlacementRule_Check_TrailingStyle(t *testing.T) {

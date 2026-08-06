@@ -21,8 +21,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // Helper function to tokenize SQL for tests.

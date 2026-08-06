@@ -17,8 +17,8 @@ package errors_test
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Example_basicError demonstrates creating a basic structured error

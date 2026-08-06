@@ -26,11 +26,11 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/style"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/keywords"
+	"github.com/aereal/sqlx/pkg/linter/rules/style"
+	"github.com/aereal/sqlx/pkg/linter/rules/whitespace"
+	"github.com/aereal/sqlx/pkg/sql/parser"
 )
 
 // builtinRules returns all built-in lint rules. This is the single source of

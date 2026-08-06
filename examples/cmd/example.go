@@ -17,8 +17,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // Example demonstrates the Unicode support and proper resource management in the SQL tokenizer

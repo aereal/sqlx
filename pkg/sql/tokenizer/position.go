@@ -15,7 +15,7 @@
 package tokenizer
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Position tracks the scanning cursor position during tokenization.

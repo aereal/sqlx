@@ -15,8 +15,8 @@
 package transpiler
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler/rules"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/transpiler/rules"
 )
 
 type dialectPair struct {

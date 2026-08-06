@@ -17,7 +17,7 @@ package metrics_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/metrics"
+	"github.com/aereal/sqlx/pkg/metrics"
 )
 
 func TestPoolStats_ReturnsNonNilResult(t *testing.T) {

@@ -12,7 +12,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-// Deprecated: Package monitor is deprecated in favor of [github.com/ajitpratap0/GoSQLX/pkg/metrics].
+// Deprecated: Package monitor is deprecated in favor of [github.com/aereal/sqlx/pkg/metrics].
 // Use pkg/metrics for all monitoring needs — it provides a superset of monitor's
 // functionality with better concurrency (per-field atomics vs global mutex),
 // per-error-type tracking, query size distribution, and JSON-serializable output.
@@ -44,7 +44,7 @@
 //
 // Enable monitoring:
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/sql/monitor"
+//	import "github.com/aereal/sqlx/pkg/sql/monitor"
 //
 //	// Enable metrics collection
 //	monitor.Enable()

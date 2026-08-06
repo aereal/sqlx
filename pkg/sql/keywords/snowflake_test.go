@@ -18,7 +18,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // TestSnowflakeKeywords tests that Snowflake-specific keywords are properly defined

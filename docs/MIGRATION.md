@@ -23,9 +23,9 @@ v1.14.0 is the largest dialect-coverage release in the project's history. Headli
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
-    "github.com/ajitpratap0/GoSQLX/pkg/transform"
+    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/pkg/sql/keywords"
+    "github.com/aereal/sqlx/pkg/transform"
 )
 
 tree, _ := gosqlx.ParseWithDialect("SELECT * FROM users u", keywords.DialectPostgreSQL)
@@ -49,8 +49,8 @@ postgres := transform.FormatSQLWithDialect(stmt, keywords.DialectPostgreSQL)
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 result, err := gosqlx.Transpile(
@@ -72,8 +72,8 @@ gosqlx transpile --from postgresql --to sqlite "SELECT * FROM users WHERE id = A
 ```go
 import (
     "context"
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-    "github.com/ajitpratap0/GoSQLX/pkg/schema/postgres"
+    "github.com/aereal/sqlx/pkg/gosqlx"
+    "github.com/aereal/sqlx/pkg/schema/postgres"
 )
 
 loader, _ := postgres.New("postgres://user:pw@host/db")
@@ -90,7 +90,7 @@ Also available: `pkg/schema/mysql` and `pkg/schema/sqlite`.
 #### Query fingerprinting
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/fingerprint"
+import "github.com/aereal/sqlx/pkg/fingerprint"
 
 norm := fingerprint.Normalize("SELECT * FROM users WHERE id = 123")
 // norm: "SELECT * FROM users WHERE id = ?"
@@ -125,13 +125,13 @@ If your code relied on the broken behavior (unlikely — it would have produced 
 
 ### Security
 
-- **CVE-2026-39883** (HIGH severity, `go.opentelemetry.io/otel/sdk`): fixed by upgrading to v1.43.0. No action required for consumers — `go get github.com/ajitpratap0/GoSQLX@v1.14.0 && go mod tidy` picks up the fix transitively.
+- **CVE-2026-39883** (HIGH severity, `go.opentelemetry.io/otel/sdk`): fixed by upgrading to v1.43.0. No action required for consumers — `go get github.com/aereal/sqlx@v1.14.0 && go mod tidy` picks up the fix transitively.
 
 ### Companion release versions
 
 | Component | v1.13.0 | v1.14.0 |
 |-----------|---------|---------|
-| Library (`github.com/ajitpratap0/GoSQLX`) | 1.13.0 | **1.14.0** |
+| Library (`github.com/aereal/sqlx`) | 1.13.0 | **1.14.0** |
 | CLI (`cmd/gosqlx`) | 1.13.0 | **1.14.0** |
 | MCP server (`cmd/gosqlx-mcp`) | 1.13.0 | **1.14.0** |
 | VS Code extension (`ajitpratap0.gosqlx`) | 1.13.0 | **1.14.0** |
@@ -214,7 +214,7 @@ The legacy string-based `token.Type` system has been completely removed. All tok
 
 ```go
 // BEFORE (v1.7.0)
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/token"
+import "github.com/aereal/sqlx/pkg/sql/token"
 
 tok := token.Token{
     Type:      token.SELECT,              // string-based
@@ -223,8 +223,8 @@ tok := token.Token{
 }
 
 // AFTER (v1.8.0)
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/token"
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/sql/token"
+import "github.com/aereal/sqlx/pkg/models"
 
 tok := token.Token{
     Type:    models.TokenTypeSelect,      // int-based (now primary)
@@ -341,7 +341,7 @@ err = parser.ValidateWithDialect(sql, "mysql")
 The new `pkg/transform/` package is purely additive:
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/transform"
+import "github.com/aereal/sqlx/pkg/transform"
 
 stmt, _ := transform.ParseSQL("SELECT * FROM orders")
 transform.AddWhere(stmt, "tenant_id = 42")
@@ -403,5 +403,5 @@ GoSQLX was relicensed from AGPL-3.0 to **Apache License 2.0** in this release cy
 ## Getting Help
 
 If you encounter issues migrating:
-- Open an issue: https://github.com/ajitpratap0/GoSQLX/issues
-- Join discussions: https://github.com/ajitpratap0/GoSQLX/discussions
+- Open an issue: https://github.com/aereal/sqlx/issues
+- Join discussions: https://github.com/aereal/sqlx/discussions

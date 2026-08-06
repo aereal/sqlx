@@ -43,7 +43,7 @@
 //
 // Column Alignment (L006):
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/style"
+//	import "github.com/aereal/sqlx/pkg/linter/rules/style"
 //
 //	rule := style.NewColumnAlignmentRule()
 //	violations, _ := rule.Check(ctx)

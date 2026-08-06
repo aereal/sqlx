@@ -17,7 +17,7 @@ package tokenizer
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Error represents a tokenization error with precise location information.

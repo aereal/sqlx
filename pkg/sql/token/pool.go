@@ -17,7 +17,7 @@ package token
 import (
 	"sync"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // tokenPool is the global token pool for memory-efficient token reuse.

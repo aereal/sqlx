@@ -351,7 +351,7 @@
 //
 // ## Basic File Validation
 //
-//	import "github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/validate"
+//	import "github.com/aereal/sqlx/cmd/gosqlx/internal/validate"
 //
 //	func processFile(path string) error {
 //	    // Validate file before reading

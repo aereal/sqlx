@@ -17,8 +17,8 @@ package style
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // ColumnAlignmentRule (L006) checks for proper column alignment in multi-line

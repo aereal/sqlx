@@ -17,8 +17,8 @@ package linter
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/models"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // Context provides all information needed for linting at multiple levels.

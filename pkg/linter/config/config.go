@@ -56,7 +56,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter"
 	"gopkg.in/yaml.v3"
 )
 

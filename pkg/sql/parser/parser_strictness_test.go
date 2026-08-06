@@ -18,7 +18,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // helper to parse SQL and return error

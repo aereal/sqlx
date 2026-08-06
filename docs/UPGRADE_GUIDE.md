@@ -40,10 +40,10 @@ v1.7.0 is a **100% backward compatible** feature release. It adds schema-qualifi
 
 ```bash
 # Update your go.mod
-go get github.com/ajitpratap0/GoSQLX@v1.7.0
+go get github.com/aereal/sqlx@v1.7.0
 
 # Or update CLI
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@v1.7.0
+go install github.com/aereal/sqlx/cmd/gosqlx@v1.7.0
 ```
 
 ### Breaking Changes
@@ -95,10 +95,10 @@ v1.6.0 is a **100% backward compatible** major feature release. It adds comprehe
 
 ```bash
 # Update your go.mod
-go get github.com/ajitpratap0/GoSQLX@v1.6.0
+go get github.com/aereal/sqlx@v1.6.0
 
 # Or update CLI
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@v1.6.0
+go install github.com/aereal/sqlx/cmd/gosqlx@v1.6.0
 ```
 
 ### ⚠️ Breaking Changes
@@ -142,18 +142,18 @@ v1.5.0 is a **100% backward compatible** release focused on test coverage improv
 
 ```bash
 # Update to v1.5.0
-go get -u github.com/ajitpratap0/GoSQLX@v1.5.0
+go get -u github.com/aereal/sqlx@v1.5.0
 
 # Update CLI tool (if installed)
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@v1.5.0
+go install github.com/aereal/sqlx/cmd/gosqlx@v1.5.0
 ```
 
 #### 2. Verify Installation
 
 ```bash
 # Check version
-go list -m github.com/ajitpratap0/GoSQLX
-# Should show: github.com/ajitpratap0/GoSQLX v1.5.0
+go list -m github.com/aereal/sqlx
+# Should show: github.com/aereal/sqlx v1.5.0
 
 # Verify CLI (if installed)
 gosqlx --version
@@ -212,8 +212,8 @@ Updated documentation:
 ### 🔗 Related Resources
 
 - **Full Release Notes**: [CHANGELOG.md](../CHANGELOG.md)
-- **Pull Request**: [PR #138](https://github.com/ajitpratap0/GoSQLX/pull/138)
-- **Issues**: Report any issues at https://github.com/ajitpratap0/GoSQLX/issues
+- **Pull Request**: [PR #138](https://github.com/aereal/sqlx/pull/138)
+- **Issues**: Report any issues at https://github.com/aereal/sqlx/issues
 
 ---
 
@@ -230,8 +230,8 @@ v1.4.0 introduces production-ready CLI tools and fixes a critical memory leak in
 ### Upgrade Steps
 
 ```bash
-go get -u github.com/ajitpratap0/GoSQLX@v1.4.0
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@v1.4.0
+go get -u github.com/aereal/sqlx@v1.4.0
+go install github.com/aereal/sqlx/cmd/gosqlx@v1.4.0
 ```
 
 ### Breaking Changes
@@ -265,7 +265,7 @@ v1.3.0 adds complete SQL-99 window function support.
 ### Upgrade Steps
 
 ```bash
-go get -u github.com/ajitpratap0/GoSQLX@v1.3.0
+go get -u github.com/aereal/sqlx@v1.3.0
 ```
 
 ### Breaking Changes
@@ -295,7 +295,7 @@ v1.2.0 adds Common Table Expressions (CTEs) and set operations support.
 ### Upgrade Steps
 
 ```bash
-go get -u github.com/ajitpratap0/GoSQLX@v1.2.0
+go get -u github.com/aereal/sqlx@v1.2.0
 ```
 
 ### Breaking Changes
@@ -324,7 +324,7 @@ v1.1.0 adds complete JOIN support across all JOIN types.
 ### Upgrade Steps
 
 ```bash
-go get -u github.com/ajitpratap0/GoSQLX@v1.1.0
+go get -u github.com/aereal/sqlx@v1.1.0
 ```
 
 ### Breaking Changes
@@ -352,7 +352,7 @@ v1.0.0 is a **major release** with significant performance improvements and prod
 ### Upgrade Steps
 
 ```bash
-go get -u github.com/ajitpratap0/GoSQLX@v1.0.0
+go get -u github.com/aereal/sqlx@v1.0.0
 ```
 
 ### Breaking Changes
@@ -414,9 +414,9 @@ Test helper imports may have changed.
 
 ### Support Channels
 
-- **Issues**: https://github.com/ajitpratap0/GoSQLX/issues
-- **Discussions**: https://github.com/ajitpratap0/GoSQLX/discussions
-- **Documentation**: https://pkg.go.dev/github.com/ajitpratap0/GoSQLX
+- **Issues**: https://github.com/aereal/sqlx/issues
+- **Discussions**: https://github.com/aereal/sqlx/discussions
+- **Documentation**: https://pkg.go.dev/github.com/aereal/sqlx
 
 ### Common Upgrade Issues
 
@@ -451,6 +451,6 @@ A: GoSQLX requires Go 1.21+. Update your Go version if needed.
 <div align="center">
 
 **Questions or Issues?**
-[Open an Issue](https://github.com/ajitpratap0/GoSQLX/issues/new) | [Start a Discussion](https://github.com/ajitpratap0/GoSQLX/discussions/new)
+[Open an Issue](https://github.com/aereal/sqlx/issues/new) | [Start a Discussion](https://github.com/aereal/sqlx/discussions/new)
 
 </div>

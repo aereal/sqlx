@@ -17,7 +17,7 @@ package cmd
 import (
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // IssueCategory represents the category of analysis issue

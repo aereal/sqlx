@@ -17,7 +17,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // BenchmarkFullPipeline benchmarks the complete SQL processing pipeline:

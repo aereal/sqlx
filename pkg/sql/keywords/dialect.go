@@ -17,7 +17,7 @@ package keywords
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // SQLDialect represents different SQL database dialects.

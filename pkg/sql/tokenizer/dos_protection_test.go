@@ -19,7 +19,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/errors"
+	"github.com/aereal/sqlx/pkg/errors"
 )
 
 // TestTokenizer_InputSizeLimit tests the DoS protection for maximum input size

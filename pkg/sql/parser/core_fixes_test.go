@@ -18,8 +18,8 @@ package parser
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // helper: tokenize + parse, returning (AST, error). Does NOT call t.Fatal so callers

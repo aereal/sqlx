@@ -65,8 +65,8 @@ echo "SELECT * FROM users" | gosqlx lint
 package main
 
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
+    "github.com/aereal/sqlx/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter/rules/whitespace"
 )
 
 func main() {
@@ -202,7 +202,7 @@ pkg/linter/
 ```go
 package myrules
 
-import "github.com/ajitpratap0/GoSQLX/pkg/linter"
+import "github.com/aereal/sqlx/pkg/linter"
 
 type MyCustomRule struct {
     linter.BaseRule

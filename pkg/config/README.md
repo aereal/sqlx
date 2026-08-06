@@ -15,7 +15,7 @@ Unified configuration management for GoSQLX that can be shared across CLI, LSP s
 ### Loading from Files
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/config"
+import "github.com/aereal/sqlx/pkg/config"
 
 // Load from single file
 cfg, err := config.LoadFromFile("gosqlx.yaml")

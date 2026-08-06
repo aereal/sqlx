@@ -15,7 +15,7 @@
 package transform
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // getWhere returns a pointer to the WHERE field for supported statements.

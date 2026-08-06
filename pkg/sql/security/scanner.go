@@ -55,8 +55,8 @@
 // AST-based scanning:
 //
 //	import (
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+//	    "github.com/aereal/sqlx/pkg/sql/parser"
+//	    "github.com/aereal/sqlx/pkg/sql/security"
 //	)
 //
 //	// Parse SQL into AST
@@ -196,7 +196,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // Severity represents the severity level of a security finding.

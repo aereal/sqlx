@@ -17,7 +17,7 @@ package transform
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // ReplaceTable returns a Rule that replaces all occurrences of a table name

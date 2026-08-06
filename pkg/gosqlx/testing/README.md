@@ -19,7 +19,7 @@ This package is part of GoSQLX. Import it in your tests:
 ```go
 import (
     "testing"
-    gosqlxtesting "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
+    gosqlxtesting "github.com/aereal/sqlx/pkg/gosqlx/testing"
 )
 ```
 

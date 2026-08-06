@@ -36,7 +36,7 @@ Basic SQL validation:
 
 	import (
 	    "testing"
-	    sqltest "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
+	    sqltest "github.com/aereal/sqlx/pkg/gosqlx/testing"
 	)
 
 	func TestBasicSQL(t *testing.T) {
@@ -301,8 +301,8 @@ Complete example of a comprehensive SQL test suite:
 
 	import (
 	    "testing"
-	    sqltest "github.com/ajitpratap0/GoSQLX/pkg/gosqlx/testing"
-	    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	    sqltest "github.com/aereal/sqlx/pkg/gosqlx/testing"
+	    "github.com/aereal/sqlx/pkg/sql/ast"
 	)
 
 	func TestUserQueries(t *testing.T) {
@@ -343,6 +343,6 @@ Complete example of a comprehensive SQL test suite:
 Package testing is part of GoSQLX v1.6.0+.
 
 For the latest documentation and examples, visit:
-https://github.com/ajitpratap0/GoSQLX
+https://github.com/aereal/sqlx
 */
 package testing

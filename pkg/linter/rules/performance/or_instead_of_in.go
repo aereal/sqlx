@@ -17,8 +17,8 @@ package performance
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // OrInsteadOfInRule (L021) detects repeated equality conditions on the same column

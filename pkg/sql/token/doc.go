@@ -35,8 +35,8 @@
 // # Basic Usage
 //
 //	import (
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/token"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/models"
+//	    "github.com/aereal/sqlx/pkg/sql/token"
+//	    "github.com/aereal/sqlx/pkg/models"
 //	)
 //
 //	tok := token.Token{Type: models.TokenTypeSelect, Literal: "SELECT"}

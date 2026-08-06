@@ -18,10 +18,10 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/style"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/keywords"
+	"github.com/aereal/sqlx/pkg/linter/rules/style"
+	"github.com/aereal/sqlx/pkg/linter/rules/whitespace"
 )
 
 // Battle tests for lint rules with real-world SQL queries

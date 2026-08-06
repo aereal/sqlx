@@ -235,8 +235,8 @@
 // Basic parsing with position tracking:
 //
 //	import (
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+//	    "github.com/aereal/sqlx/pkg/sql/parser"
+//	    "github.com/aereal/sqlx/pkg/sql/tokenizer"
 //	)
 //
 //	// Tokenize SQL
@@ -329,11 +329,11 @@
 //
 // # Related Packages
 //
-//   - github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer: Token generation from SQL text
-//   - github.com/ajitpratap0/GoSQLX/pkg/sql/ast: AST node definitions and visitor pattern
-//   - github.com/ajitpratap0/GoSQLX/pkg/models: Token types, spans, locations
-//   - github.com/ajitpratap0/GoSQLX/pkg/errors: Structured error types with codes
-//   - github.com/ajitpratap0/GoSQLX/pkg/sql/keywords: Multi-dialect keyword classification
+//   - github.com/aereal/sqlx/pkg/sql/tokenizer: Token generation from SQL text
+//   - github.com/aereal/sqlx/pkg/sql/ast: AST node definitions and visitor pattern
+//   - github.com/aereal/sqlx/pkg/models: Token types, spans, locations
+//   - github.com/aereal/sqlx/pkg/errors: Structured error types with codes
+//   - github.com/aereal/sqlx/pkg/sql/keywords: Multi-dialect keyword classification
 //
 // # Further Reading
 //

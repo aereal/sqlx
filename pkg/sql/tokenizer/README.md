@@ -29,7 +29,7 @@ The `tokenizer` package provides a high-performance, zero-copy SQL lexical analy
 package main
 
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 func main() {

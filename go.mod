@@ -1,4 +1,4 @@
-module github.com/ajitpratap0/GoSQLX
+module github.com/aereal/sqlx
 
 go 1.26.1
 

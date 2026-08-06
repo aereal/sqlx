@@ -18,7 +18,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 func TestError_Error(t *testing.T) {
@@ -59,10 +59,10 @@ func TestError_Error(t *testing.T) {
 				Code:     ErrCodeUnexpectedToken,
 				Message:  "unexpected token",
 				Location: models.Location{Line: 1, Column: 5},
-				HelpURL:  "https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md#E2001",
+				HelpURL:  "https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md#E2001",
 			},
 			contains: []string{
-				"Help: https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md#E2001",
+				"Help: https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md#E2001",
 			},
 		},
 	}

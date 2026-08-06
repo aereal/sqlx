@@ -17,8 +17,8 @@ package naming
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 const distinctColumnThreshold = 5

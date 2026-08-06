@@ -17,7 +17,7 @@ package gosqlx
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // TestRegexOperators_EndToEnd tests PostgreSQL regex operators using the full tokenizer->parser pipeline

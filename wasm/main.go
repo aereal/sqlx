@@ -20,15 +20,15 @@ import (
 	"encoding/json"
 	"syscall/js"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/advisor"
-	"github.com/ajitpratap0/GoSQLX/pkg/formatter"
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/keywords"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+	"github.com/aereal/sqlx/pkg/advisor"
+	"github.com/aereal/sqlx/pkg/formatter"
+	"github.com/aereal/sqlx/pkg/gosqlx"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/keywords"
+	"github.com/aereal/sqlx/pkg/linter/rules/whitespace"
+	"github.com/aereal/sqlx/pkg/sql/security"
 
-	sqlkeywords "github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	sqlkeywords "github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 // dialectMap maps JS-friendly dialect strings to keywords.SQLDialect constants.

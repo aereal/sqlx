@@ -297,7 +297,7 @@ func FormatSARIF(result *ValidationResult, toolVersion string) ([]byte, error) {
 						Name:            "GoSQLX",
 						Version:         toolVersion,
 						SemanticVersion: toolVersion,
-						InformationURI:  "https://github.com/ajitpratap0/GoSQLX",
+						InformationURI:  "https://github.com/aereal/sqlx",
 						Rules: []SARIFRule{
 							{
 								ID:   "sql-syntax-error",

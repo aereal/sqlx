@@ -15,7 +15,7 @@
 package ast
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // RollupExpression represents ROLLUP(col1, col2, ...) in GROUP BY clause

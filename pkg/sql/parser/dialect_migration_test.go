@@ -18,8 +18,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/dialect"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/keywords"
+	"github.com/aereal/sqlx/pkg/sql/dialect"
+	"github.com/aereal/sqlx/pkg/sql/keywords"
 )
 
 // These tests anchor the Sprint-2 strangler-fig migrations from

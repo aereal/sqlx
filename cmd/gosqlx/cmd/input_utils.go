@@ -20,7 +20,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/validate"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/validate"
 )
 
 const (

@@ -24,7 +24,7 @@ import (
 	"sync"
 	"sync/atomic"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/metrics"
+	"github.com/aereal/sqlx/pkg/metrics"
 )
 
 // poolLeakCount counts expressions that exceeded PutExpression's iterative

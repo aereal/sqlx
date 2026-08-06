@@ -52,7 +52,7 @@ gosqlx lsp --help
 ### Within Go Code
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/lsp"
+import "github.com/aereal/sqlx/pkg/lsp"
 
 // Create stdio server
 server := lsp.NewStdioServer(logger)
@@ -400,7 +400,7 @@ Using eglot:
 which gosqlx
 
 # Reinstall if needed
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+go install github.com/aereal/sqlx/cmd/gosqlx@latest
 
 # Test with logging
 gosqlx lsp --log /tmp/test.log
@@ -438,9 +438,9 @@ tail -f /tmp/gosqlx-lsp.log | grep -E "Initialize|Document|Diagnostic"
 
 ## Resources
 
-- **Repository**: https://github.com/ajitpratap0/GoSQLX
-- **Issues**: https://github.com/ajitpratap0/GoSQLX/issues
-- **Discussions**: https://github.com/ajitpratap0/GoSQLX/discussions
+- **Repository**: https://github.com/aereal/sqlx
+- **Issues**: https://github.com/aereal/sqlx/issues
+- **Discussions**: https://github.com/aereal/sqlx/discussions
 - **LSP Specification**: https://microsoft.github.io/language-server-protocol/
 
 ---

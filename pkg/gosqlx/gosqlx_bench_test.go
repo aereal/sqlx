@@ -17,8 +17,8 @@ package gosqlx
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/parser"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // BenchmarkHighLevel_Parse benchmarks the high-level gosqlx.Parse() API

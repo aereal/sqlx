@@ -20,8 +20,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/formatter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/formatter"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // ─── helper ──────────────────────────────────────────────────────────────────

@@ -17,8 +17,8 @@ package main
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/whitespace"
 )
 
 func main() {

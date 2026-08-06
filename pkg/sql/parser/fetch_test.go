@@ -20,7 +20,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // Note: Uses parseSQL helper from nulls_first_last_test.go

@@ -20,7 +20,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/sql/tokenizer"
 )
 
 // TestCorpus walks testdata/corpus/ recursively and attempts to parse every .sql file.

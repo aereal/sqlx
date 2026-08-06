@@ -14,7 +14,7 @@
 
 package keywords
 
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/models"
 
 // Keyword represents a SQL keyword with its properties and reservation status.
 //

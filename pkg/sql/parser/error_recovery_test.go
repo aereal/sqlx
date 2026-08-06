@@ -15,11 +15,11 @@
 package parser
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/token"
+	"github.com/aereal/sqlx/pkg/sql/token"
 )
 
 // TestParser_ErrorRecovery_SELECT tests all error paths in SELECT statement parsing

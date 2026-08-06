@@ -17,8 +17,8 @@ package whitespace
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // MixedIndentationRule (L002) detects and fixes inconsistent use of tabs and spaces

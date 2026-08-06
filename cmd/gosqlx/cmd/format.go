@@ -21,7 +21,7 @@ import (
 
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/config"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/config"
 )
 
 var (

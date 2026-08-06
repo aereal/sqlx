@@ -116,7 +116,7 @@ Programmatic usage:
 	import (
 	    "log"
 	    "os"
-	    "github.com/ajitpratap0/GoSQLX/pkg/lsp"
+	    "github.com/aereal/sqlx/pkg/lsp"
 	)
 
 	func main() {
@@ -616,6 +616,6 @@ SQL Standards:
 
 GoSQLX Project:
 
-	https://github.com/ajitpratap0/GoSQLX
+	https://github.com/aereal/sqlx
 */
 package lsp

@@ -14,7 +14,7 @@
 
 package keywords
 
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/models"
 
 // IsDMLKeyword checks if a given string is a DML keyword
 func (k *Keywords) IsDMLKeyword(s string) bool {

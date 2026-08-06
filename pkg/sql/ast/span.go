@@ -14,7 +14,7 @@
 
 package ast
 
-import "github.com/ajitpratap0/GoSQLX/pkg/models"
+import "github.com/aereal/sqlx/pkg/models"
 
 // Spanned represents an AST node that has source location information
 type Spanned interface {

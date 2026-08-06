@@ -17,7 +17,7 @@ package ast
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // TestPutExpressionAllTypes tests PutExpression with all expression types

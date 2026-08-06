@@ -17,8 +17,8 @@ package errors_test
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/errors"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/errors"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Example_enhancedErrorWithContext demonstrates the enhanced error formatting with 3 lines of context

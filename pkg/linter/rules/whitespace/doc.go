@@ -58,7 +58,7 @@
 //
 // Using trailing whitespace rule:
 //
-//	import "github.com/ajitpratap0/GoSQLX/pkg/linter/rules/whitespace"
+//	import "github.com/aereal/sqlx/pkg/linter/rules/whitespace"
 //
 //	rule := whitespace.NewTrailingWhitespaceRule()
 //	violations, err := rule.Check(ctx)

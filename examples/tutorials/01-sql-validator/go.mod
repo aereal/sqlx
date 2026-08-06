@@ -1,7 +1,7 @@
-module github.com/ajitpratap0/GoSQLX/examples/tutorials/01-sql-validator
+module github.com/aereal/sqlx/examples/tutorials/01-sql-validator
 
 go 1.21
 
-replace github.com/ajitpratap0/GoSQLX => ../../../
+replace github.com/aereal/sqlx => ../../../
 
-require github.com/ajitpratap0/GoSQLX v0.0.0-00010101000000-000000000000
+require github.com/aereal/sqlx v0.0.0-00010101000000-000000000000

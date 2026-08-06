@@ -19,7 +19,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // TestMemoryLeakDetection checks for memory leaks in tokenizer and AST operations

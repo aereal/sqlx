@@ -17,7 +17,7 @@ package ast
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // Node represents any node in the Abstract Syntax Tree.

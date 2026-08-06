@@ -45,7 +45,7 @@ UNION-based injection detection is now split into two patterns to eliminate fals
 This split eliminates false-positive CRITICAL alerts on legitimate multi-query application code using `UNION`.
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+import "github.com/aereal/sqlx/pkg/sql/security"
 
 scanner := security.NewScanner()
 result := scanner.Scan(ast)
@@ -371,7 +371,7 @@ BenchmarkIsSecurePath           168 ns/op   (168ns)       32 B/op    2 allocs/op
 Custom security settings can be configured via `SecurityValidator`:
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/validate"
+import "github.com/aereal/sqlx/cmd/gosqlx/internal/validate"
 
 // Create custom validator
 validator := validate.NewSecurityValidator()

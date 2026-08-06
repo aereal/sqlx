@@ -21,7 +21,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	dbschema "github.com/ajitpratap0/GoSQLX/pkg/schema/db"
+	dbschema "github.com/aereal/sqlx/pkg/schema/db"
 )
 
 // Loader implements db.Loader for MySQL.

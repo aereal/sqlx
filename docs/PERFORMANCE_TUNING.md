@@ -194,8 +194,8 @@ package main
 import (
     "os"
     "runtime/pprof"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/parser"
 )
 
 func profileCPU() {
@@ -356,7 +356,7 @@ func processSQLWrong(sql []byte) error {
 ### Monitoring Pool Efficiency
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+import "github.com/aereal/sqlx/pkg/metrics"
 
 func monitorPoolMetrics() {
     snapshot := metrics.GetSnapshot()
@@ -902,7 +902,7 @@ func (s *LSPServer) validateDocumentSize(content string) error {
 #### LSP Performance Monitoring
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+import "github.com/aereal/sqlx/pkg/metrics"
 
 func monitorLSPPerformance() {
     ticker := time.NewTicker(30 * time.Second)
@@ -1471,7 +1471,7 @@ func setupProduction() {
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+    "github.com/aereal/sqlx/pkg/metrics"
     "time"
 )
 
@@ -1744,6 +1744,6 @@ Pool Warm-up:    200 objects
 ---
 
 **Need Help?**
-- File an issue: https://github.com/ajitpratap0/GoSQLX/issues
+- File an issue: https://github.com/aereal/sqlx/issues
 - Review benchmarks: `pkg/sql/*/comprehensive_bench_test.go`
 - Check examples: `examples/`

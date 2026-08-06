@@ -21,7 +21,7 @@ package formatter
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 // renderCreateSequence renders a CREATE [OR REPLACE] SEQUENCE [IF NOT EXISTS] statement.

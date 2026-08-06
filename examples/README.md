@@ -136,9 +136,9 @@ All examples follow the same pattern:
 package main
 
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+    "github.com/aereal/sqlx/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/pkg/sql/parser"
+    "github.com/aereal/sqlx/pkg/sql/ast"
 )
 
 func main() {

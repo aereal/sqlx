@@ -25,7 +25,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // KeywordConflict describes a collision recorded during keyword registration.

@@ -17,7 +17,7 @@ package parser
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/pkg/models"
 )
 
 // mkSpanToken is a convenience helper that wraps a models.Token into a

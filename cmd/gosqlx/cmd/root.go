@@ -17,10 +17,10 @@ package cmd
 import (
 	"github.com/spf13/cobra"
 
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/actioncmd"
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/cmdutil"
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/lspcmd"
-	"github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/optimizecmd"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/actioncmd"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/cmdutil"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/lspcmd"
+	"github.com/aereal/sqlx/cmd/gosqlx/internal/optimizecmd"
 )
 
 // Version is the current version of gosqlx CLI.

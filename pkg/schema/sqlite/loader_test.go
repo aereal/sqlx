@@ -20,7 +20,7 @@ import (
 
 	_ "modernc.org/sqlite"
 
-	sqschema "github.com/ajitpratap0/GoSQLX/pkg/schema/sqlite"
+	sqschema "github.com/aereal/sqlx/pkg/schema/sqlite"
 )
 
 func openSQLite(t *testing.T) *sql.DB {
