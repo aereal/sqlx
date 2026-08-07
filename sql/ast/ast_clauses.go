@@ -439,6 +439,59 @@ func (t TableConstraint) Children() []Node {
 	return children
 }
 
+// DomainConstraint represents a domain constraint.
+type DomainConstraint interface {
+	Node
+	Expression
+	domainConstraint()
+}
+
+// DomainConstraintNull is a [DomainConstraint] that represents explicit nullability constraint.
+type DomainConstraintNull struct {
+	ConstraintName string
+	Start, End     models.Location
+}
+
+var _ DomainConstraint = (*DomainConstraintNull)(nil)
+
+func (DomainConstraintNull) domainConstraint()    {}
+func (DomainConstraintNull) expressionNode()      {}
+func (DomainConstraintNull) TokenLiteral() string { return "NULL" }
+func (DomainConstraintNull) Children() []Node     { return []Node{} }
+
+// DomainConstraintNotNull is a [DomainConstraint] that represents non-nullability constraint.
+type DomainConstraintNotNull struct {
+	ConstraintName string
+	Start, End     models.Location
+}
+
+var _ DomainConstraint = (*DomainConstraintNotNull)(nil)
+
+func (DomainConstraintNotNull) domainConstraint()    {}
+func (DomainConstraintNotNull) expressionNode()      {}
+func (DomainConstraintNotNull) TokenLiteral() string { return "NOT NULL" }
+func (DomainConstraintNotNull) Children() []Node     { return []Node{} }
+
+// DomainConstraintCheck is a [DomainConstraint] that represents constraints with the [DomainConstraintCheck.Expression].
+type DomainConstraintCheck struct {
+	ConstraintName string
+	Expression     Expression
+	Start, End     models.Location
+}
+
+var _ DomainConstraint = (*DomainConstraintCheck)(nil)
+
+func (DomainConstraintCheck) domainConstraint()    {}
+func (DomainConstraintCheck) expressionNode()      {}
+func (DomainConstraintCheck) TokenLiteral() string { return "CHECK" }
+func (c *DomainConstraintCheck) Children() []Node {
+	children := make([]Node, 0, 1)
+	if c.Expression != nil {
+		children = append(children, c.Expression)
+	}
+	return children
+}
+
 // ReferenceDefinition represents a REFERENCES clause
 type ReferenceDefinition struct {
 	Table    string

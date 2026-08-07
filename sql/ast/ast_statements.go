@@ -733,6 +733,36 @@ func (s *CreateSequenceStatement) Children() []Node {
 	return nil
 }
 
+// CreateDomainStatement represents:
+//
+//	CREATE DOMAIN name
+type CreateDomainStatement struct {
+	Name              *Identifier
+	Type              string
+	Constraint        DomainConstraint
+	Collate           string
+	DefaultExpression Expression
+	Start, End        models.Location
+}
+
+var _ Statement = (*CreateDomainStatement)(nil)
+
+func (CreateDomainStatement) statementNode()       {}
+func (CreateDomainStatement) TokenLiteral() string { return "CREATE" }
+func (s *CreateDomainStatement) Children() []Node {
+	children := make([]Node, 0, 3)
+	if s.Name != nil {
+		children = append(children, s.Name)
+	}
+	if s.Constraint != nil {
+		children = append(children, s.Constraint)
+	}
+	if s.DefaultExpression != nil {
+		children = append(children, s.DefaultExpression)
+	}
+	return children
+}
+
 // DropSequenceStatement represents:
 //
 //	DROP SEQUENCE [IF EXISTS | IF NOT EXISTS] name

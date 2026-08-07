@@ -94,6 +94,13 @@ func (p *Parser) parseCreateStatement() (ast.Statement, error) {
 			stmt.Pos = seqPos
 		}
 		return stmt, nil
+	} else if p.isTokenMatch("DOMAIN") {
+		p.advance() // consume DOMAIN
+		stmt, err := p.parseCreateDomainStatement()
+		if err != nil {
+			return nil, err
+		}
+		return stmt, nil
 	}
 
 	// Snowflake object-type extensions: STAGE, STREAM, TASK, PIPE, FILE FORMAT,
@@ -160,7 +167,7 @@ func (p *Parser) parseCreateStatement() (ast.Statement, error) {
 		}
 	}
 
-	return nil, p.expectedError("TABLE, VIEW, MATERIALIZED VIEW, or INDEX after CREATE")
+	return nil, p.expectedError("TABLE, VIEW, MATERIALIZED VIEW, DOMAIN, or INDEX after CREATE")
 }
 
 // parseCreateTable parses CREATE TABLE statement with partitioning support
@@ -448,6 +455,118 @@ func (p *Parser) parseCreateTable(temporary bool) (*ast.CreateTableStatement, er
 	}
 
 	return stmt, nil
+}
+
+func (p *Parser) parseCreateDomainStatement() (*ast.CreateDomainStatement, error) {
+	stmt := &ast.CreateDomainStatement{
+		Name: new(ast.Identifier),
+	}
+
+	domainName, start, end, err := p.parseQualifiedName()
+	if err != nil {
+		return nil, p.expectedError("domain name")
+	}
+	stmt.Name.Name = domainName
+	stmt.Name.Start = start
+	stmt.Name.End = end
+
+	if p.isType(models.TokenTypeAs) { // optional AS
+		p.advance()
+	}
+
+	dataType := p.parseColumnName()
+	if dataType == nil {
+		return nil, p.expectedError("data type")
+	}
+	stmt.Type = dataType.Name
+
+	// Check for type parameters. The simple form is VARCHAR(100) or
+	// DECIMAL(10,2), but ClickHouse also has nested/parameterised types like
+	// Array(Nullable(String)), Map(String, Array(UInt32)), Tuple(a UInt8, b String),
+	// FixedString(16), DateTime64(3, 'UTC'), LowCardinality(String), Decimal(38, 18),
+	// and engines like ReplicatedMergeTree('/path', '{replica}'). Use a depth-tracking
+	// token collector that round-trips the type string.
+	if p.isType(models.TokenTypeLParen) {
+		args, err := p.parseTypeArgsString()
+		if err != nil {
+			return nil, err
+		}
+		stmt.Type += args
+	}
+
+	if p.matchType(models.TokenTypeCollate) {
+		if !p.isIdentifier() {
+			return nil, p.expectedError("collation name after COLLATE")
+		}
+		stmt.Collate = p.currentToken.Token.Value
+		p.advance() // consume identifier
+	}
+
+	if p.matchType(models.TokenTypeDefault) {
+		expr, err := p.parseExpression()
+		if err != nil {
+			return nil, err
+		}
+		stmt.DefaultExpression = expr
+	}
+
+	constraint, err := p.parseDomainConstraint()
+	if err != nil {
+		return nil, err
+	}
+	stmt.Constraint = constraint
+
+	return stmt, nil
+}
+
+func (p *Parser) parseDomainConstraint() (ast.DomainConstraint, error) {
+	start := p.currentLocation()
+
+	var contraintName string
+	if p.matchType(models.TokenTypeConstraint) {
+		if !p.isType(models.TokenTypeIdentifier) {
+			return nil, p.expectedError("constraint name")
+		}
+		contraintName = p.currentToken.Token.Value
+		p.advance() // consume identifier
+	}
+
+	switch {
+	case p.matchType(models.TokenTypeCheck): // CHECK (expr)
+		if !p.matchType(models.TokenTypeLParen) {
+			return nil, p.expectedError("( after CHECK")
+		}
+		expr, err := p.parseExpression()
+		if err != nil {
+			return nil, err
+		}
+		if !p.matchType(models.TokenTypeRParen) {
+			return nil, p.expectedError(") after CHECK expression")
+		}
+		return &ast.DomainConstraintCheck{
+			ConstraintName: contraintName,
+			Expression:     expr,
+			Start:          start,
+			End:            p.currentLocation(),
+		}, nil
+	case p.matchType(models.TokenTypeNot): // NOT NULL
+		if !p.matchType(models.TokenTypeNull) {
+			return nil, p.expectedError("NULL after NOT")
+		}
+		return &ast.DomainConstraintNotNull{
+			ConstraintName: contraintName,
+			Start:          start,
+			End:            p.currentLocation(),
+		}, nil
+	case p.matchType(models.TokenTypeNull): // NULL
+		return &ast.DomainConstraintNull{
+			ConstraintName: contraintName,
+			Start:          start,
+			End:            p.currentLocation(),
+		}, nil
+	default:
+		return nil, p.expectedError("CHECK or NULL or NOT NULL")
+	}
 }
 
 // parsePartitionByClause parses PARTITION BY RANGE/LIST/HASH (columns)

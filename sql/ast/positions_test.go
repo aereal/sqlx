@@ -197,6 +197,53 @@ func TestCreateTableStatementPosition(t *testing.T) {
 	assertPosEqual(t, "CREATE TABLE column 2 end", stmt.Columns[1].End, 4, 1)
 }
 
+func TestCreateDomainStatementPosition(t *testing.T) {
+	t.Run("check", func(t *testing.T) {
+		tree := parseWithPositions(t, "create domain unsigned_smallint smallint\n  constraint unsigned_smallint_check\n  check ((value >= 0))")
+		if len(tree.Statements) != 1 {
+			t.Fatalf("expected 1 statement, got %d", len(tree.Statements))
+		}
+		stmt, ok := tree.Statements[0].(*ast.CreateDomainStatement)
+		if !ok {
+			t.Fatalf("expected *ast.CreateDomainStatement, got %T", tree.Statements[0])
+		}
+		assertPosEqual(t, "CREATE DOMAIN start", stmt.Start, 1, 1)
+		assertPosEqual(t, "CREATE DOMAIN end", stmt.End, 3, 23)
+		checkConstraint, ok := stmt.Constraint.(*ast.DomainConstraintCheck)
+		if !ok {
+			t.Fatalf("expected *ast.DomainConstraintCheck, got %T", stmt.Constraint)
+		}
+		if stmt.Name.Name != "unsigned_smallint" {
+			t.Errorf("got domain name: %q", stmt.Name.Name)
+		}
+		assertPosEqual(t, "constraint start", checkConstraint.Start, 2, 3)
+		assertPosEqual(t, "constraint end", checkConstraint.End, 3, 23)
+	})
+
+	t.Run("not null", func(t *testing.T) {
+		tree := parseWithPositions(t, "create domain public.non_empty_string as varchar(255)\n  collate \"ja_JP.UTF-8\"\n  not null")
+		if len(tree.Statements) != 1 {
+			t.Fatalf("expected 1 statement, got %d", len(tree.Statements))
+		}
+		stmt, ok := tree.Statements[0].(*ast.CreateDomainStatement)
+		if !ok {
+			t.Fatalf("expected *ast.CreateDomainStatement, got %T", tree.Statements[0])
+		}
+		assertPosEqual(t, "CREATE DOMAIN start", stmt.Start, 1, 1)
+		assertPosEqual(t, "CREATE DOMAIN end", stmt.End, 3, 11)
+		if stmt.Name.Name != "public.non_empty_string" {
+			t.Errorf("got domain name: %q", stmt.Name.Name)
+		}
+
+		checkConstraint, ok := stmt.Constraint.(*ast.DomainConstraintNotNull)
+		if !ok {
+			t.Fatalf("expected *ast.DomainConstraintNotNull, got %T", stmt.Constraint)
+		}
+		assertPosEqual(t, "constraint start", checkConstraint.Start, 3, 3)
+		assertPosEqual(t, "constraint end", checkConstraint.End, 3, 11)
+	})
+}
+
 // -----------------------------------------------------------------------------
 // TestIdentifierPosition verifies Identifier nodes carry positions
 // -----------------------------------------------------------------------------

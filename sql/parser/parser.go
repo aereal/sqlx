@@ -725,6 +725,9 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 		case *ast.CreateTableStatement:
 			stmt.Start = startPos
 			stmt.End = endPos
+		case *ast.CreateDomainStatement:
+			stmt.Start = startPos
+			stmt.End = endPos
 		}
 		return stmt, nil
 	case models.TokenTypeDrop:
