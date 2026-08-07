@@ -80,14 +80,16 @@ func (p *Parser) parseFromTableReference() (ast.TableReference, error) {
 		p.advance()
 		// Optional /path suffix — consume tokens joined by / until a space boundary.
 		// Slash tokenizes as TokenTypeDiv.
+		var stageNameSb83 strings.Builder
 		for p.isType(models.TokenTypeDiv) {
-			stageName += "/"
+			stageNameSb83.WriteString("/")
 			p.advance()
 			if p.isIdentifier() || p.isType(models.TokenTypeKeyword) {
-				stageName += p.currentToken.Token.Value
+				stageNameSb83.WriteString(p.currentToken.Token.Value)
 				p.advance()
 			}
 		}
+		stageName += stageNameSb83.String()
 		tableRef = ast.TableReference{
 			Name:    stageName,
 			Lateral: isLateral,

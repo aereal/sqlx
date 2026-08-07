@@ -1440,8 +1440,9 @@ func (t TokenType) IsLiteral() bool {
 		TokenTypeSingleQuotedString, TokenTypeDoubleQuotedString,
 		TokenTypeTrue, TokenTypeFalse, TokenTypeNull:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // IsDMLKeyword returns true if the token type is a Data Manipulation Language keyword.
@@ -1458,8 +1459,9 @@ func (t TokenType) IsDMLKeyword() bool {
 	case TokenTypeSelect, TokenTypeInsert, TokenTypeUpdate, TokenTypeDelete,
 		TokenTypeInto, TokenTypeValues, TokenTypeSet, TokenTypeFrom, TokenTypeWhere:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // IsDDLKeyword returns true if the token type is a Data Definition Language keyword.
@@ -1478,8 +1480,9 @@ func (t TokenType) IsDDLKeyword() bool {
 		TokenTypeIndex, TokenTypeView, TokenTypeColumn, TokenTypeDatabase,
 		TokenTypeSchema, TokenTypeTrigger:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // IsJoinKeyword returns true if the token type is a JOIN-related keyword.
@@ -1500,8 +1503,9 @@ func (t TokenType) IsJoinKeyword() bool {
 		TokenTypeOuterJoin, TokenTypeFullJoin, TokenTypeCrossJoin,
 		TokenTypeOn, TokenTypeUsing:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // IsWindowKeyword returns true if the token type is a window function keyword.
@@ -1525,8 +1529,9 @@ func (t TokenType) IsWindowKeyword() bool {
 		TokenTypeCurrent, TokenTypeRow, TokenTypeGroups, TokenTypeFilter,
 		TokenTypeExclude:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // IsAggregateFunction returns true if the token type is a standard SQL aggregate function.
@@ -1546,8 +1551,9 @@ func (t TokenType) IsAggregateFunction() bool {
 	switch t {
 	case TokenTypeCount, TokenTypeSum, TokenTypeAvg, TokenTypeMin, TokenTypeMax:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // IsDataType returns true if the token type is a SQL data type.
@@ -1579,8 +1585,9 @@ func (t TokenType) IsConstraint() bool {
 		TokenTypeUnique, TokenTypeCheck, TokenTypeDefault, TokenTypeAutoIncrement,
 		TokenTypeConstraint, TokenTypeNotNull, TokenTypeNullable:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // IsSetOperation returns true if the token type is a set operation keyword.
@@ -1602,6 +1609,7 @@ func (t TokenType) IsSetOperation() bool {
 	switch t {
 	case TokenTypeUnion, TokenTypeExcept, TokenTypeIntersect, TokenTypeAll:
 		return true
+	default:
+		return false
 	}
-	return false
 }

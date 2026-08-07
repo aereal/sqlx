@@ -31,6 +31,7 @@ package ast
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -51,7 +52,7 @@ func (s *StageParamsObject) String() string {
 		parts = append(parts, fmt.Sprintf("URL='%s'", *s.URL))
 	}
 	if s.StorageIntegration != nil {
-		parts = append(parts, fmt.Sprintf("STORAGE_INTEGRATION=%s", *s.StorageIntegration))
+		parts = append(parts, "STORAGE_INTEGRATION="+*s.StorageIntegration)
 	}
 	if s.Endpoint != nil {
 		parts = append(parts, fmt.Sprintf("ENDPOINT='%s'", *s.Endpoint))
@@ -174,7 +175,7 @@ func NewBooleanOption(name string, value bool) DataLoadingOption {
 	return DataLoadingOption{
 		OptionName: name,
 		OptionType: DataLoadingOptionTypeBoolean,
-		Value:      fmt.Sprintf("%v", value),
+		Value:      strconv.FormatBool(value),
 	}
 }
 
@@ -188,7 +189,7 @@ func NewEnumOption(name, value string) DataLoadingOption {
 }
 
 // NewNumberOption creates a new number-type DataLoadingOption
-func NewNumberOption(name string, value interface{}) DataLoadingOption {
+func NewNumberOption(name string, value any) DataLoadingOption {
 	return DataLoadingOption{
 		OptionName: name,
 		OptionType: DataLoadingOptionTypeNumber,

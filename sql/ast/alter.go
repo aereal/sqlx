@@ -206,7 +206,7 @@ const (
 type RoleOption struct {
 	Name  string
 	Type  RoleOptionType
-	Value interface{} // Can be bool or Expression depending on Type
+	Value any // Can be bool or Expression depending on Type
 }
 
 // RoleOptionType identifies which role attribute is being set.

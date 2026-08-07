@@ -43,10 +43,12 @@ func (p *Parser) parseMatchAgainst(matchFunc *ast.FunctionCall) (ast.Expression,
 
 	// Consume optional mode keywords until we hit )
 	mode := ""
+	var modeSb46 strings.Builder
 	for !p.isType(models.TokenTypeRParen) && !p.isType(models.TokenTypeEOF) {
-		mode += " " + p.currentToken.Token.Value
+		modeSb46.WriteString(" " + p.currentToken.Token.Value)
 		p.advance()
 	}
+	mode += modeSb46.String()
 
 	if !p.isType(models.TokenTypeRParen) {
 		return nil, p.expectedError(")")

@@ -29,7 +29,7 @@ import (
 // work-queue cap and were drained via the recursive fallback. Non-zero values
 // mean the AST is pathologically large (>MaxWorkQueueSize nodes in a single
 // cleanup) or the queue algorithm needs tuning. Exposed via PoolLeakCount().
-var poolLeakCount uint64
+var poolLeakCount atomic.Uint64
 
 // PoolLeakCount returns the number of times PutExpression's iterative cleanup
 // exceeded MaxWorkQueueSize and fell back to recursive drain. A non-zero
@@ -37,12 +37,12 @@ var poolLeakCount uint64
 // node — but it flags that the work-queue cap was hit. Used for diagnostics
 // and by leak tests.
 func PoolLeakCount() uint64 {
-	return atomic.LoadUint64(&poolLeakCount)
+	return poolLeakCount.Load()
 }
 
 // ResetPoolLeakCount zeroes the pool-leak counter. Test-only helper.
 func ResetPoolLeakCount() {
-	atomic.StoreUint64(&poolLeakCount, 0)
+	poolLeakCount.Store(0)
 }
 
 // Pool configuration constants control cleanup behavior to prevent resource exhaustion.
@@ -72,7 +72,7 @@ const (
 var (
 	// DDL statement pools
 	createTableStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &CreateTableStatement{
 				Columns:     make([]ColumnDef, 0, 4),
 				Constraints: make([]TableConstraint, 0, 2),
@@ -83,7 +83,7 @@ var (
 	}
 
 	alterTableStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &AlterTableStatement{
 				Actions: make([]AlterTableAction, 0, 2),
 			}
@@ -91,7 +91,7 @@ var (
 	}
 
 	createIndexStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &CreateIndexStatement{
 				Columns: make([]IndexColumn, 0, 4),
 			}
@@ -99,7 +99,7 @@ var (
 	}
 
 	mergeStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &MergeStatement{
 				WhenClauses: make([]*MergeWhenClause, 0, 2),
 				Output:      make([]Expression, 0, 2),
@@ -108,7 +108,7 @@ var (
 	}
 
 	createViewStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &CreateViewStatement{
 				Columns: make([]string, 0),
 			}
@@ -116,7 +116,7 @@ var (
 	}
 
 	createMaterializedViewStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &CreateMaterializedViewStatement{
 				Columns: make([]string, 0),
 			}
@@ -124,13 +124,13 @@ var (
 	}
 
 	refreshMaterializedViewStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &RefreshMaterializedViewStatement{}
 		},
 	}
 
 	dropStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &DropStatement{
 				Names: make([]string, 0, 2),
 			}
@@ -138,7 +138,7 @@ var (
 	}
 
 	truncateStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &TruncateStatement{
 				Tables: make([]string, 0, 2),
 			}
@@ -146,25 +146,25 @@ var (
 	}
 
 	showStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ShowStatement{}
 		},
 	}
 
 	describeStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &DescribeStatement{}
 		},
 	}
 
 	unsupportedStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &UnsupportedStatement{}
 		},
 	}
 
 	replaceStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ReplaceStatement{
 				Columns: make([]Expression, 0, 4),
 				Values:  make([][]Expression, 0, 4),
@@ -173,14 +173,14 @@ var (
 	}
 
 	alterStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &AlterStatement{}
 		},
 	}
 
 	// AST node pools
 	astPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &AST{
 				Statements: make([]Statement, 0, 8), // Increased initial capacity
 			}
@@ -189,7 +189,7 @@ var (
 
 	// Statement pools
 	selectStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &SelectStatement{
 				Columns: make([]Expression, 0, 4),
 				OrderBy: make([]OrderByExpression, 0, 1),
@@ -198,7 +198,7 @@ var (
 	}
 
 	insertStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &InsertStatement{
 				Columns: make([]Expression, 0, 4),
 				Values:  make([][]Expression, 0, 4),
@@ -207,7 +207,7 @@ var (
 	}
 
 	updateStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &UpdateStatement{
 				Assignments: make([]UpdateExpression, 0, 4),
 			}
@@ -215,40 +215,40 @@ var (
 	}
 
 	deleteStmtPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &DeleteStatement{}
 		},
 	}
 
 	// Expression pools
 	identifierPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &Identifier{}
 		},
 	}
 
 	binaryExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &BinaryExpression{}
 		},
 	}
 
 	// Add a pool for LiteralValue to reduce allocations
 	literalValuePool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &LiteralValue{}
 		},
 	}
 
 	updateExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &UpdateExpression{}
 		},
 	}
 
 	// Additional expression pools for common expression types
 	functionCallPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &FunctionCall{
 				Arguments: make([]Expression, 0, 4),
 			}
@@ -256,7 +256,7 @@ var (
 	}
 
 	caseExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &CaseExpression{
 				WhenClauses: make([]WhenClause, 0, 2),
 			}
@@ -264,13 +264,13 @@ var (
 	}
 
 	betweenExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &BetweenExpression{}
 		},
 	}
 
 	inExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &InExpression{
 				List: make([]Expression, 0, 4),
 			}
@@ -278,7 +278,7 @@ var (
 	}
 
 	tupleExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &TupleExpression{
 				Expressions: make([]Expression, 0, 4),
 			}
@@ -286,7 +286,7 @@ var (
 	}
 
 	arrayConstructorPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ArrayConstructorExpression{
 				Elements: make([]Expression, 0, 4),
 			}
@@ -294,25 +294,25 @@ var (
 	}
 
 	subqueryExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &SubqueryExpression{}
 		},
 	}
 
 	castExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &CastExpression{}
 		},
 	}
 
 	intervalExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &IntervalExpression{}
 		},
 	}
 
 	arraySubscriptExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ArraySubscriptExpression{
 				Indices: make([]Expression, 0, 2), // Most common: 1-2 dimensions
 			}
@@ -320,32 +320,32 @@ var (
 	}
 
 	arraySliceExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ArraySliceExpression{}
 		},
 	}
 
 	// Additional expression pools for complete coverage
 	existsExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ExistsExpression{}
 		},
 	}
 
 	anyExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &AnyExpression{}
 		},
 	}
 
 	allExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &AllExpression{}
 		},
 	}
 
 	listExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ListExpression{
 				Values: make([]Expression, 0, 4),
 			}
@@ -353,53 +353,53 @@ var (
 	}
 
 	unaryExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &UnaryExpression{}
 		},
 	}
 
 	extractExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &ExtractExpression{}
 		},
 	}
 
 	positionExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &PositionExpression{}
 		},
 	}
 
 	substringExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &SubstringExpression{}
 		},
 	}
 
 	aliasedExprPool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			return &AliasedExpression{}
 		},
 	}
 
 	// Slice pools
 	exprSlicePool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			s := make([]Expression, 0, 16) // Double capacity for better performance
 			return &s
 		},
 	}
 
 	createSequencePool = sync.Pool{
-		New: func() interface{} { return &CreateSequenceStatement{} },
+		New: func() any { return &CreateSequenceStatement{} },
 	}
 
 	dropSequencePool = sync.Pool{
-		New: func() interface{} { return &DropSequenceStatement{} },
+		New: func() any { return &DropSequenceStatement{} },
 	}
 
 	alterSequencePool = sync.Pool{
-		New: func() interface{} { return &AlterSequenceStatement{} },
+		New: func() any { return &AlterSequenceStatement{} },
 	}
 
 	// putExpressionWorkQueuePool recycles the iterative work-queue slice used
@@ -414,7 +414,7 @@ var (
 	// Callers must write the mutated slice header back to the pointer
 	// before Put so subsequent Get sees the grown capacity.
 	putExpressionWorkQueuePool = sync.Pool{
-		New: func() interface{} {
+		New: func() any {
 			s := make([]Expression, 0, 32)
 			return &s
 		},
@@ -463,7 +463,8 @@ var (
 //
 // See also: ReleaseAST(), GetSelectStatement(), GetInsertStatement()
 func NewAST() *AST {
-	return astPool.Get().(*AST)
+	val, _ := astPool.Get().(*AST)
+	return val
 }
 
 // ReleaseAST returns an AST container to the pool for reuse.
@@ -612,7 +613,7 @@ func releaseStatement(stmt Statement) {
 
 // GetCreateIndexStatement gets a CreateIndexStatement from the pool.
 func GetCreateIndexStatement() *CreateIndexStatement {
-	stmt := createIndexStmtPool.Get().(*CreateIndexStatement)
+	stmt, _ := createIndexStmtPool.Get().(*CreateIndexStatement)
 	stmt.Columns = stmt.Columns[:0]
 	return stmt
 }
@@ -646,7 +647,7 @@ func PutCreateIndexStatement(stmt *CreateIndexStatement) {
 
 // GetCreateViewStatement gets a CreateViewStatement from the pool.
 func GetCreateViewStatement() *CreateViewStatement {
-	stmt := createViewStmtPool.Get().(*CreateViewStatement)
+	stmt, _ := createViewStmtPool.Get().(*CreateViewStatement)
 	stmt.Columns = stmt.Columns[:0]
 	return stmt
 }
@@ -674,7 +675,7 @@ func PutCreateViewStatement(stmt *CreateViewStatement) {
 
 // GetCreateMaterializedViewStatement gets a CreateMaterializedViewStatement from the pool.
 func GetCreateMaterializedViewStatement() *CreateMaterializedViewStatement {
-	stmt := createMaterializedViewStmtPool.Get().(*CreateMaterializedViewStatement)
+	stmt, _ := createMaterializedViewStmtPool.Get().(*CreateMaterializedViewStatement)
 	stmt.Columns = stmt.Columns[:0]
 	return stmt
 }
@@ -701,7 +702,8 @@ func PutCreateMaterializedViewStatement(stmt *CreateMaterializedViewStatement) {
 
 // GetRefreshMaterializedViewStatement gets a RefreshMaterializedViewStatement from the pool.
 func GetRefreshMaterializedViewStatement() *RefreshMaterializedViewStatement {
-	return refreshMaterializedViewStmtPool.Get().(*RefreshMaterializedViewStatement)
+	stmt, _ := refreshMaterializedViewStmtPool.Get().(*RefreshMaterializedViewStatement)
+	return stmt
 }
 
 // PutRefreshMaterializedViewStatement returns a RefreshMaterializedViewStatement to the pool.
@@ -719,7 +721,7 @@ func PutRefreshMaterializedViewStatement(stmt *RefreshMaterializedViewStatement)
 
 // GetDropStatement gets a DropStatement from the pool.
 func GetDropStatement() *DropStatement {
-	stmt := dropStmtPool.Get().(*DropStatement)
+	stmt, _ := dropStmtPool.Get().(*DropStatement)
 	stmt.Names = stmt.Names[:0]
 	return stmt
 }
@@ -740,7 +742,7 @@ func PutDropStatement(stmt *DropStatement) {
 
 // GetTruncateStatement gets a TruncateStatement from the pool.
 func GetTruncateStatement() *TruncateStatement {
-	stmt := truncateStmtPool.Get().(*TruncateStatement)
+	stmt, _ := truncateStmtPool.Get().(*TruncateStatement)
 	stmt.Tables = stmt.Tables[:0]
 	return stmt
 }
@@ -761,7 +763,8 @@ func PutTruncateStatement(stmt *TruncateStatement) {
 
 // GetShowStatement gets a ShowStatement from the pool.
 func GetShowStatement() *ShowStatement {
-	return showStmtPool.Get().(*ShowStatement)
+	stmt, _ := showStmtPool.Get().(*ShowStatement)
+	return stmt
 }
 
 // PutShowStatement returns a ShowStatement to the pool.
@@ -779,7 +782,8 @@ func PutShowStatement(stmt *ShowStatement) {
 
 // GetDescribeStatement gets a DescribeStatement from the pool.
 func GetDescribeStatement() *DescribeStatement {
-	return describeStmtPool.Get().(*DescribeStatement)
+	stmt, _ := describeStmtPool.Get().(*DescribeStatement)
+	return stmt
 }
 
 // PutDescribeStatement returns a DescribeStatement to the pool.
@@ -795,7 +799,8 @@ func PutDescribeStatement(stmt *DescribeStatement) {
 
 // GetUnsupportedStatement gets an UnsupportedStatement from the pool.
 func GetUnsupportedStatement() *UnsupportedStatement {
-	return unsupportedStmtPool.Get().(*UnsupportedStatement)
+	stmt, _ := unsupportedStmtPool.Get().(*UnsupportedStatement)
+	return stmt
 }
 
 // PutUnsupportedStatement returns an UnsupportedStatement to the pool.
@@ -812,7 +817,8 @@ func PutUnsupportedStatement(stmt *UnsupportedStatement) {
 
 // GetAlterStatement gets an AlterStatement from the pool.
 func GetAlterStatement() *AlterStatement {
-	return alterStmtPool.Get().(*AlterStatement)
+	stmt, _ := alterStmtPool.Get().(*AlterStatement)
+	return stmt
 }
 
 // PutAlterStatement returns an AlterStatement to the pool.
@@ -832,7 +838,8 @@ func PutAlterStatement(stmt *AlterStatement) {
 
 // NewCreateSequenceStatement retrieves a CreateSequenceStatement from the pool.
 func NewCreateSequenceStatement() *CreateSequenceStatement {
-	return createSequencePool.Get().(*CreateSequenceStatement)
+	stmt, _ := createSequencePool.Get().(*CreateSequenceStatement)
+	return stmt
 }
 
 // ReleaseCreateSequenceStatement returns a CreateSequenceStatement to the pool.
@@ -843,7 +850,8 @@ func ReleaseCreateSequenceStatement(s *CreateSequenceStatement) {
 
 // NewDropSequenceStatement retrieves a DropSequenceStatement from the pool.
 func NewDropSequenceStatement() *DropSequenceStatement {
-	return dropSequencePool.Get().(*DropSequenceStatement)
+	stmt, _ := dropSequencePool.Get().(*DropSequenceStatement)
+	return stmt
 }
 
 // ReleaseDropSequenceStatement returns a DropSequenceStatement to the pool.
@@ -855,7 +863,8 @@ func ReleaseDropSequenceStatement(s *DropSequenceStatement) {
 
 // NewAlterSequenceStatement retrieves an AlterSequenceStatement from the pool.
 func NewAlterSequenceStatement() *AlterSequenceStatement {
-	return alterSequencePool.Get().(*AlterSequenceStatement)
+	stmt, _ := alterSequencePool.Get().(*AlterSequenceStatement)
+	return stmt
 }
 
 // ReleaseAlterSequenceStatement returns an AlterSequenceStatement to the pool.

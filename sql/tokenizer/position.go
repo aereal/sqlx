@@ -15,6 +15,8 @@
 package tokenizer
 
 import (
+	"slices"
+
 	"github.com/aereal/sqlx/models"
 )
 
@@ -126,10 +128,10 @@ func (p *Position) AdvanceN(n int, lineStarts []int) {
 	p.Index += n
 
 	// Find which line we're on
-	for i := len(lineStarts) - 1; i >= 0; i-- {
-		if p.Index >= lineStarts[i] {
+	for i, v := range slices.Backward(lineStarts) {
+		if p.Index >= v {
 			p.Line = i + 1
-			p.Column = p.Index - lineStarts[i] + 1
+			p.Column = p.Index - v + 1
 			break
 		}
 	}

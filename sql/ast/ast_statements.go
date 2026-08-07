@@ -160,11 +160,9 @@ func (s SelectStatement) Children() []Node {
 	children = append(children, nodifyExpressions(s.DistinctOnColumns)...)
 	children = append(children, nodifyExpressions(s.Columns)...)
 	for _, from := range s.From {
-		from := from // G601: Create local copy to avoid memory aliasing
 		children = append(children, &from)
 	}
 	for _, join := range s.Joins {
-		join := join // G601: Create local copy to avoid memory aliasing
 		children = append(children, &join)
 	}
 	if s.Sample != nil {
@@ -184,11 +182,9 @@ func (s SelectStatement) Children() []Node {
 		children = append(children, s.Qualify)
 	}
 	for _, window := range s.Windows {
-		window := window // G601: Create local copy to avoid memory aliasing
 		children = append(children, &window)
 	}
 	for _, orderBy := range s.OrderBy {
-		orderBy := orderBy // G601: Create local copy to avoid memory aliasing
 		children = append(children, &orderBy)
 	}
 	if s.Fetch != nil {
@@ -292,11 +288,9 @@ func (u UpdateStatement) Children() []Node {
 		children = append(children, u.With)
 	}
 	for _, assignment := range u.Assignments {
-		assignment := assignment // G601: Create local copy to avoid memory aliasing
 		children = append(children, &assignment)
 	}
 	for _, from := range u.From {
-		from := from // G601: Create local copy to avoid memory aliasing
 		children = append(children, &from)
 	}
 	if u.Where != nil {
@@ -333,18 +327,15 @@ func (c CreateTableStatement) TokenLiteral() string { return "CREATE TABLE" }
 func (c CreateTableStatement) Children() []Node {
 	children := make([]Node, 0)
 	for _, col := range c.Columns {
-		col := col // G601: Create local copy to avoid memory aliasing
 		children = append(children, &col)
 	}
 	for _, constraint := range c.Constraints {
-		constraint := constraint // G601: Create local copy to avoid memory aliasing
 		children = append(children, &constraint)
 	}
 	if c.PartitionBy != nil {
 		children = append(children, c.PartitionBy)
 	}
 	for _, p := range c.Partitions {
-		p := p // G601: Create local copy
 		children = append(children, &p)
 	}
 	return children
@@ -371,7 +362,6 @@ func (d DeleteStatement) Children() []Node {
 		children = append(children, d.With)
 	}
 	for _, using := range d.Using {
-		using := using // G601: Create local copy to avoid memory aliasing
 		children = append(children, &using)
 	}
 	if d.Where != nil {
@@ -408,7 +398,6 @@ func (a AlterTableStatement) TokenLiteral() string { return "ALTER TABLE" }
 func (a AlterTableStatement) Children() []Node {
 	children := make([]Node, len(a.Actions))
 	for i, action := range a.Actions {
-		action := action // G601: Create local copy to avoid memory aliasing
 		children[i] = &action
 	}
 	return children
@@ -451,7 +440,6 @@ func (c CreateIndexStatement) TokenLiteral() string { return "CREATE INDEX" }
 func (c CreateIndexStatement) Children() []Node {
 	children := make([]Node, 0)
 	for _, col := range c.Columns {
-		col := col // G601: Create local copy to avoid memory aliasing
 		children = append(children, &col)
 	}
 	if c.Where != nil {
@@ -526,7 +514,6 @@ func (a MergeAction) TokenLiteral() string { return a.ActionType }
 func (a MergeAction) Children() []Node {
 	children := make([]Node, 0)
 	for _, set := range a.SetClauses {
-		set := set // G601: Create local copy
 		children = append(children, &set)
 	}
 	for _, val := range a.Values {

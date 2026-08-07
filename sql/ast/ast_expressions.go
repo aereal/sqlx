@@ -164,11 +164,9 @@ func (f FunctionCall) Children() []Node {
 		children = append(children, f.Filter)
 	}
 	for _, orderBy := range f.OrderBy {
-		orderBy := orderBy // G601: Create local copy to avoid memory aliasing
 		children = append(children, &orderBy)
 	}
 	for _, orderBy := range f.WithinGroup {
-		orderBy := orderBy // G601: Create local copy to avoid memory aliasing
 		children = append(children, &orderBy)
 	}
 	return children
@@ -190,7 +188,6 @@ func (c CaseExpression) Children() []Node {
 		children = append(children, c.Value)
 	}
 	for _, when := range c.WhenClauses {
-		when := when // G601: Create local copy to avoid memory aliasing
 		children = append(children, &when)
 	}
 	if c.ElseClause != nil {

@@ -34,7 +34,7 @@ func identifierName(expr ast.Expression) string {
 // "SELECT * FROM _t WHERE _col = <valueSQL>" trick, returning the right-hand
 // side of the equality. This handles literals, function calls, identifiers, etc.
 func parseValueExpr(valueSQL string) (ast.Expression, error) {
-	expr, err := parseCondition(fmt.Sprintf("_col = %s", valueSQL))
+	expr, err := parseCondition("_col = " + valueSQL)
 	if err != nil {
 		return nil, fmt.Errorf("parse value %q: %w", valueSQL, err)
 	}

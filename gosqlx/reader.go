@@ -55,7 +55,7 @@ import (
 // with the context error if ctx is cancelled. This does not interrupt a Read
 // that has already entered a syscall — callers dealing with pathological
 // network readers should still enforce deadlines at the transport layer.
-func ParseReader(ctx context.Context, r io.Reader, opts ...Option) (*Tree, error) {
+func ParseReader(ctx context.Context, r io.Reader, opts ...Option) (*Tree, error) { //nolint:contextcheck // ctx is respected
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -109,7 +109,7 @@ func ParseReader(ctx context.Context, r io.Reader, opts ...Option) (*Tree, error
 //	    gosqlx.WithDialect("postgresql"),
 //	    gosqlx.WithMaxBytes(4<<20),
 //	)
-func ParseReaderMultiple(ctx context.Context, r io.Reader, opts ...Option) ([]*Tree, error) {
+func ParseReaderMultiple(ctx context.Context, r io.Reader, opts ...Option) ([]*Tree, error) { //nolint:contextcheck // ctx is respected
 	if ctx == nil {
 		ctx = context.Background()
 	}
@@ -208,7 +208,7 @@ func classifyReadErr(ctx context.Context, err error) error {
 // with a transport-aware deadline (e.g. net.Conn.SetReadDeadline) before
 // handing it to ParseReader.
 type ctxReader struct {
-	ctx context.Context
+	ctx context.Context //nolint:containedctx // ctxReader is complex
 	r   io.Reader
 }
 

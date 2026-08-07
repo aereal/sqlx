@@ -416,10 +416,7 @@ func GenerateDidYouMean(actual string, possibleValues []string) string {
 	}
 
 	// Only suggest if distance is reasonable
-	threshold := len(actual) / 2
-	if threshold < 2 {
-		threshold = 2
-	}
+	threshold := max(len(actual)/2, 2)
 
 	if minDistance <= threshold && len(bestMatches) > 0 {
 		if len(bestMatches) == 1 {
@@ -532,7 +529,7 @@ func SuggestForSetOperation(operation, context string) string {
 
 	// Mismatched columns
 	if strings.Contains(context, "column") || strings.Contains(context, "mismatch") {
-		return fmt.Sprintf("%s requires same number of columns with compatible types in both queries", operation)
+		return operation + " requires same number of columns with compatible types in both queries"
 	}
 
 	return fmt.Sprintf("Check %s syntax: SELECT ... %s SELECT ... [ORDER BY ...]", operation, operation)

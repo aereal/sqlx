@@ -187,12 +187,13 @@ func (p *Parser) parseCastLike(try bool) (*ast.CastExpression, error) {
 		typeParams := "("
 		paramCount := 0
 
+		var typeParamsSb190 strings.Builder
 		for !p.isType(models.TokenTypeRParen) {
 			if paramCount > 0 {
 				if !p.isType(models.TokenTypeComma) {
 					return nil, p.expectedError(", or )")
 				}
-				typeParams += p.currentToken.Token.Value
+				typeParamsSb190.WriteString(p.currentToken.Token.Value)
 				p.advance() // Consume comma
 			}
 
@@ -205,10 +206,11 @@ func (p *Parser) parseCastLike(try bool) (*ast.CastExpression, error) {
 				)
 			}
 
-			typeParams += p.currentToken.Token.Value
+			typeParamsSb190.WriteString(p.currentToken.Token.Value)
 			p.advance()
 			paramCount++
 		}
+		typeParams += typeParamsSb190.String()
 
 		typeParams += ")"
 		dataType += typeParams

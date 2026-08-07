@@ -17,6 +17,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	"github.com/aereal/sqlx/gosqlx"
 	"github.com/aereal/sqlx/sql/ast"
@@ -38,7 +39,7 @@ func main() {
 		log.Fatalf("Failed to parse: %v", err)
 	}
 
-	insertStmt := astResult.Statements[0].(*ast.InsertStatement)
+	insertStmt, _ := astResult.Statements[0].(*ast.InsertStatement)
 	fmt.Printf("Table: %s\n", insertStmt.Table.Name)
 	fmt.Printf("Columns: %d\n", len(insertStmt.Columns))
 	fmt.Printf("Rows: %d\n", len(insertStmt.Values))
@@ -58,7 +59,7 @@ func main() {
 		log.Fatalf("Failed to parse: %v", err)
 	}
 
-	insertStmt2 := astResult2.Statements[0].(*ast.InsertStatement)
+	insertStmt2, _ := astResult2.Statements[0].(*ast.InsertStatement)
 	fmt.Printf("Table: %s\n", insertStmt2.Table.Name)
 	fmt.Printf("Rows: %d\n", len(insertStmt2.Values))
 	fmt.Printf("Has ON CONFLICT: %t\n", insertStmt2.OnConflict != nil)
@@ -78,7 +79,7 @@ func main() {
 		log.Fatalf("Failed to parse: %v", err)
 	}
 
-	insertStmt3 := astResult3.Statements[0].(*ast.InsertStatement)
+	insertStmt3, _ := astResult3.Statements[0].(*ast.InsertStatement)
 	fmt.Printf("Table: %s\n", insertStmt3.Table.Name)
 	fmt.Printf("Rows: %d\n", len(insertStmt3.Values))
 	fmt.Printf("RETURNING columns: %d\n", len(insertStmt3.Returning))
@@ -86,12 +87,14 @@ func main() {
 
 	// Example 4: Large batch insert
 	sql4 := "INSERT INTO bulk_data (id, value) VALUES "
+	var sql4Sb89 strings.Builder
 	for i := 1; i <= 10; i++ {
 		if i > 1 {
-			sql4 += ", "
+			sql4Sb89.WriteString(", ")
 		}
-		sql4 += fmt.Sprintf("(%d, 'value%d')", i, i)
+		sql4Sb89.WriteString(fmt.Sprintf("(%d, 'value%d')", i, i))
 	}
+	sql4 += sql4Sb89.String()
 
 	fmt.Println("Example 4: Large Batch INSERT (10 rows)")
 	fmt.Println()
@@ -101,7 +104,7 @@ func main() {
 		log.Fatalf("Failed to parse: %v", err)
 	}
 
-	insertStmt4 := astResult4.Statements[0].(*ast.InsertStatement)
+	insertStmt4, _ := astResult4.Statements[0].(*ast.InsertStatement)
 	fmt.Printf("Table: %s\n", insertStmt4.Table.Name)
 	fmt.Printf("Rows: %d\n", len(insertStmt4.Values))
 	fmt.Printf("Values per row: %d\n", len(insertStmt4.Values[0]))

@@ -19,6 +19,7 @@ import (
 	"context"
 	"fmt"
 	"log/slog"
+	"slices"
 	"strings"
 	"unicode/utf8"
 
@@ -446,10 +447,9 @@ func (t *Tokenizer) Tokenize(input []byte) ([]models.TokenWithSpan, error) {
 
 	// Pre-allocate token slice with better capacity estimation
 	// More accurate estimation based on typical SQL token density
-	estimatedTokens := len(input) / 4
-	if estimatedTokens < 16 {
-		estimatedTokens = 16 // At least 16 tokens
-	}
+	estimatedTokens := max(len(input)/4,
+		// At least 16 tokens
+		16)
 	tokens := make([]models.TokenWithSpan, 0, estimatedTokens)
 
 	// Get a buffer from the pool for string operations
@@ -495,8 +495,8 @@ func (t *Tokenizer) Tokenize(input []byte) ([]models.TokenWithSpan, error) {
 			if t.logger != nil && t.logger.Enabled(context.Background(), slog.LevelDebug) {
 				t.logger.LogAttrs(context.Background(), slog.LevelDebug, "token",
 					slog.String("type", fmt.Sprintf("%T", token)),
-					slog.Int("start_line", int(tw.Start.Line)),
-					slog.Int("start_col", int(tw.Start.Column)),
+					slog.Int("start_line", tw.Start.Line),
+					slog.Int("start_col", tw.Start.Column),
 				)
 			}
 			tokens = append(tokens, tw)
@@ -567,10 +567,9 @@ func (t *Tokenizer) TokenizeContext(ctx context.Context, input []byte) ([]models
 	}
 
 	// Pre-allocate token slice with better capacity estimation
-	estimatedTokens := len(input) / 4
-	if estimatedTokens < 16 {
-		estimatedTokens = 16 // At least 16 tokens
-	}
+	estimatedTokens := max(len(input)/4,
+		// At least 16 tokens
+		16)
 	tokens := make([]models.TokenWithSpan, 0, estimatedTokens)
 
 	// Get a buffer from the pool for string operations
@@ -621,11 +620,11 @@ func (t *Tokenizer) TokenizeContext(ctx context.Context, input []byte) ([]models
 				Start: t.toSQLPosition(startPos),
 				End:   t.getCurrentPosition(),
 			}
-			if t.logger != nil && t.logger.Enabled(context.Background(), slog.LevelDebug) {
-				t.logger.LogAttrs(context.Background(), slog.LevelDebug, "token",
+			if t.logger != nil && t.logger.Enabled(ctx, slog.LevelDebug) {
+				t.logger.LogAttrs(ctx, slog.LevelDebug, "token",
 					slog.String("type", fmt.Sprintf("%T", token)),
-					slog.Int("start_line", int(tw.Start.Line)),
-					slog.Int("start_col", int(tw.Start.Column)),
+					slog.Int("start_line", tw.Start.Line),
+					slog.Int("start_col", tw.Start.Column),
 				)
 			}
 			tokens = append(tokens, tw)
@@ -1065,7 +1064,7 @@ func (t *Tokenizer) readTripleQuotedString(quote rune) (models.Token, error) {
 	startPos := t.pos
 
 	// Skip opening triple quotes
-	for i := 0; i < 3; i++ {
+	for range 3 {
 		r, size := utf8.DecodeRune(t.input[t.pos.Index:])
 		t.pos.AdvanceRune(r, size)
 	}
@@ -1802,9 +1801,9 @@ func isIdentifierChar(r rune) bool {
 func (t *Tokenizer) hasCodeBeforeOnLine(idx int) bool {
 	// Find the start of the line containing idx
 	lineStart := 0
-	for i := len(t.lineStarts) - 1; i >= 0; i-- {
-		if t.lineStarts[i] <= idx {
-			lineStart = t.lineStarts[i]
+	for _, v := range slices.Backward(t.lineStarts) {
+		if v <= idx {
+			lineStart = v
 			break
 		}
 	}

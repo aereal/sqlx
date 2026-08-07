@@ -272,7 +272,7 @@ func (t *Tree) Clone() *Tree {
 //	for _, tbl := range tree.Tables() {
 //	    ...
 //	}
-func ParseTree(ctx context.Context, sql string, opts ...Option) (*Tree, error) {
+func ParseTree(ctx context.Context, sql string, opts ...Option) (*Tree, error) { //nolint:contextcheck // ctx is respected
 	if ctx == nil {
 		ctx = context.Background()
 	}

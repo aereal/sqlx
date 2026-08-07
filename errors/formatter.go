@@ -16,6 +16,7 @@ package errors
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/aereal/sqlx/models"
@@ -96,10 +97,7 @@ func FormatMultiLineContext(sql string, location models.Location, highlightLen i
 	if maxLineNum > len(lines) {
 		maxLineNum = len(lines)
 	}
-	lineNumWidth := len(fmt.Sprintf("%d", maxLineNum))
-	if lineNumWidth < 2 {
-		lineNumWidth = 2
-	}
+	lineNumWidth := max(len(strconv.Itoa(maxLineNum)), 2)
 
 	sb.WriteString("\n")
 
@@ -270,10 +268,7 @@ func FormatContextWindow(sql string, location models.Location, highlightLen int,
 	errorLineNum := location.Line
 
 	// Calculate line range
-	startLine := errorLineNum - linesBefore
-	if startLine < 1 {
-		startLine = 1
-	}
+	startLine := max(errorLineNum-linesBefore, 1)
 
 	endLine := errorLineNum + linesAfter
 	if endLine > len(lines) {
@@ -281,10 +276,7 @@ func FormatContextWindow(sql string, location models.Location, highlightLen int,
 	}
 
 	// Calculate line number width for alignment
-	lineNumWidth := len(fmt.Sprintf("%d", endLine))
-	if lineNumWidth < 2 {
-		lineNumWidth = 2
-	}
+	lineNumWidth := max(len(strconv.Itoa(endLine)), 2)
 
 	sb.WriteString("\n")
 

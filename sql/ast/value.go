@@ -37,7 +37,7 @@ import (
 // Value represents primitive SQL values such as number and string
 type Value struct {
 	Type  ValueType
-	Value interface{}
+	Value any
 }
 
 // ValueType represents the type of a SQL value
@@ -102,7 +102,7 @@ func (v Value) String() string {
 	case NumberValue:
 		if n, ok := v.Value.(Number); ok {
 			if n.Long {
-				return fmt.Sprintf("%sL", n.Value)
+				return n.Value + "L"
 			}
 			return n.Value
 		}
@@ -202,7 +202,7 @@ func escapeQuotedString(s string, quote rune) string {
 	var result strings.Builder
 	prevChar := rune(0)
 	chars := []rune(s)
-	for i := 0; i < len(chars); i++ {
+	for i := range chars {
 		ch := chars[i]
 		if ch == quote {
 			if prevChar == '\\' {

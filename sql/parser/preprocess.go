@@ -37,7 +37,7 @@ import (
 // kwBufPool is a small byte-buffer pool used to avoid allocations during
 // upper-case conversion of short keyword strings.
 var kwBufPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		buf := make([]byte, 32)
 		return &buf
 	},
@@ -95,6 +95,7 @@ func expandCompoundToken(t models.TokenWithSpan) []models.TokenWithSpan {
 		return makeTwo(models.TokenTypeGroup, "GROUP", "BY", models.TokenTypeBy)
 	case models.TokenTypeGroupingSets:
 		return makeTwo(models.TokenTypeGrouping, "GROUPING", "SETS", models.TokenTypeSets)
+	default: // noop
 	}
 
 	// Value-based compound token matching (tokenizer may produce these as
@@ -142,6 +143,7 @@ func normalizeToken(t models.TokenWithSpan) models.TokenWithSpan {
 		models.TokenTypeMin, models.TokenTypeMax:
 		t.Token.Type = models.TokenTypeIdentifier
 		return t
+	default: // noop
 	}
 
 	// Identifier tokens whose *value* is a keyword that the parser dispatches
@@ -169,13 +171,13 @@ func toUpper(s string) string {
 	n := len(s)
 	var upper []byte
 	if n <= 32 {
-		bufPtr := kwBufPool.Get().(*[]byte)
+		bufPtr, _ := kwBufPool.Get().(*[]byte)
 		upper = (*bufPtr)[:n]
 		defer kwBufPool.Put(bufPtr)
 	} else {
 		upper = make([]byte, n)
 	}
-	for i := 0; i < n; i++ {
+	for i := range n {
 		c := s[i]
 		if c >= 'a' && c <= 'z' {
 			upper[i] = c - 32

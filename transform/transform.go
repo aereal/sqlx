@@ -15,6 +15,7 @@
 package transform
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/aereal/sqlx/formatter"
@@ -125,7 +126,7 @@ func parseSQL(sql string) (ast.Statement, error) {
 	}
 
 	if tree == nil || len(tree.Statements) == 0 {
-		return nil, fmt.Errorf("no statements parsed")
+		return nil, errors.New("no statements parsed")
 	}
 
 	return tree.Statements[0], nil

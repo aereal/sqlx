@@ -351,6 +351,7 @@ func New(dialect SQLDialect, ignoreCase bool) *Keywords {
 		k.addKeywordsWithCategory(SNOWFLAKE_SPECIFIC)
 	case DialectClickHouse:
 		k.addKeywordsWithCategory(CLICKHOUSE_SPECIFIC)
+	default: // noop
 	}
 
 	// Build O(1) lookup cache for compound keyword first-words

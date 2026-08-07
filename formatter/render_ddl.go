@@ -173,6 +173,7 @@ func writeSequenceOptionsFormatted(sb *strings.Builder, opts ast.SequenceOptions
 	case ast.NoCycleBehavior:
 		sb.WriteString(" ")
 		sb.WriteString(f.kw("NOCYCLE"))
+	default: // noop
 	}
 	if opts.RestartWith != nil {
 		sb.WriteString(" ")

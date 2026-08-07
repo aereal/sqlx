@@ -14,13 +14,10 @@
 
 package ast
 
-import (
-	"sync/atomic"
-)
-
 // GetUpdateExpression gets an UpdateExpression from the pool
 func GetUpdateExpression() *UpdateExpression {
-	return updateExprPool.Get().(*UpdateExpression)
+	expr, _ := updateExprPool.Get().(*UpdateExpression)
+	return expr
 }
 
 // PutUpdateExpression returns an UpdateExpression to the pool
@@ -43,7 +40,8 @@ func PutUpdateExpression(expr *UpdateExpression) {
 
 // GetIdentifier gets an Identifier from the pool
 func GetIdentifier() *Identifier {
-	return identifierPool.Get().(*Identifier)
+	id, _ := identifierPool.Get().(*Identifier)
+	return id
 }
 
 // PutIdentifier returns an Identifier to the pool
@@ -57,7 +55,8 @@ func PutIdentifier(ident *Identifier) {
 
 // GetBinaryExpression gets a BinaryExpression from the pool
 func GetBinaryExpression() *BinaryExpression {
-	return binaryExprPool.Get().(*BinaryExpression)
+	expr, _ := binaryExprPool.Get().(*BinaryExpression)
+	return expr
 }
 
 // PutBinaryExpression returns a BinaryExpression to the pool
@@ -75,7 +74,7 @@ func PutBinaryExpression(expr *BinaryExpression) {
 
 // GetExpressionSlice gets a slice of Expression from the pool
 func GetExpressionSlice() *[]Expression {
-	slice := exprSlicePool.Get().(*[]Expression)
+	slice, _ := exprSlicePool.Get().(*[]Expression)
 	*slice = (*slice)[:0]
 	return slice
 }
@@ -94,7 +93,8 @@ func PutExpressionSlice(slice *[]Expression) {
 
 // GetLiteralValue gets a LiteralValue from the pool
 func GetLiteralValue() *LiteralValue {
-	return literalValuePool.Get().(*LiteralValue)
+	val, _ := literalValuePool.Get().(*LiteralValue)
+	return val
 }
 
 // PutLiteralValue returns a LiteralValue to the pool
@@ -208,7 +208,7 @@ func putExpressionImpl(expr Expression, depth int) {
 	// Acquire a pooled work queue. We must write the (possibly grown)
 	// slice header back to the pointer before Put so that subsequent
 	// Get calls see the grown capacity.
-	qp := putExpressionWorkQueuePool.Get().(*[]Expression)
+	qp, _ := putExpressionWorkQueuePool.Get().(*[]Expression)
 	workQueue := (*qp)[:0]
 	defer func() {
 		// Nil out slice elements up to the underlying capacity we used so
@@ -510,7 +510,7 @@ func putExpressionImpl(expr Expression, depth int) {
 	// ceil(total_nodes / MaxWorkQueueSize). MaxCleanupDepth = 100 bounds this
 	// at ~10_000_000 total nodes in an AST — far beyond any real SQL query.
 	if len(workQueue) > 0 {
-		atomic.AddUint64(&poolLeakCount, uint64(len(workQueue)))
+		poolLeakCount.Add(uint64(len(workQueue)))
 		if depth < MaxCleanupDepth {
 			for _, remaining := range workQueue {
 				putExpressionImpl(remaining, depth+1)
@@ -523,7 +523,7 @@ func putExpressionImpl(expr Expression, depth int) {
 
 // GetFunctionCall gets a FunctionCall from the pool
 func GetFunctionCall() *FunctionCall {
-	fc := functionCallPool.Get().(*FunctionCall)
+	fc, _ := functionCallPool.Get().(*FunctionCall)
 	fc.Arguments = fc.Arguments[:0]
 	return fc
 }
@@ -547,7 +547,7 @@ func PutFunctionCall(fc *FunctionCall) {
 
 // GetCaseExpression gets a CaseExpression from the pool
 func GetCaseExpression() *CaseExpression {
-	ce := caseExprPool.Get().(*CaseExpression)
+	ce, _ := caseExprPool.Get().(*CaseExpression)
 	ce.WhenClauses = ce.WhenClauses[:0]
 	return ce
 }
@@ -571,7 +571,8 @@ func PutCaseExpression(ce *CaseExpression) {
 
 // GetBetweenExpression gets a BetweenExpression from the pool
 func GetBetweenExpression() *BetweenExpression {
-	return betweenExprPool.Get().(*BetweenExpression)
+	expr, _ := betweenExprPool.Get().(*BetweenExpression)
+	return expr
 }
 
 // PutBetweenExpression returns a BetweenExpression to the pool
@@ -591,7 +592,7 @@ func PutBetweenExpression(be *BetweenExpression) {
 
 // GetInExpression gets an InExpression from the pool
 func GetInExpression() *InExpression {
-	ie := inExprPool.Get().(*InExpression)
+	ie, _ := inExprPool.Get().(*InExpression)
 	ie.List = ie.List[:0]
 	return ie
 }
@@ -620,7 +621,7 @@ func PutInExpression(ie *InExpression) {
 
 // GetTupleExpression gets a TupleExpression from the pool
 func GetTupleExpression() *TupleExpression {
-	te := tupleExprPool.Get().(*TupleExpression)
+	te, _ := tupleExprPool.Get().(*TupleExpression)
 	te.Expressions = te.Expressions[:0]
 	return te
 }
@@ -640,7 +641,7 @@ func PutTupleExpression(te *TupleExpression) {
 
 // GetArrayConstructor gets an ArrayConstructorExpression from the pool
 func GetArrayConstructor() *ArrayConstructorExpression {
-	ac := arrayConstructorPool.Get().(*ArrayConstructorExpression)
+	ac, _ := arrayConstructorPool.Get().(*ArrayConstructorExpression)
 	ac.Elements = ac.Elements[:0]
 	ac.Subquery = nil
 	return ac
@@ -666,7 +667,8 @@ func PutArrayConstructor(ac *ArrayConstructorExpression) {
 
 // GetSubqueryExpression gets a SubqueryExpression from the pool
 func GetSubqueryExpression() *SubqueryExpression {
-	return subqueryExprPool.Get().(*SubqueryExpression)
+	expr, _ := subqueryExprPool.Get().(*SubqueryExpression)
+	return expr
 }
 
 // PutSubqueryExpression returns a SubqueryExpression to the pool
@@ -684,7 +686,8 @@ func PutSubqueryExpression(se *SubqueryExpression) {
 
 // GetCastExpression gets a CastExpression from the pool
 func GetCastExpression() *CastExpression {
-	return castExprPool.Get().(*CastExpression)
+	expr, _ := castExprPool.Get().(*CastExpression)
+	return expr
 }
 
 // PutCastExpression returns a CastExpression to the pool
@@ -700,7 +703,8 @@ func PutCastExpression(ce *CastExpression) {
 
 // GetIntervalExpression gets an IntervalExpression from the pool
 func GetIntervalExpression() *IntervalExpression {
-	return intervalExprPool.Get().(*IntervalExpression)
+	expr, _ := intervalExprPool.Get().(*IntervalExpression)
+	return expr
 }
 
 // PutIntervalExpression returns an IntervalExpression to the pool
@@ -714,7 +718,8 @@ func PutIntervalExpression(ie *IntervalExpression) {
 
 // GetAliasedExpression retrieves an AliasedExpression from the pool
 func GetAliasedExpression() *AliasedExpression {
-	return aliasedExprPool.Get().(*AliasedExpression)
+	expr, _ := aliasedExprPool.Get().(*AliasedExpression)
+	return expr
 }
 
 // PutAliasedExpression returns an AliasedExpression to the pool
@@ -730,7 +735,8 @@ func PutAliasedExpression(ae *AliasedExpression) {
 
 // GetArraySubscriptExpression gets an ArraySubscriptExpression from the pool
 func GetArraySubscriptExpression() *ArraySubscriptExpression {
-	return arraySubscriptExprPool.Get().(*ArraySubscriptExpression)
+	expr, _ := arraySubscriptExprPool.Get().(*ArraySubscriptExpression)
+	return expr
 }
 
 // PutArraySubscriptExpression returns an ArraySubscriptExpression to the pool
@@ -755,7 +761,8 @@ func PutArraySubscriptExpression(ase *ArraySubscriptExpression) {
 
 // GetArraySliceExpression gets an ArraySliceExpression from the pool
 func GetArraySliceExpression() *ArraySliceExpression {
-	return arraySliceExprPool.Get().(*ArraySliceExpression)
+	expr, _ := arraySliceExprPool.Get().(*ArraySliceExpression)
+	return expr
 }
 
 // PutArraySliceExpression returns an ArraySliceExpression to the pool

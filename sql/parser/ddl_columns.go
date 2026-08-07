@@ -41,6 +41,7 @@ func (p *Parser) parseColumnName() *ast.Identifier {
 		models.TokenTypeRParen, models.TokenTypeSemicolon, models.TokenTypePeriod,
 		models.TokenTypeUnknown:
 		return nil
+	default: // noop
 	}
 	pos := p.currentLocation()
 	ident := &ast.Identifier{Name: val, Pos: pos}
@@ -528,6 +529,7 @@ func (p *Parser) parseTypeArgsString() (string, error) {
 			prevWasIdent = false
 			p.advance()
 			continue
+		default: // noop
 		}
 
 		// Render leaf token. Quote string literals; everything else is rendered

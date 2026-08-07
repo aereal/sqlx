@@ -30,7 +30,7 @@ type StructField struct {
 // ParseStructTags parses struct field tags into a map
 func ParseStructTags(tag string) map[string]string {
 	tags := make(map[string]string)
-	for _, t := range strings.Split(tag, " ") {
+	for t := range strings.SplitSeq(tag, " ") {
 		if t == "" {
 			continue
 		}
@@ -48,8 +48,7 @@ func ParseStructTags(tag string) map[string]string {
 // GetStructFields returns the fields of a struct type
 func GetStructFields(t reflect.Type) []StructField {
 	fields := make([]StructField, 0)
-	for i := 0; i < t.NumField(); i++ {
-		f := t.Field(i)
+	for f := range t.Fields() {
 		field := StructField{
 			Name: f.Name,
 			Type: f.Type.String(),

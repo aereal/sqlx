@@ -74,15 +74,15 @@ func (a *AST) Span() models.Span {
 }
 
 // spanInfo stores source location information for AST nodes
-var spanInfo = make(map[interface{}]models.Span)
+var spanInfo = make(map[any]models.Span)
 
 // SetSpan sets the source location span for an AST node
-func SetSpan(node interface{}, span models.Span) {
+func SetSpan(node any, span models.Span) {
 	spanInfo[node] = span
 }
 
 // GetSpan gets the source location span for an AST node
-func GetSpan(node interface{}) models.Span {
+func GetSpan(node any) models.Span {
 	if span, ok := spanInfo[node]; ok {
 		return span
 	}
@@ -99,7 +99,7 @@ func (i *InsertStatement) Span() models.Span {
 	spans := make([]models.Span, 0)
 
 	if i.With != nil {
-		if spanned, ok := interface{}(i.With).(Spanned); ok {
+		if spanned, ok := any(i.With).(Spanned); ok {
 			spans = append(spans, spanned.Span())
 		}
 	}
@@ -119,7 +119,7 @@ func (i *InsertStatement) Span() models.Span {
 	}
 
 	if i.Query != nil {
-		if spanned, ok := interface{}(i.Query).(Spanned); ok {
+		if spanned, ok := any(i.Query).(Spanned); ok {
 			spans = append(spans, spanned.Span())
 		}
 	}

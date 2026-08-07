@@ -22,7 +22,7 @@ import (
 
 // tokenPool is the global token pool for memory-efficient token reuse.
 var tokenPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		return &Token{}
 	},
 }
@@ -31,7 +31,7 @@ var tokenPool = sync.Pool{
 // The token is pre-initialized with zero values.
 // Always use defer to return the token to the pool when done.
 func Get() *Token {
-	token := tokenPool.Get().(*Token)
+	token, _ := tokenPool.Get().(*Token)
 	token.Type = models.TokenTypeUnknown
 	token.Literal = ""
 	return token

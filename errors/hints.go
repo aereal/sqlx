@@ -64,10 +64,7 @@ func SuggestKeyword(input string) string {
 
 	// Only suggest if the distance is small relative to input length
 	// (avoid suggesting "SELECT" for completely unrelated words)
-	threshold := len(input) / 2
-	if threshold < 2 {
-		threshold = 2
-	}
+	threshold := max(len(input)/2, 2)
 
 	var result string
 	if minDistance <= threshold {

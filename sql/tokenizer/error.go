@@ -112,7 +112,7 @@ func ErrorUnterminatedString(location models.Location) *Error {
 //
 // Example: "invalid number format: 123.e at line 1, column 10"
 func ErrorInvalidNumber(value string, location models.Location) *Error {
-	return NewError(fmt.Sprintf("invalid number format: %s", value), location)
+	return NewError("invalid number format: "+value, location)
 }
 
 // ErrorInvalidIdentifier creates an error for an invalid identifier.
@@ -130,7 +130,7 @@ func ErrorInvalidNumber(value string, location models.Location) *Error {
 //
 // Example: "invalid identifier: 123abc at line 2, column 8"
 func ErrorInvalidIdentifier(value string, location models.Location) *Error {
-	return NewError(fmt.Sprintf("invalid identifier: %s", value), location)
+	return NewError("invalid identifier: "+value, location)
 }
 
 // ErrorInvalidOperator creates an error for an invalid operator.
@@ -147,5 +147,5 @@ func ErrorInvalidIdentifier(value string, location models.Location) *Error {
 //
 // Example: "invalid operator: <=> at line 1, column 20"
 func ErrorInvalidOperator(value string, location models.Location) *Error {
-	return NewError(fmt.Sprintf("invalid operator: %s", value), location)
+	return NewError("invalid operator: "+value, location)
 }

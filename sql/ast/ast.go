@@ -123,7 +123,7 @@ func (i Identifier) Children() []Node     { return nil }
 
 // LiteralValue represents a literal value in SQL
 type LiteralValue struct {
-	Value interface{}
+	Value any
 	Type  string // INTEGER, FLOAT, STRING, BOOLEAN, NULL, etc.
 }
 

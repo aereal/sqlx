@@ -29,8 +29,8 @@ import (
 // It includes the methods used by the helper functions.
 type TestingT interface {
 	Helper()
-	Errorf(format string, args ...interface{})
-	Fatalf(format string, args ...interface{})
+	Errorf(format string, args ...any)
+	Fatalf(format string, args ...any)
 }
 
 // Ensure *testing.T implements TestingT
@@ -210,7 +210,7 @@ func AssertColumns(t TestingT, sql string, expectedColumns []string) bool {
 // Example:
 //
 //	testing.AssertParsesTo(t, "SELECT * FROM users", &ast.SelectStatement{})
-func AssertParsesTo(t TestingT, sql string, expectedType interface{}) bool {
+func AssertParsesTo(t TestingT, sql string, expectedType any) bool {
 	t.Helper()
 
 	astNode, err := gosqlx.Parse(sql)

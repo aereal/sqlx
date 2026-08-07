@@ -91,6 +91,7 @@ func (p *Parser) isStatementStartingKeyword() bool {
 			models.TokenTypeSet, models.TokenTypeBegin,
 			models.TokenTypeCommit, models.TokenTypeRollback:
 			return true
+		default: // noop
 		}
 	}
 	return false

@@ -16,7 +16,8 @@ package ast
 
 // GetInsertStatement gets an InsertStatement from the pool
 func GetInsertStatement() *InsertStatement {
-	return insertStmtPool.Get().(*InsertStatement)
+	stmt, _ := insertStmtPool.Get().(*InsertStatement)
+	return stmt
 }
 
 // PutInsertStatement returns an InsertStatement to the pool.
@@ -127,7 +128,8 @@ func PutInsertStatement(stmt *InsertStatement) {
 
 // GetUpdateStatement gets an UpdateStatement from the pool
 func GetUpdateStatement() *UpdateStatement {
-	return updateStmtPool.Get().(*UpdateStatement)
+	stmt, _ := updateStmtPool.Get().(*UpdateStatement)
+	return stmt
 }
 
 // PutUpdateStatement returns an UpdateStatement to the pool.
@@ -195,7 +197,8 @@ func PutUpdateStatement(stmt *UpdateStatement) {
 
 // GetDeleteStatement gets a DeleteStatement from the pool
 func GetDeleteStatement() *DeleteStatement {
-	return deleteStmtPool.Get().(*DeleteStatement)
+	stmt, _ := deleteStmtPool.Get().(*DeleteStatement)
+	return stmt
 }
 
 // PutDeleteStatement returns a DeleteStatement to the pool.
@@ -253,7 +256,7 @@ func PutDeleteStatement(stmt *DeleteStatement) {
 
 // GetSelectStatement gets a SelectStatement from the pool
 func GetSelectStatement() *SelectStatement {
-	stmt := selectStmtPool.Get().(*SelectStatement)
+	stmt, _ := selectStmtPool.Get().(*SelectStatement)
 	stmt.Columns = stmt.Columns[:0]
 	stmt.OrderBy = stmt.OrderBy[:0]
 	return stmt
@@ -513,7 +516,7 @@ func releaseTableReference(tr *TableReference) {
 
 // GetCreateTableStatement gets a CreateTableStatement from the pool.
 func GetCreateTableStatement() *CreateTableStatement {
-	stmt := createTableStmtPool.Get().(*CreateTableStatement)
+	stmt, _ := createTableStmtPool.Get().(*CreateTableStatement)
 	stmt.Columns = stmt.Columns[:0]
 	stmt.Constraints = stmt.Constraints[:0]
 	stmt.Inherits = stmt.Inherits[:0]
@@ -608,7 +611,7 @@ func PutCreateTableStatement(stmt *CreateTableStatement) {
 
 // GetAlterTableStatement gets an AlterTableStatement from the pool.
 func GetAlterTableStatement() *AlterTableStatement {
-	stmt := alterTableStmtPool.Get().(*AlterTableStatement)
+	stmt, _ := alterTableStmtPool.Get().(*AlterTableStatement)
 	stmt.Actions = stmt.Actions[:0]
 	return stmt
 }
@@ -650,7 +653,7 @@ func PutAlterTableStatement(stmt *AlterTableStatement) {
 
 // GetMergeStatement gets a MergeStatement from the pool.
 func GetMergeStatement() *MergeStatement {
-	stmt := mergeStmtPool.Get().(*MergeStatement)
+	stmt, _ := mergeStmtPool.Get().(*MergeStatement)
 	stmt.WhenClauses = stmt.WhenClauses[:0]
 	stmt.Output = stmt.Output[:0]
 	return stmt
@@ -714,7 +717,7 @@ func PutMergeStatement(stmt *MergeStatement) {
 
 // GetReplaceStatement gets a ReplaceStatement from the pool.
 func GetReplaceStatement() *ReplaceStatement {
-	stmt := replaceStmtPool.Get().(*ReplaceStatement)
+	stmt, _ := replaceStmtPool.Get().(*ReplaceStatement)
 	stmt.Columns = stmt.Columns[:0]
 	stmt.Values = stmt.Values[:0]
 	return stmt

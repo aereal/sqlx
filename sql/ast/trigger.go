@@ -128,7 +128,7 @@ func (t TriggerEvent) String() string {
 		for i, col := range t.Columns {
 			cols[i] = col.TokenLiteral()
 		}
-		return fmt.Sprintf("UPDATE OF %s", strings.Join(cols, ", "))
+		return "UPDATE OF " + strings.Join(cols, ", ")
 	case TriggerEventDelete:
 		return "DELETE"
 	case TriggerEventTruncate:
@@ -218,7 +218,6 @@ func (t TriggerEvent) Children() []Node {
 	}
 	nodes := make([]Node, len(t.Columns))
 	for i, col := range t.Columns {
-		col := col // G601: avoid memory aliasing
 		nodes[i] = &col
 	}
 	return nodes

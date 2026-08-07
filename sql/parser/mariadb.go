@@ -15,7 +15,6 @@
 package parser
 
 import (
-	"fmt"
 	"strings"
 
 	goerrors "github.com/aereal/sqlx/errors"
@@ -370,7 +369,7 @@ func (p *Parser) parseTemporalPointExpression() (ast.Expression, error) {
 		p.advance()
 		if !p.isStringLiteral() {
 			return nil, goerrors.ExpectedTokenError(
-				fmt.Sprintf("string literal after %s", typeKeyword),
+				"string literal after "+typeKeyword,
 				p.currentToken.Token.Value,
 				p.currentLocation(),
 				"",

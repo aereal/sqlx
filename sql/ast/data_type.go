@@ -31,6 +31,7 @@ package ast
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -72,7 +73,7 @@ func (c *CharacterLength) String() string {
 	if c.Unit != nil {
 		return fmt.Sprintf("%d %s", c.Length, c.Unit)
 	}
-	return fmt.Sprintf("%d", c.Length)
+	return strconv.FormatUint(c.Length, 10)
 }
 
 // CharLengthUnits represents possible units for characters
@@ -107,7 +108,7 @@ func (b *BinaryLength) String() string {
 	if b.IsMax {
 		return "MAX"
 	}
-	return fmt.Sprintf("%d", b.Length)
+	return strconv.FormatUint(b.Length, 10)
 }
 
 // TimezoneInfo represents timezone information for temporal types

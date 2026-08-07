@@ -16,6 +16,7 @@ package parser
 
 import (
 	"context"
+	"slices"
 	"strings"
 	"sync"
 
@@ -63,7 +64,7 @@ type TokenPosition struct {
 //	defer parser.PutParser(parser)  // MUST return to pool
 //	ast, err := parser.Parse(tokens)
 var parserPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		return &Parser{}
 	},
 }
@@ -84,7 +85,8 @@ var parserPool = sync.Pool{
 //
 // Thread Safety: Safe for concurrent calls - each goroutine gets its own instance.
 func GetParser() *Parser {
-	return parserPool.Get().(*Parser)
+	parser, _ := parserPool.Get().(*Parser)
+	return parser
 }
 
 // PutParser returns a Parser instance to the pool after resetting it.
@@ -240,9 +242,10 @@ type Parser struct {
 	tokens       []models.TokenWithSpan
 	currentPos   int
 	currentToken models.TokenWithSpan
-	depth        int             // Current recursion depth
-	ctx          context.Context // Optional context for cancellation support
-	strict       bool            // Strict mode rejects empty statements
+	depth        int // Current recursion depth
+	// ctx is optional context for cancellation support
+	ctx    context.Context //nolint:containedctx // parser is stateful
+	strict bool            // Strict mode rejects empty statements
 	// dialect holds the SQL dialect for dialect-aware parsing as a raw
 	// string (default: "" which the string-returning Dialect() method
 	// reports as "postgresql" for v1.x backward compatibility).
@@ -787,6 +790,7 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 				return p.parseSnowflakeStageStatement(upper)
 			}
 		}
+	default: // noop
 	}
 	return nil, p.expectedError("statement")
 }
@@ -957,12 +961,7 @@ func (p *Parser) matchType(expected models.TokenType) bool {
 // isAnyType checks if the current token's Type matches any of the given types.
 // More efficient than multiple isType calls when checking many alternatives.
 func (p *Parser) isAnyType(types ...models.TokenType) bool {
-	for _, t := range types {
-		if p.isType(t) {
-			return true
-		}
-	}
-	return false
+	return slices.ContainsFunc(types, p.isType)
 }
 
 // isIdentifier checks if the current token is an identifier.
@@ -978,8 +977,9 @@ func (p *Parser) isStringLiteral() bool {
 	switch p.currentToken.Token.Type {
 	case models.TokenTypeString, models.TokenTypeSingleQuotedString, models.TokenTypeDollarQuotedString:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // isComparisonOperator checks if the current token is a comparison operator using O(1) switch.
@@ -990,8 +990,9 @@ func (p *Parser) isComparisonOperator() bool {
 		models.TokenTypeTilde, models.TokenTypeTildeAsterisk,
 		models.TokenTypeExclamationMarkTilde, models.TokenTypeExclamationMarkTildeAsterisk:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // isQuantifier checks if the current token is ANY or ALL using O(1) switch.
@@ -999,8 +1000,9 @@ func (p *Parser) isQuantifier() bool {
 	switch p.currentToken.Token.Type {
 	case models.TokenTypeAny, models.TokenTypeAll:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // isBooleanLiteral checks if the current token is TRUE or FALSE using O(1) switch.
@@ -1008,8 +1010,9 @@ func (p *Parser) isBooleanLiteral() bool {
 	switch p.currentToken.Token.Type {
 	case models.TokenTypeTrue, models.TokenTypeFalse:
 		return true
+	default:
+		return false
 	}
-	return false
 }
 
 // =============================================================================
@@ -1055,6 +1058,7 @@ func (p *Parser) parseBareWordAsString() string {
 		models.TokenTypeSemicolon, models.TokenTypePeriod,
 		models.TokenTypeUnknown:
 		return ""
+	default: // noop
 	}
 	if p.currentToken.Token.Value == "" {
 		return ""
@@ -1140,6 +1144,7 @@ func (p *Parser) isNonReservedKeyword() bool {
 			"TABLES", "DATABASES":
 			return true
 		}
+	default: // noop
 	}
 	return false
 }

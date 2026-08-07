@@ -39,6 +39,7 @@ package fingerprint
 
 import (
 	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"strings"
 
@@ -143,5 +144,5 @@ func Fingerprint(sql string) (string, error) {
 		return "", err
 	}
 	h := sha256.Sum256([]byte(normalized))
-	return fmt.Sprintf("%x", h), nil
+	return hex.EncodeToString(h[:]), nil
 }

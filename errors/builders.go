@@ -94,7 +94,7 @@ func InvalidNumberError(value string, location models.Location, sql string) *Err
 //   - location: Line/column where the token was found
 //   - sql: Full SQL source used to generate visual context
 func UnexpectedTokenError(tokenType, tokenValue string, location models.Location, sql string) *Error {
-	message := fmt.Sprintf("unexpected token: %s", tokenType)
+	message := "unexpected token: " + tokenType
 	if tokenValue != "" {
 		message = fmt.Sprintf("unexpected token: %s ('%s')", tokenType, tokenValue)
 	}
@@ -170,7 +170,7 @@ func MissingClauseError(clause string, location models.Location, sql string) *Er
 func InvalidSyntaxError(description string, location models.Location, sql string) *Error {
 	return NewError(
 		ErrCodeInvalidSyntax,
-		fmt.Sprintf("invalid syntax: %s", description),
+		"invalid syntax: "+description,
 		location,
 	).WithContext(sql, 1).WithHint(GenerateHint(ErrCodeInvalidSyntax, "", ""))
 }
@@ -186,7 +186,7 @@ func InvalidSyntaxError(description string, location models.Location, sql string
 func UnsupportedFeatureError(feature string, location models.Location, sql string) *Error {
 	return NewError(
 		ErrCodeUnsupportedFeature,
-		fmt.Sprintf("unsupported feature: %s", feature),
+		"unsupported feature: "+feature,
 		location,
 	).WithContext(sql, len(feature)).WithHint(GenerateHint(ErrCodeUnsupportedFeature, "", ""))
 }
@@ -265,7 +265,7 @@ func TokenLimitReachedError(count, maxTokens int, location models.Location, sql 
 // Parameters:
 //   - panicValue: The value recovered from the panic (may be an error or string)
 //   - location: Position in SQL at the time of the panic
-func TokenizerPanicError(panicValue interface{}, location models.Location) *Error {
+func TokenizerPanicError(panicValue any, location models.Location) *Error {
 	return NewError(
 		ErrCodeTokenizerPanic,
 		fmt.Sprintf("tokenizer panic recovered: %v", panicValue),
@@ -352,7 +352,7 @@ func UnsupportedJoinError(joinType string, location models.Location, sql string)
 func InvalidCTEError(description string, location models.Location, sql string) *Error {
 	return NewError(
 		ErrCodeInvalidCTE,
-		fmt.Sprintf("invalid CTE syntax: %s", description),
+		"invalid CTE syntax: "+description,
 		location,
 	).WithContext(sql, 1).WithHint("Check WITH clause syntax: WITH cte_name AS (SELECT ...) SELECT * FROM cte_name")
 }
@@ -449,7 +449,7 @@ func TypeMismatchError(leftType, rightType, context string, location models.Loca
 func AmbiguousColumnError(columnName string, tables []string, location models.Location, sql string) *Error {
 	tableList := "multiple tables"
 	if len(tables) > 0 {
-		tableList = fmt.Sprintf("tables: %s", joinStrings(tables, ", "))
+		tableList = "tables: " + joinStrings(tables, ", ")
 	}
 	return NewError(
 		ErrCodeAmbiguousColumn,

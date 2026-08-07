@@ -23,7 +23,7 @@ import (
 // This reduces allocations for string building operations (identifiers, literals).
 // Initial capacity is set to 256 bytes to handle typical SQL token sizes.
 var bufferPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		// Increase initial capacity for better performance with typical SQL queries
 		return bytes.NewBuffer(make([]byte, 0, 256))
 	},
@@ -33,7 +33,8 @@ var bufferPool = sync.Pool{
 // The buffer is pre-allocated and ready for writing operations.
 // Always pair with putBuffer() to return the buffer to the pool.
 func getBuffer() *bytes.Buffer {
-	return bufferPool.Get().(*bytes.Buffer)
+	buf, _ := bufferPool.Get().(*bytes.Buffer)
+	return buf
 }
 
 // putBuffer returns a buffer to the pool after use.
@@ -54,7 +55,7 @@ func putBuffer(buf *bytes.Buffer) {
 //   - 95%+ pool hit rate in production workloads
 //   - Zero-allocation instance reuse when pool is warm
 var tokenizerPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		t, err := New()
 		if err != nil {
 			panic("gosqlx: failed to initialize tokenizer pool: " + err.Error())
@@ -88,7 +89,7 @@ var tokenizerPool = sync.Pool{
 // Performance: 95%+ hit rate means most calls reuse existing instances
 // rather than allocating new ones, providing significant performance benefits.
 func GetTokenizer() *Tokenizer {
-	t := tokenizerPool.Get().(*Tokenizer)
+	t, _ := tokenizerPool.Get().(*Tokenizer)
 
 	return t
 }

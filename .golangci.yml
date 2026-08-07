@@ -4,16 +4,49 @@ run:
   timeout: 10m
   tests: false
 
+output:
+  show-stats: true
+  sort-order:
+    - file
+    - severity
+    - linter
+
 linters:
   enable:
-    - ineffassign
-    - unused
+    - asciicheck
+    - bidichk
+    - containedctx
+    - contextcheck
+    - copyloopvar
+    - durationcheck
+    - embeddedstructfieldcheck
     - errcheck
+    - errchkjson
+    - exhaustive
+    - forcetypeassert
+    - gocheckcompilerdirectives
+    - gochecksumtype
+    - gosec
     - govet
+    - iface
+    - ineffassign
+    - modernize
+    - nilerr
+    - noctx
+    - nolintlint
+    - nosprintfhostport
+    - paralleltest
+    - perfsprint
+    - sloglint
     - staticcheck
-    - misspell
-    - gocritic
+    - testpackage
+    - thelper
+    - tparallel
+    - unconvert
+    - unparam
     - unused
+    - usestdlibvars
+    - usetesting
   settings:
     errcheck:
       exclude-functions:
@@ -23,6 +56,8 @@ linters:
         - fmt.Print
         - fmt.Printf
         - fmt.Println
+    exhaustive:
+      default-signifies-exhaustive: true
     staticcheck:
       checks:
         - "all"

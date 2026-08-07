@@ -215,7 +215,6 @@ func (w WindowSpec) Children() []Node {
 	children := make([]Node, 0)
 	children = append(children, nodifyExpressions(w.PartitionBy)...)
 	for _, orderBy := range w.OrderBy {
-		orderBy := orderBy // G601: Create local copy to avoid memory aliasing
 		children = append(children, &orderBy)
 	}
 	if w.FrameClause != nil {
@@ -344,7 +343,6 @@ func (o OnConflict) Children() []Node {
 	children := nodifyExpressions(o.Target)
 	if o.Action.DoUpdate != nil {
 		for _, update := range o.Action.DoUpdate {
-			update := update // G601: Create local copy to avoid memory aliasing
 			children = append(children, &update)
 		}
 	}
@@ -371,7 +369,6 @@ func (u UpsertClause) TokenLiteral() string { return "ON DUPLICATE KEY UPDATE" }
 func (u UpsertClause) Children() []Node {
 	children := make([]Node, len(u.Updates))
 	for i, update := range u.Updates {
-		update := update // G601: Create local copy to avoid memory aliasing
 		children[i] = &update
 	}
 	return children
@@ -389,7 +386,6 @@ func (c ColumnDef) TokenLiteral() string { return c.Name }
 func (c ColumnDef) Children() []Node {
 	children := make([]Node, len(c.Constraints))
 	for i, constraint := range c.Constraints {
-		constraint := constraint // G601: Create local copy to avoid memory aliasing
 		children[i] = &constraint
 	}
 	return children
@@ -688,7 +684,6 @@ func (m MatchRecognizeClause) Children() []Node {
 	var nodes []Node
 	nodes = append(nodes, nodifyExpressions(m.PartitionBy)...)
 	for _, ob := range m.OrderBy {
-		ob := ob
 		nodes = append(nodes, &ob)
 	}
 	for _, md := range m.Measures {

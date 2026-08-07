@@ -16,6 +16,7 @@ package tokenizer
 
 import (
 	"bytes"
+	stderrors "errors"
 	"fmt"
 	"unicode/utf8"
 
@@ -114,7 +115,7 @@ func (r *StringLiteralReader) handleEscapeSequence(buf *bytes.Buffer) error {
 	r.pos.Column++
 
 	if r.pos.Index >= len(r.input) {
-		return fmt.Errorf("unexpected end of input after escape character")
+		return stderrors.New("unexpected end of input after escape character")
 	}
 
 	ch := r.input[r.pos.Index]
@@ -146,11 +147,11 @@ func (r *StringLiteralReader) handleEscapeSequence(buf *bytes.Buffer) error {
 // handleUnicodeEscape handles \uXXXX Unicode escape sequences
 func (r *StringLiteralReader) handleUnicodeEscape(buf *bytes.Buffer) error {
 	if r.pos.Index+4 > len(r.input) {
-		return fmt.Errorf("incomplete Unicode escape sequence")
+		return stderrors.New("incomplete Unicode escape sequence")
 	}
 
 	var value rune
-	for i := 0; i < 4; i++ {
+	for i := range 4 {
 		ch := r.input[r.pos.Index+i]
 		var digit rune
 		switch {
@@ -161,7 +162,7 @@ func (r *StringLiteralReader) handleUnicodeEscape(buf *bytes.Buffer) error {
 		case ch >= 'A' && ch <= 'F':
 			digit = rune(ch-'A') + 10
 		default:
-			return fmt.Errorf("invalid Unicode escape sequence")
+			return stderrors.New("invalid Unicode escape sequence")
 		}
 		value = value*16 + digit
 	}

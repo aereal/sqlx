@@ -193,6 +193,7 @@ package security
 import (
 	"fmt"
 	"regexp"
+	"slices"
 	"strings"
 	"sync"
 
@@ -899,10 +900,8 @@ func (s *Scanner) isSystemTable(tableName string) bool {
 	tableLower := strings.ToLower(tableName)
 
 	// Check exact matches first
-	for _, name := range systemTableNames {
-		if tableLower == name {
-			return true
-		}
+	if slices.Contains(systemTableNames, tableLower) {
+		return true
 	}
 
 	// Check prefix matches (e.g., "information_schema.tables", "pg_class")

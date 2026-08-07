@@ -29,6 +29,7 @@ package errors
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 
 	"github.com/aereal/sqlx/models"
@@ -252,10 +253,7 @@ func (e *Error) formatContext() string {
 	if maxLineNum > len(lines) {
 		maxLineNum = len(lines)
 	}
-	lineNumWidth := len(fmt.Sprintf("%d", maxLineNum))
-	if lineNumWidth < 2 {
-		lineNumWidth = 2
-	}
+	lineNumWidth := max(len(strconv.Itoa(maxLineNum)), 2)
 
 	sb.WriteString("\n")
 

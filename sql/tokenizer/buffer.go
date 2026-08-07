@@ -51,7 +51,7 @@ type BufferPool struct {
 func NewBufferPool() *BufferPool {
 	return &BufferPool{
 		pool: sync.Pool{
-			New: func() interface{} {
+			New: func() any {
 				// Pre-allocate buffer for common token sizes
 				b := make([]byte, 0, 128)
 				return &b
@@ -72,7 +72,7 @@ func NewBufferPool() *BufferPool {
 //
 // Returns a byte slice ready for use (length 0, capacity >= 128).
 func (p *BufferPool) Get() []byte {
-	buf := p.pool.Get().(*[]byte)
+	buf, _ := p.pool.Get().(*[]byte)
 	*buf = (*buf)[:0] // Reset length but keep capacity
 	return *buf
 }

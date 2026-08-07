@@ -18,6 +18,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"slices"
 	"strings"
 
 	"github.com/aereal/sqlx/sql/tokenizer"
@@ -123,7 +124,7 @@ func formatSQL(sql string, opts FormatOptions) (string, error) {
 	}
 
 	for i, token := range tokens {
-		value := string(token.Token.Value)
+		value := token.Token.Value
 		upperValue := strings.ToUpper(value)
 
 		// Check if it's a keyword
@@ -153,7 +154,7 @@ func formatSQL(sql string, opts FormatOptions) (string, error) {
 
 		// Add space after token (except for last token or special characters)
 		if i < len(tokens)-1 {
-			nextValue := string(tokens[i+1].Token.Value)
+			nextValue := tokens[i+1].Token.Value
 			if !isSpecialChar(value) && !isSpecialChar(nextValue) {
 				result.WriteString(" ")
 			}
@@ -178,12 +179,7 @@ func isKeyword(word string) bool {
 		"BETWEEN", "LIKE", "ASC", "DESC",
 	}
 
-	for _, k := range keywords {
-		if k == word {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(keywords, word)
 }
 
 func isSpecialChar(s string) bool {

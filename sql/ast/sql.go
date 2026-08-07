@@ -27,7 +27,7 @@ import (
 // following the project's existing pooling patterns (sync.Pool for tokenizer
 // buffers, token objects, etc.) to reduce allocations in hot paths.
 var builderPool = sync.Pool{
-	New: func() interface{} {
+	New: func() any {
 		return &strings.Builder{}
 	},
 }
@@ -35,7 +35,7 @@ var builderPool = sync.Pool{
 // getBuilder retrieves a strings.Builder from the pool, ready for use.
 // Always pair with putBuilder to return it.
 func getBuilder() *strings.Builder {
-	sb := builderPool.Get().(*strings.Builder)
+	sb, _ := builderPool.Get().(*strings.Builder)
 	sb.Reset()
 	return sb
 }
@@ -459,9 +459,11 @@ func (a *ArraySubscriptExpression) SQL() string {
 		return ""
 	}
 	s := exprSQL(a.Array)
+	var sSb462 strings.Builder
 	for _, idx := range a.Indices {
-		s += "[" + exprSQL(idx) + "]"
+		sSb462.WriteString("[" + exprSQL(idx) + "]")
 	}
+	s += sSb462.String()
 	return s
 }
 
@@ -557,7 +559,6 @@ func (s *SelectStatement) SQL() string {
 	}
 
 	for _, j := range s.Joins {
-		j := j // G601: Create local copy to avoid memory aliasing
 		sb.WriteString(" ")
 		sb.WriteString(joinSQL(&j))
 	}
@@ -811,11 +812,9 @@ func (c *CreateTableStatement) SQL() string {
 
 	parts := make([]string, 0, len(c.Columns)+len(c.Constraints))
 	for _, col := range c.Columns {
-		col := col // G601: Create local copy to avoid memory aliasing
 		parts = append(parts, columnDefSQL(&col))
 	}
 	for _, con := range c.Constraints {
-		con := con // G601: Create local copy to avoid memory aliasing
 		parts = append(parts, tableConstraintSQL(&con))
 	}
 	sb.WriteString(strings.Join(parts, ", "))
@@ -895,7 +894,6 @@ func (a *AlterTableStatement) SQL() string {
 	sb.WriteString("ALTER TABLE ")
 	sb.WriteString(a.Table)
 	for _, action := range a.Actions {
-		action := action // G601: Create local copy to avoid memory aliasing
 		sb.WriteString(" ")
 		sb.WriteString(alterActionSQL(&action))
 	}
@@ -1487,7 +1485,6 @@ func columnDefSQL(c *ColumnDef) string {
 	sb.WriteString(" ")
 	sb.WriteString(c.Type)
 	for _, con := range c.Constraints {
-		con := con // G601: Create local copy to avoid memory aliasing
 		sb.WriteString(" ")
 		sb.WriteString(columnConstraintSQL(&con))
 	}
@@ -1701,6 +1698,7 @@ func writeSequenceOptions(b *strings.Builder, opts SequenceOptions) {
 		b.WriteString(" CYCLE")
 	case NoCycleBehavior:
 		b.WriteString(" NOCYCLE")
+	default: // noop
 	}
 	if opts.RestartWith != nil {
 		b.WriteString(" RESTART WITH ")

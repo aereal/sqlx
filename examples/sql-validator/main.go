@@ -90,7 +90,7 @@ func main() {
 			fmt.Println(truncate(query, 100))
 		}
 
-		result := validateSQL(query, *dialect, *verbose)
+		result := validateSQL(query, *dialect)
 
 		if result.Error != nil {
 			errors++
@@ -143,7 +143,7 @@ type ValidationResult struct {
 	Warnings      []string
 }
 
-func validateSQL(sql string, dialect string, verbose bool) ValidationResult {
+func validateSQL(sql string, dialect string) ValidationResult {
 	result := ValidationResult{Valid: true}
 
 	// Get tokenizer
@@ -251,7 +251,7 @@ func checkForWarnings(tokens []models.TokenWithSpan, dialect string) []string {
 
 		// PostgreSQL-specific
 		if dialect != "postgres" && (upper == "RETURNING" || upper == "ARRAY") {
-			warnings = append(warnings, fmt.Sprintf("%s is PostgreSQL-specific", upper))
+			warnings = append(warnings, upper+" is PostgreSQL-specific")
 		}
 
 		// SQL Server-specific

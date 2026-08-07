@@ -29,9 +29,9 @@ type keywordSuggestionCache struct {
 	// maxSize limits cache growth; partial eviction when exceeded
 	maxSize int
 	// metrics for observability
-	hits      uint64
-	misses    uint64
-	evictions uint64
+	hits      atomic.Uint64
+	misses    atomic.Uint64
+	evictions atomic.Uint64
 }
 
 var (
@@ -53,9 +53,9 @@ func (c *keywordSuggestionCache) get(input string) (string, bool) {
 	defer c.mu.RUnlock()
 	result, ok := c.cache[input]
 	if ok {
-		atomic.AddUint64(&c.hits, 1)
+		c.hits.Add(1)
 	} else {
-		atomic.AddUint64(&c.misses, 1)
+		c.misses.Add(1)
 	}
 	return result, ok
 }
@@ -88,7 +88,7 @@ func (c *keywordSuggestionCache) set(input, suggestion string) {
 			count++
 		}
 		evicted := len(c.cache) - count
-		atomic.AddUint64(&c.evictions, uint64(evicted)) // #nosec G115
+		c.evictions.Add(uint64(evicted)) // #nosec G115
 		c.cache = newCache
 	}
 
@@ -152,9 +152,9 @@ type SuggestionCacheStats struct {
 //	stats := errors.GetSuggestionCacheStats()
 //	fmt.Printf("Cache hit rate: %.1f%%\n", stats.HitRate*100)
 func GetSuggestionCacheStats() SuggestionCacheStats {
-	hits := atomic.LoadUint64(&suggestionCache.hits)
-	misses := atomic.LoadUint64(&suggestionCache.misses)
-	evictions := atomic.LoadUint64(&suggestionCache.evictions)
+	hits := suggestionCache.hits.Load()
+	misses := suggestionCache.misses.Load()
+	evictions := suggestionCache.evictions.Load()
 
 	var hitRate float64
 	total := hits + misses
@@ -176,7 +176,7 @@ func GetSuggestionCacheStats() SuggestionCacheStats {
 // keyword suggestion cache without clearing cached entries. Call this at the start
 // of a benchmark or monitoring interval to obtain a clean measurement window.
 func ResetSuggestionCacheStats() {
-	atomic.StoreUint64(&suggestionCache.hits, 0)
-	atomic.StoreUint64(&suggestionCache.misses, 0)
-	atomic.StoreUint64(&suggestionCache.evictions, 0)
+	suggestionCache.hits.Store(0)
+	suggestionCache.misses.Store(0)
+	suggestionCache.evictions.Store(0)
 }

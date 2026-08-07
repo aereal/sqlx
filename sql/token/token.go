@@ -14,6 +14,8 @@
 
 package token
 
+import "slices"
+
 import "github.com/aereal/sqlx/models"
 
 // Token represents a lexical token in SQL source code.
@@ -79,10 +81,5 @@ func (t Token) IsType(expected models.TokenType) bool {
 //	    fmt.Println("This is a DML statement keyword")
 //	}
 func (t Token) IsAnyType(types ...models.TokenType) bool {
-	for _, typ := range types {
-		if t.Type == typ {
-			return true
-		}
-	}
-	return false
+	return slices.Contains(types, t.Type)
 }

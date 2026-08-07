@@ -365,6 +365,7 @@ func (p *Parser) isDataTypeKeyword() bool {
 		models.TokenTypeText, models.TokenTypeBoolean, models.TokenTypeFloat,
 		models.TokenTypeInterval:
 		return true
+	default: // noop
 	}
 	// Fallback: check literal for data type keywords not all represented in models
 	switch strings.ToUpper(p.currentToken.Token.Value) {
@@ -390,6 +391,7 @@ func (p *Parser) isJSONOperator() bool {
 		models.TokenTypeQuestionPipe,  // ?|
 		models.TokenTypeQuestionAnd:   // ?&
 		return true
+	default: // noop
 	}
 	return false
 }

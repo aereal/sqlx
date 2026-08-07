@@ -138,7 +138,7 @@ func FormatStatement(s ast.Statement, opts ast.FormatOptions) string {
 		return renderCreateTable(v, opts)
 	case *ast.SetOperation:
 		return renderSetOperation(v, opts)
-	case *ast.AlterTableStatement: //nolint:staticcheck // AlterTableStatement kept for backward compatibility
+	case *ast.AlterTableStatement:
 		return renderAlterTable(v, opts)
 	case *ast.CreateIndexStatement:
 		return renderCreateIndex(v, opts)
@@ -257,7 +257,6 @@ func renderSelect(s *ast.SelectStatement, opts ast.FormatOptions) string {
 	}
 
 	for _, j := range s.Joins {
-		j := j
 		sb.WriteString(f.clauseSep())
 		sb.WriteString(joinSQL(&j, f))
 	}
@@ -577,11 +576,9 @@ func renderCreateTable(c *ast.CreateTableStatement, opts ast.FormatOptions) stri
 		f.depth++
 		parts := make([]string, 0, len(c.Columns)+len(c.Constraints))
 		for _, col := range c.Columns {
-			col := col
 			parts = append(parts, f.indentStr()+columnDefSQL(&col))
 		}
 		for _, con := range c.Constraints {
-			con := con
 			parts = append(parts, f.indentStr()+tableConstraintSQL(&con))
 		}
 		sb.WriteString(strings.Join(parts, ",\n"))
@@ -593,11 +590,9 @@ func renderCreateTable(c *ast.CreateTableStatement, opts ast.FormatOptions) stri
 		sb.WriteString(" (")
 		parts := make([]string, 0, len(c.Columns)+len(c.Constraints))
 		for _, col := range c.Columns {
-			col := col
 			parts = append(parts, columnDefSQL(&col))
 		}
 		for _, con := range c.Constraints {
-			con := con
 			parts = append(parts, tableConstraintSQL(&con))
 		}
 		sb.WriteString(strings.Join(parts, ", "))
@@ -657,7 +652,7 @@ func renderSetOperation(s *ast.SetOperation, opts ast.FormatOptions) string {
 	return f.result()
 }
 
-func renderAlterTable(a *ast.AlterTableStatement, opts ast.FormatOptions) string { //nolint:staticcheck // AlterTableStatement kept for backward compatibility
+func renderAlterTable(a *ast.AlterTableStatement, opts ast.FormatOptions) string {
 	if a == nil {
 		return ""
 	}
@@ -1457,7 +1452,6 @@ func columnDefSQL(c *ast.ColumnDef) string {
 	sb.WriteString(" ")
 	sb.WriteString(c.Type)
 	for _, con := range c.Constraints {
-		con := con
 		sb.WriteString(" ")
 		sb.WriteString(columnConstraintSQL(&con))
 	}

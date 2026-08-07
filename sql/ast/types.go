@@ -256,15 +256,9 @@ const (
 	StorageSerializationAvro
 )
 
-// StatementVariant represents a specific type of SQL statement
-type StatementVariant interface {
-	Node
-	statementNode()
-}
-
 // StatementImpl represents a concrete implementation of a SQL statement
 type StatementImpl struct {
-	Variant StatementVariant
+	Variant Statement
 }
 
 // TokenLiteral implements Node by delegating to the wrapped StatementVariant.
