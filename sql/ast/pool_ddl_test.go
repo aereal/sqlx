@@ -37,7 +37,7 @@ func TestCreateTableStatementPool(t *testing.T) {
 
 	t.Run("Fields zeroed after Put", func(t *testing.T) {
 		stmt := GetCreateTableStatement()
-		stmt.Name = "users"
+		stmt.Table.Name = "users"
 		stmt.IfNotExists = true
 		stmt.Temporary = true
 		stmt.Columns = append(stmt.Columns, ColumnDef{
@@ -75,8 +75,8 @@ func TestCreateTableStatementPool(t *testing.T) {
 
 		PutCreateTableStatement(stmt)
 
-		if stmt.Name != "" {
-			t.Errorf("Name not cleared, got %q", stmt.Name)
+		if stmt.Table.Name != "" {
+			t.Errorf("Name not cleared, got %q", stmt.Table.Name)
 		}
 		if stmt.IfNotExists {
 			t.Error("IfNotExists not cleared")
@@ -106,12 +106,12 @@ func TestCreateTableStatementPool(t *testing.T) {
 
 	t.Run("Pool roundtrip reuse", func(t *testing.T) {
 		stmt1 := GetCreateTableStatement()
-		stmt1.Name = "orders"
+		stmt1.Table.Name = "orders"
 		PutCreateTableStatement(stmt1)
 
 		stmt2 := GetCreateTableStatement()
-		if stmt2.Name != "" {
-			t.Errorf("Reused statement not clean, Name=%q", stmt2.Name)
+		if stmt2.Table.Name != "" {
+			t.Errorf("Reused statement not clean, Name=%q", stmt2.Table.Name)
 		}
 		PutCreateTableStatement(stmt2)
 	})
@@ -891,7 +891,7 @@ func TestReleaseASTMixedDMLAndDDL(t *testing.T) {
 
 		// DDL statements
 		ct := GetCreateTableStatement()
-		ct.Name = "new_table"
+		ct.Table.Name = "new_table"
 		a.Statements = append(a.Statements, ct)
 
 		at := GetAlterTableStatement()
@@ -962,7 +962,7 @@ func TestReleaseASTMixedDMLAndDDL(t *testing.T) {
 
 func TestReleaseStatementsMixedDDL(t *testing.T) {
 	stmts := []Statement{
-		&CreateTableStatement{Name: "t1"},
+		&CreateTableStatement{Table: TableReference{Name: "t1"}},
 		&AlterTableStatement{Table: "t2"},
 		&CreateIndexStatement{Name: "idx"},
 		&MergeStatement{TargetAlias: "tgt"},
@@ -1000,7 +1000,7 @@ func BenchmarkCreateTableStatementPool(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
 			stmt := GetCreateTableStatement()
-			stmt.Name = "users"
+			stmt.Table.Name = "users"
 			stmt.IfNotExists = true
 			stmt.Columns = append(stmt.Columns, ColumnDef{
 				Name: "id",
@@ -1017,7 +1017,7 @@ func BenchmarkCreateTableStatementPool(b *testing.B) {
 		b.ReportAllocs()
 		for i := 0; i < b.N; i++ {
 			stmt := &CreateTableStatement{
-				Name:        "users",
+				Table:       TableReference{Name: "users"},
 				IfNotExists: true,
 				Columns: []ColumnDef{
 					{

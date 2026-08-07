@@ -489,8 +489,8 @@ func TestParser_CreateTableWithPartitioning(t *testing.T) {
 				t.Fatalf("expected CreateTableStatement, got %T", result.Statements[0])
 			}
 
-			if stmt.Name != tt.tableName {
-				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Name)
+			if stmt.Table.Name != tt.tableName {
+				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table.Name)
 			}
 
 			if len(stmt.Columns) != tt.numColumns {
@@ -557,8 +557,8 @@ func TestParser_CreateTableSimple(t *testing.T) {
 				t.Fatalf("expected CreateTableStatement, got %T", result.Statements[0])
 			}
 
-			if stmt.Name != tt.tableName {
-				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Name)
+			if stmt.Table.Name != tt.tableName {
+				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table.Name)
 			}
 
 			if len(stmt.Columns) != tt.numColumns {

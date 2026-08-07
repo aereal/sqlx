@@ -180,7 +180,7 @@ func TestDeleteStatementSQL(t *testing.T) {
 
 func TestCreateTableStatementSQL(t *testing.T) {
 	stmt := &CreateTableStatement{
-		Name: "users",
+		Table: TableReference{Name: "users"},
 		Columns: []ColumnDef{
 			{Name: "id", Type: "INTEGER", Constraints: []ColumnConstraint{{Type: "PRIMARY KEY"}}},
 			{Name: "name", Type: "VARCHAR(255)", Constraints: []ColumnConstraint{{Type: "NOT NULL"}}},

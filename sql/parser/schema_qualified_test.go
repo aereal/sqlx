@@ -359,8 +359,8 @@ func TestSchemaQualified_DDL_Names(t *testing.T) {
 		if !ok {
 			t.Fatalf("expected CreateTableStatement, got %T", tree.Statements[0])
 		}
-		if stmt.Name != "public.users" {
-			t.Errorf("expected table name %q, got %q", "public.users", stmt.Name)
+		if stmt.Table.Name != "public.users" {
+			t.Errorf("expected table name %q, got %q", "public.users", stmt.Table.Name)
 		}
 	})
 

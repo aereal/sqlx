@@ -601,10 +601,11 @@ func PutCreateTableStatement(stmt *CreateTableStatement) {
 	}
 	stmt.Options = stmt.Options[:0]
 
+	stmt.Table = TableReference{}
+
 	// Reset scalar fields
 	stmt.IfNotExists = false
 	stmt.Temporary = false
-	stmt.Name = ""
 
 	createTableStmtPool.Put(stmt)
 }

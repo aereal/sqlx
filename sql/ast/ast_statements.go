@@ -304,7 +304,7 @@ func (u UpdateStatement) Children() []Node {
 type CreateTableStatement struct {
 	IfNotExists  bool
 	Temporary    bool
-	Name         string
+	Table        TableReference
 	Columns      []ColumnDef
 	Constraints  []TableConstraint
 	Inherits     []string

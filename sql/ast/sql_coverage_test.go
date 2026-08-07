@@ -446,7 +446,7 @@ func TestForSQL(t *testing.T) {
 func TestTableConstraintSQL(t *testing.T) {
 	// Via CreateTableStatement
 	stmt := &CreateTableStatement{
-		Name:    "t",
+		Table:   TableReference{Name: "t"},
 		Columns: []ColumnDef{{Name: "id", Type: "INT"}},
 		Constraints: []TableConstraint{
 			{Name: "pk", Type: "PRIMARY KEY", Columns: []string{"id"}},
@@ -465,7 +465,7 @@ func TestTableConstraintSQL(t *testing.T) {
 
 func TestColumnConstraintSQL_AllTypes(t *testing.T) {
 	stmt := &CreateTableStatement{
-		Name: "t",
+		Table: TableReference{Name: "t"},
 		Columns: []ColumnDef{
 			{Name: "a", Type: "INT", Constraints: []ColumnConstraint{{Type: "NOT NULL"}}},
 			{Name: "b", Type: "INT", Constraints: []ColumnConstraint{{Type: "UNIQUE"}}},
@@ -749,7 +749,7 @@ func TestDeleteStatement_WithUsingReturning(t *testing.T) {
 
 func TestCreateTableStatement_AllFeatures(t *testing.T) {
 	stmt := &CreateTableStatement{
-		Name:        "t",
+		Table:       TableReference{Name: "t"},
 		Temporary:   true,
 		IfNotExists: true,
 		Columns:     []ColumnDef{{Name: "id", Type: "INT"}},

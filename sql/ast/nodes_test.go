@@ -1336,7 +1336,7 @@ func TestCreateTableStatement(t *testing.T) {
 		{
 			name: "simple CREATE TABLE",
 			stmt: &CreateTableStatement{
-				Name:    "users",
+				Table:   TableReference{Name: "users"},
 				Columns: []ColumnDef{},
 			},
 			wantLiteral: "CREATE TABLE",
@@ -1345,7 +1345,7 @@ func TestCreateTableStatement(t *testing.T) {
 		{
 			name: "CREATE TABLE IF NOT EXISTS",
 			stmt: &CreateTableStatement{
-				Name:        "products",
+				Table:       TableReference{Name: "products"},
 				IfNotExists: true,
 				Columns:     []ColumnDef{},
 			},
@@ -1355,7 +1355,7 @@ func TestCreateTableStatement(t *testing.T) {
 		{
 			name: "CREATE TEMPORARY TABLE",
 			stmt: &CreateTableStatement{
-				Name:      "temp_data",
+				Table:     TableReference{Name: "temp_data"},
 				Temporary: true,
 				Columns:   []ColumnDef{},
 			},

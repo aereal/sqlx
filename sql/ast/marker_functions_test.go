@@ -49,7 +49,7 @@ func TestMarkerFunctions_StatementNodes(t *testing.T) {
 		},
 		{
 			name:      "CreateTableStatement",
-			statement: &CreateTableStatement{Name: "test"},
+			statement: &CreateTableStatement{Table: TableReference{Name: "test"}},
 			wantType:  "CREATE TABLE",
 		},
 		{

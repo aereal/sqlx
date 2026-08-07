@@ -569,7 +569,7 @@ func renderCreateTable(c *ast.CreateTableStatement, opts ast.FormatOptions) stri
 		sb.WriteString(f.kw("IF NOT EXISTS"))
 		sb.WriteString(" ")
 	}
-	sb.WriteString(c.Name)
+	sb.WriteString(c.Table.Name)
 
 	if opts.NewlinePerClause {
 		sb.WriteString(" (\n")

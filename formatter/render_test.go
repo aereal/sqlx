@@ -325,7 +325,7 @@ func TestRenderDelete_Nil(t *testing.T) {
 
 func TestRenderCreateTable_Readable(t *testing.T) {
 	stmt := &ast.CreateTableStatement{
-		Name: "users",
+		Table: ast.TableReference{Name: "users"},
 		Columns: []ast.ColumnDef{
 			{Name: "id", Type: "INT"},
 			{Name: "name", Type: "TEXT"},
@@ -343,7 +343,7 @@ func TestRenderCreateTable_Readable(t *testing.T) {
 
 func TestRenderCreateTable_AllFeatures(t *testing.T) {
 	stmt := &ast.CreateTableStatement{
-		Name:        "t",
+		Table:       ast.TableReference{Name: "t"},
 		Temporary:   true,
 		IfNotExists: true,
 		Columns: []ast.ColumnDef{
@@ -380,7 +380,7 @@ func TestRenderCreateTable_Nil(t *testing.T) {
 
 func TestRenderFormatWithTabs(t *testing.T) {
 	stmt := &ast.CreateTableStatement{
-		Name:    "t",
+		Table:   ast.TableReference{Name: "t"},
 		Columns: []ast.ColumnDef{{Name: "id", Type: "INT"}},
 	}
 	opts := ast.FormatOptions{

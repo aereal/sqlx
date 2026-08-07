@@ -807,7 +807,7 @@ func (c *CreateTableStatement) SQL() string {
 	if c.IfNotExists {
 		sb.WriteString("IF NOT EXISTS ")
 	}
-	sb.WriteString(c.Name)
+	sb.WriteString(c.Table.Name)
 	sb.WriteString(" (")
 
 	parts := make([]string, 0, len(c.Columns)+len(c.Constraints))
