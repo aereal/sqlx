@@ -714,8 +714,19 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 		p.advance()
 		return p.parseMergeStatement()
 	case models.TokenTypeCreate:
-		p.advance()
-		return p.parseCreateStatement()
+		startPos := p.currentLocation()
+		p.advance() // consume CREATE
+		stmt, err := p.parseCreateStatement()
+		if err != nil {
+			return nil, err
+		}
+		endPos := p.currentLocation()
+		switch stmt := stmt.(type) {
+		case *ast.CreateTableStatement:
+			stmt.Start = startPos
+			stmt.End = endPos
+		}
+		return stmt, nil
 	case models.TokenTypeDrop:
 		stmtPos := p.currentLocation()
 		p.advance()

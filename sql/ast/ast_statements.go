@@ -320,6 +320,8 @@ type CreateTableStatement struct {
 	// PeriodDefinitions holds PERIOD FOR clauses for application-time or system-time periods.
 	// Example: PERIOD FOR app_time (start_col, end_col)
 	PeriodDefinitions []*PeriodDefinition
+
+	Start, End models.Location
 }
 
 func (c *CreateTableStatement) statementNode()      {}

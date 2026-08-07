@@ -179,6 +179,19 @@ func TestDeleteStatementPosition(t *testing.T) {
 	assertPosEqual(t, "DELETE.End", del.End, 1, 31)
 }
 
+func TestCreateTableStatementPosition(t *testing.T) {
+	tree := parseWithPositions(t, "create table public.users (\n  id integer primary key,\n  name varchar(255) not null\n)")
+	if len(tree.Statements) != 1 {
+		t.Fatalf("expected 1 statement, got %d", len(tree.Statements))
+	}
+	stmt, ok := tree.Statements[0].(*ast.CreateTableStatement)
+	if !ok {
+		t.Fatalf("expected *ast.CreateTableStatement, got %T", tree.Statements[0])
+	}
+	assertPosEqual(t, "CREATE TABLE start", stmt.Start, 1, 1)
+	assertPosEqual(t, "CREATE TABLE end", stmt.End, 4, 2)
+}
+
 // -----------------------------------------------------------------------------
 // TestIdentifierPosition verifies Identifier nodes carry positions
 // -----------------------------------------------------------------------------
