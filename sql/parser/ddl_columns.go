@@ -52,6 +52,7 @@ func (p *Parser) parseColumnName() *ast.Identifier {
 
 // parseColumnDef parses a column definition including column constraints
 func (p *Parser) parseColumnDef() (*ast.ColumnDef, error) {
+	start := p.currentLocation()
 	name := p.parseColumnName()
 	if name == nil {
 		return nil, goerrors.ExpectedTokenError(
@@ -91,8 +92,9 @@ func (p *Parser) parseColumnDef() (*ast.ColumnDef, error) {
 	}
 
 	colDef := &ast.ColumnDef{
-		Name: name.Name,
-		Type: dataTypeStr,
+		Name:  name.Name,
+		Type:  dataTypeStr,
+		Start: start,
 	}
 
 	// ClickHouse column options that may appear between the type and the
@@ -128,6 +130,7 @@ func (p *Parser) parseColumnDef() (*ast.ColumnDef, error) {
 		colDef.Constraints = append(colDef.Constraints, *constraint)
 	}
 
+	colDef.End = p.currentLocation()
 	return colDef, nil
 }
 

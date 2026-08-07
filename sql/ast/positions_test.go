@@ -190,6 +190,11 @@ func TestCreateTableStatementPosition(t *testing.T) {
 	}
 	assertPosEqual(t, "CREATE TABLE start", stmt.Start, 1, 1)
 	assertPosEqual(t, "CREATE TABLE end", stmt.End, 4, 2)
+
+	assertPosEqual(t, "CREATE TABLE column 1 start", stmt.Columns[0].Start, 2, 3)
+	assertPosEqual(t, "CREATE TABLE column 1 end", stmt.Columns[0].End, 2, 25)
+	assertPosEqual(t, "CREATE TABLE column 2 start", stmt.Columns[1].Start, 3, 3)
+	assertPosEqual(t, "CREATE TABLE column 2 end", stmt.Columns[1].End, 4, 1)
 }
 
 // -----------------------------------------------------------------------------

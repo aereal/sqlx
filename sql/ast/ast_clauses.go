@@ -379,6 +379,7 @@ type ColumnDef struct {
 	Name        string
 	Type        string
 	Constraints []ColumnConstraint
+	Start, End  models.Location
 }
 
 func (c *ColumnDef) expressionNode()     {}
