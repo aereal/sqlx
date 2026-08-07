@@ -728,6 +728,8 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 		case *ast.CreateDomainStatement:
 			stmt.Start = startPos
 			stmt.End = endPos
+		case ast.CreateTypeStatement:
+			stmt.SetSpan(models.NewSpan(startPos, endPos))
 		}
 		return stmt, nil
 	case models.TokenTypeDrop:

@@ -763,6 +763,75 @@ func (s *CreateDomainStatement) Children() []Node {
 	return children
 }
 
+type CreateTypeStatement interface {
+	Statement
+	Spanned
+	SetSpan(span models.Span)
+	TypeName() *Identifier
+	createTypeStatement()
+}
+
+// CreateEnumTypeStatement represents:
+//
+//	CREATE TYPE name AS ENUM (...)
+type CreateEnumTypeStatement struct {
+	Name *Identifier
+	// Labels is available enumerated values.
+	Labels     []string
+	Start, End models.Location
+}
+
+var _ CreateTypeStatement = (*CreateEnumTypeStatement)(nil)
+
+func (CreateEnumTypeStatement) createTypeStatement() {}
+func (CreateEnumTypeStatement) statementNode()       {}
+func (CreateEnumTypeStatement) TokenLiteral() string { return "CREATE" }
+func (s *CreateEnumTypeStatement) Children() []Node {
+	children := make([]Node, 0, 3)
+	if s.Name != nil {
+		children = append(children, s.Name)
+	}
+	return children
+}
+func (s *CreateEnumTypeStatement) Span() models.Span {
+	return models.NewSpan(s.Start, s.End)
+}
+func (s *CreateEnumTypeStatement) SetSpan(span models.Span) {
+	s.Start = span.Start
+	s.End = span.End
+}
+func (s *CreateEnumTypeStatement) TypeName() *Identifier { return s.Name }
+
+type CreateCompositeTypeStatement struct {
+	Name       *Identifier
+	Attributes []ColumnDef
+	Start, End models.Location
+}
+
+var _ CreateTypeStatement = (*CreateCompositeTypeStatement)(nil)
+
+func (CreateCompositeTypeStatement) createTypeStatement() {}
+func (CreateCompositeTypeStatement) statementNode()       {}
+func (CreateCompositeTypeStatement) TokenLiteral() string { return "CREATE" }
+func (s *CreateCompositeTypeStatement) Children() []Node {
+	children := make([]Node, 0, 1+len(s.Attributes))
+	if s.Name != nil {
+		children = append(children, s.Name)
+	}
+	for _, attr := range s.Attributes {
+		children = append(children, attr)
+	}
+	return children
+}
+func (s *CreateCompositeTypeStatement) Span() models.Span {
+	return models.NewSpan(s.Start, s.End)
+}
+func (s *CreateCompositeTypeStatement) SetSpan(span models.Span) {
+	s.Start = span.Start
+	s.End = span.End
+}
+func (s *CreateCompositeTypeStatement) TypeName() *Identifier { return s.Name }
+
 // DropSequenceStatement represents:
 //
 //	DROP SEQUENCE [IF EXISTS | IF NOT EXISTS] name

@@ -101,6 +101,13 @@ func (p *Parser) parseCreateStatement() (ast.Statement, error) {
 			return nil, err
 		}
 		return stmt, nil
+	} else if p.isTokenMatch("TYPE") {
+		p.advance() // consume TYPE
+		stmt, err := p.parseCreateTypeStatement()
+		if err != nil {
+			return nil, err
+		}
+		return stmt, nil
 	}
 
 	// Snowflake object-type extensions: STAGE, STREAM, TASK, PIPE, FILE FORMAT,
@@ -167,7 +174,7 @@ func (p *Parser) parseCreateStatement() (ast.Statement, error) {
 		}
 	}
 
-	return nil, p.expectedError("TABLE, VIEW, MATERIALIZED VIEW, DOMAIN, or INDEX after CREATE")
+	return nil, p.expectedError("TABLE, VIEW, MATERIALIZED VIEW, DOMAIN, TYPE, or INDEX after CREATE")
 }
 
 // parseCreateTable parses CREATE TABLE statement with partitioning support
@@ -567,6 +574,99 @@ func (p *Parser) parseDomainConstraint() (ast.DomainConstraint, error) {
 	default:
 		return nil, p.expectedError("CHECK or NULL or NOT NULL")
 	}
+}
+
+func (p *Parser) parseCreateTypeStatement() (ast.CreateTypeStatement, error) {
+	start := p.currentLocation()
+
+	if !p.isIdentifier() {
+		return nil, p.expectedError("type name")
+	}
+	rawName, nameStart, nameEnd, err := p.parseQualifiedName()
+	if err != nil {
+		return nil, err
+	}
+	nameIdent := &ast.Identifier{
+		Name:  rawName,
+		Start: nameStart,
+		End:   nameEnd,
+	}
+
+	if !p.matchType(models.TokenTypeAs) { // TODO: support other form
+		return nil, p.expectedError("AS")
+	}
+
+	switch {
+	case p.isTokenMatch("ENUM"):
+		p.advance() // consume ENUM
+		stmt, err := p.parseCreateEnumTypeStatement()
+		if err != nil {
+			return nil, err
+		}
+		stmt.Name = nameIdent
+		stmt.Start = start
+		stmt.End = p.currentLocation()
+		return stmt, nil
+	case p.isType(models.TokenTypeLParen): // composite type
+		stmt, err := p.parseCreateCompositeTypeStatement()
+		if err != nil {
+			return nil, err
+		}
+		stmt.Name = nameIdent
+		stmt.Start = start
+		stmt.End = p.currentLocation()
+		return stmt, nil
+	default:
+		return nil, p.expectedError("(expr) OR ENUM (...)")
+	}
+}
+
+func (p *Parser) parseCreateEnumTypeStatement() (*ast.CreateEnumTypeStatement, error) {
+	stmt := &ast.CreateEnumTypeStatement{}
+
+	if !p.matchType(models.TokenTypeLParen) {
+		return nil, p.expectedError("( after ENUM")
+	}
+
+	for {
+		label := p.parseStringLiteral()
+		stmt.Labels = append(stmt.Labels, label)
+		if !p.matchType(models.TokenTypeComma) {
+			break
+		}
+	}
+	if !p.matchType(models.TokenTypeRParen) {
+		return nil, p.expectedError(")")
+	}
+
+	return stmt, nil
+}
+
+func (p *Parser) parseCreateCompositeTypeStatement() (*ast.CreateCompositeTypeStatement, error) {
+	if !p.matchType(models.TokenTypeLParen) {
+		return nil, p.expectedError("(")
+	}
+
+	stmt := &ast.CreateCompositeTypeStatement{}
+
+	for {
+		def, err := p.parseColumnDef()
+		if err != nil {
+			return nil, err
+		}
+
+		stmt.Attributes = append(stmt.Attributes, *def)
+
+		if !p.matchType(models.TokenTypeComma) {
+			break
+		}
+	}
+
+	if !p.matchType(models.TokenTypeRParen) {
+		return nil, p.expectedError(")")
+	}
+
+	return stmt, nil
 }
 
 // parsePartitionByClause parses PARTITION BY RANGE/LIST/HASH (columns)

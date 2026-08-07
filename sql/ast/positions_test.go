@@ -244,6 +244,40 @@ func TestCreateDomainStatementPosition(t *testing.T) {
 	})
 }
 
+func TestCreateTypeStatementPosition(t *testing.T) {
+	t.Run("enum", func(t *testing.T) {
+		tree := parseWithPositions(t, "create type public.user_role as enum ('admin', 'ordinary')")
+		if len(tree.Statements) != 1 {
+			t.Fatalf("expected 1 statement, got %d", len(tree.Statements))
+		}
+		stmt, ok := tree.Statements[0].(ast.CreateTypeStatement)
+		if !ok {
+			t.Fatalf("expected *ast.CreateTypeStatement, got %T", tree.Statements[0])
+		}
+		assertPosEqual(t, "CREATE TYPE start", stmt.Span().Start, 1, 1)
+		assertPosEqual(t, "CREATE TYPE end", stmt.Span().End, 1, 59)
+		if stmt.TypeName().Name != "public.user_role" {
+			t.Errorf("got type name: %q", stmt.TypeName().Name)
+		}
+	})
+
+	t.Run("composite", func(t *testing.T) {
+		tree := parseWithPositions(t, "create type loc as (x integer, y integer)")
+		if len(tree.Statements) != 1 {
+			t.Fatalf("expected 1 statement, got %d", len(tree.Statements))
+		}
+		stmt, ok := tree.Statements[0].(ast.CreateTypeStatement)
+		if !ok {
+			t.Fatalf("expected *ast.CreateTypeStatement, got %T", tree.Statements[0])
+		}
+		assertPosEqual(t, "CREATE TYPE start", stmt.Span().Start, 1, 1)
+		assertPosEqual(t, "CREATE TYPE end", stmt.Span().End, 1, 42)
+		if stmt.TypeName().Name != "loc" {
+			t.Errorf("got type name: %q", stmt.TypeName().Name)
+		}
+	})
+}
+
 // -----------------------------------------------------------------------------
 // TestIdentifierPosition verifies Identifier nodes carry positions
 // -----------------------------------------------------------------------------
