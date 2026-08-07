@@ -44,8 +44,9 @@ func (p *Parser) parseColumnName() *ast.Identifier {
 	default: // noop
 	}
 	pos := p.currentLocation()
-	ident := &ast.Identifier{Name: val, Pos: pos}
+	ident := &ast.Identifier{Name: val, Start: pos}
 	p.advance()
+	ident.End = p.currentLocation()
 	return ident
 }
 

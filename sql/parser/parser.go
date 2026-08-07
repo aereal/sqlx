@@ -1029,8 +1029,9 @@ func (p *Parser) parseIdent() *ast.Identifier {
 		return nil
 	}
 	pos := p.currentLocation()
-	ident := &ast.Identifier{Name: p.currentToken.Token.Value, Pos: pos}
+	tokValue := p.currentToken.Token.Value
 	p.advance()
+	ident := &ast.Identifier{Name: tokValue, Start: pos, End: p.currentLocation()}
 	return ident
 }
 

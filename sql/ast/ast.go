@@ -114,7 +114,8 @@ func nodifyExpressions(exprs []Expression) []Node {
 type Identifier struct {
 	Name  string
 	Table string          // Optional table qualifier
-	Pos   models.Location // Source position of this identifier (1-based line and column)
+	Start models.Location // Source position of this identifier (1-based line and column)
+	End   models.Location
 }
 
 func (i *Identifier) expressionNode()     {}

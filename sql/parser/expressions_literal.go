@@ -180,30 +180,33 @@ func (p *Parser) parsePrimaryExpression() (ast.Expression, error) {
 		}
 
 		// Handle regular identifier or qualified identifier (table.column or table.*)
-		ident := &ast.Identifier{Name: identName, Pos: identPos}
+		ident := &ast.Identifier{Name: identName, Start: identPos, End: p.currentLocation()}
 
 		// Check for qualified identifier (table.column) or qualified asterisk (table.*)
 		if p.isType(models.TokenTypePeriod) {
 			p.advance() // Consume .
 			if p.isType(models.TokenTypeAsterisk) || p.isType(models.TokenTypeMul) {
+				p.advance() // consume asterisk
 				// Handle table.* (qualified asterisk).
 				// Both TokenTypeAsterisk and TokenTypeMul represent '*'.
 				ident = &ast.Identifier{
 					Table: ident.Name,
 					Name:  "*",
-					Pos:   identPos,
+					Start: identPos,
+					End:   p.currentLocation(),
 				}
-				p.advance()
 			} else if p.isIdentifier() || p.isNonReservedKeyword() {
+				value := p.currentToken.Token.Value
+				p.advance() // consume identifier
 				// Handle table.column (qualified identifier).
 				// isNonReservedKeyword covers reserved words valid as column
 				// names after a dot, e.g. table.KEY, schema.INDEX, alias.VIEW.
 				ident = &ast.Identifier{
 					Table: ident.Name,
-					Name:  p.currentToken.Token.Value,
-					Pos:   identPos,
+					Name:  value,
+					Start: identPos,
+					End:   p.currentLocation(),
 				}
-				p.advance()
 			} else {
 				return nil, goerrors.InvalidSyntaxError(
 					"expected column name or * after table qualifier",

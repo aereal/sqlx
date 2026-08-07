@@ -198,9 +198,10 @@ func TestIdentifierPosition(t *testing.T) {
 		t.Fatalf("expected *ast.Identifier, got %T", sel.Columns[0])
 	}
 
-	assertPos(t, "Identifier(id).Pos", ident.Pos)
+	assertPos(t, "Identifier(id).Start", ident.Start)
 	// "id" starts at column 8 in "SELECT id FROM users" (SELECT is 6 chars + space = 7)
-	assertPosEqual(t, "Identifier(id).Pos", ident.Pos, 1, 8)
+	assertPosEqual(t, "Identifier(id).Start", ident.Start, 1, 8)
+	assertPosEqual(t, "Identifier(id).End", ident.End, 1, 11)
 }
 
 func TestQualifiedIdentifierPosition(t *testing.T) {
@@ -218,7 +219,7 @@ func TestQualifiedIdentifierPosition(t *testing.T) {
 	}
 
 	// Qualified identifier should have position of the table qualifier
-	assertPos(t, "Identifier(u.id).Pos", ident.Pos)
+	assertPos(t, "Identifier(u.id).Start", ident.Start)
 	if ident.Name != "id" || ident.Table != "u" {
 		t.Errorf("expected u.id, got %s.%s", ident.Table, ident.Name)
 	}
