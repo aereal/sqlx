@@ -159,28 +159,10 @@ func (p *Parser) parsePrimaryExpression() (ast.Expression, error) {
 		identName := p.currentToken.Token.Value
 		p.advance()
 
-		// Check for function call (identifier followed by parentheses)
-		if p.isType(models.TokenTypeLParen) {
-			// This is a function call
-			funcCall, err := p.parseFunctionCall(identName)
-			if err != nil {
-				return nil, err
-			}
-			// Assign position of function name
-			if funcCall.Pos.IsZero() {
-				funcCall.Pos = identPos
-			}
-
-			// MySQL MATCH(...) AGAINST(...) full-text search
-			if strings.EqualFold(identName, "MATCH") && strings.EqualFold(p.currentToken.Token.Value, "AGAINST") {
-				return p.parseMatchAgainst(funcCall)
-			}
-
-			return funcCall, nil
-		}
-
 		// Handle regular identifier or qualified identifier (table.column or table.*)
 		ident := &ast.Identifier{Name: identName, Start: identPos, End: p.currentLocation()}
+
+		var onlyIdent bool
 
 		// Check for qualified identifier (table.column) or qualified asterisk (table.*)
 		if p.isType(models.TokenTypePeriod) {
@@ -195,6 +177,7 @@ func (p *Parser) parsePrimaryExpression() (ast.Expression, error) {
 					Start: identPos,
 					End:   p.currentLocation(),
 				}
+				onlyIdent = true
 			} else if p.isIdentifier() || p.isNonReservedKeyword() {
 				value := p.currentToken.Token.Value
 				p.advance() // consume identifier
@@ -214,6 +197,26 @@ func (p *Parser) parsePrimaryExpression() (ast.Expression, error) {
 					"Use table.column or table.* syntax",
 				)
 			}
+		}
+
+		// Check for function call (identifier followed by parentheses)
+		if !onlyIdent && p.isType(models.TokenTypeLParen) {
+			// This is a function call
+			funcCall, err := p.parseFunctionCall(identName)
+			if err != nil {
+				return nil, err
+			}
+			// Assign position of function name
+			if funcCall.Pos.IsZero() {
+				funcCall.Pos = identPos
+			}
+
+			// MySQL MATCH(...) AGAINST(...) full-text search
+			if strings.EqualFold(identName, "MATCH") && strings.EqualFold(p.currentToken.Token.Value, "AGAINST") {
+				return p.parseMatchAgainst(funcCall)
+			}
+
+			return funcCall, nil
 		}
 
 		// Check for array subscript or slice syntax: identifier[...]

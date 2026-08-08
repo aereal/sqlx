@@ -191,6 +191,11 @@ func TestParseFunctionCall_EdgeCases(t *testing.T) {
 			sql:       "SELECT COUNT(*), SUM(amount), AVG(price) FROM sales",
 			shouldErr: false,
 		},
+		{
+			name:      "qualified function call",
+			sql:       "SELECT pg_catalog.set_config('search_path', '', false)",
+			shouldErr: false,
+		},
 	}
 
 	for _, tt := range tests {
