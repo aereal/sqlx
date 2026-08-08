@@ -782,6 +782,13 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 				return p.parseSnowflakeStageStatement(upper)
 			}
 		}
+	case models.TokenTypeSet:
+		p.advance()
+		stmt, err := p.parseSetStatement()
+		if err != nil {
+			return nil, err
+		}
+		return stmt, nil
 	case models.TokenTypeIdentifier:
 		// PRAGMA may be tokenized as IDENTIFIER when no dialect-specific keyword
 		// set is active (e.g. when using the default PostgreSQL tokenizer dialect).

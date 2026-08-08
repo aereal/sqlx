@@ -15,6 +15,8 @@
 package ast
 
 import (
+	"fmt"
+
 	"github.com/aereal/sqlx/models"
 )
 
@@ -867,4 +869,46 @@ func (s *AlterSequenceStatement) Children() []Node {
 		return []Node{s.Name}
 	}
 	return nil
+}
+
+const (
+	SetStatementLifetimeSession SetStatementLifetime = iota
+	SetStatementLifetimeLocal
+)
+
+type SetStatementLifetime int
+
+func (lt SetStatementLifetime) String() string {
+	switch lt {
+	case SetStatementLifetimeSession:
+		return "SESSION"
+	case SetStatementLifetimeLocal:
+		return "LOCAL"
+	default:
+		return fmt.Sprintf("SetStatementLifetime(%d)", lt)
+	}
+}
+
+// SetStatement represents:
+//
+//	SET $name = 'value';
+type SetStatement struct {
+	Lifetime       SetStatementLifetime
+	ParameterName  string
+	ParameterValue Expression
+	Start, End     models.Location
+}
+
+var _ Statement = (*SetStatement)(nil)
+
+func (SetStatement) statementNode() {}
+
+func (SetStatement) TokenLiteral() string { return "SET" }
+
+func (s *SetStatement) Children() []Node {
+	children := make([]Node, 0)
+	if s.ParameterValue != nil {
+		children = append(children, s.ParameterValue)
+	}
+	return children
 }
