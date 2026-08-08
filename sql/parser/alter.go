@@ -360,6 +360,36 @@ func (p *Parser) parseAlterTypeStatement() (ast.AlterTypeStatement, error) {
 	return stmt, nil
 }
 
+func (p *Parser) parseAlterDomainStatement() (ast.AlterDomainStatement, error) {
+	name, start, end, err := p.parseQualifiedName()
+	if err != nil {
+		return nil, err
+	}
+
+	if !p.isTokenMatch("OWNER") {
+		return nil, p.expectedError("OWNER")
+	}
+	p.advance() // consume OWNER
+	if !p.isTokenMatch("TO") {
+		return nil, p.expectedError("TO")
+	}
+	p.advance() // consume TO
+
+	userName := p.parseIdent()
+	if userName == nil {
+		return nil, p.expectedError("user name")
+	}
+	stmt := &ast.AlterDomainOwnerToStatement{
+		Name: &ast.Identifier{
+			Name:  name,
+			Start: start,
+			End:   end,
+		},
+		UserName: userName.Name,
+	}
+	return stmt, nil
+}
+
 // parseRoleOption parses a role option
 func (p *Parser) parseRoleOption() (*ast.RoleOption, error) {
 	option := &ast.RoleOption{}

@@ -876,6 +876,43 @@ func (s *AlterTypeOwnerToStatement) SetSpan(span models.Span) {
 
 func (s *AlterTypeOwnerToStatement) TypeName() *Identifier { return s.Name }
 
+type AlterDomainStatement interface {
+	Statement
+	Span() models.Span
+	SetSpan(span models.Span)
+	alterDomainStatement()
+}
+
+// AlterDomainOwnerToStatement represents:
+//
+//	ALTER DOMAIN name [options...]
+type AlterDomainOwnerToStatement struct {
+	Name       *Identifier
+	UserName   string
+	Start, End models.Location
+}
+
+var _ AlterDomainStatement = (*AlterDomainOwnerToStatement)(nil)
+
+func (AlterDomainOwnerToStatement) statementNode() {}
+
+func (AlterDomainOwnerToStatement) alterDomainStatement() {}
+
+func (AlterDomainOwnerToStatement) TokenLiteral() string { return "ALTER" }
+
+func (s *AlterDomainOwnerToStatement) Children() []Node {
+	children := make([]Node, 0)
+	return children
+}
+
+func (s *AlterDomainOwnerToStatement) Span() models.Span {
+	return models.NewSpan(s.Start, s.End)
+}
+
+func (s *AlterDomainOwnerToStatement) SetSpan(span models.Span) {
+	s.Start, s.End = span.Start, span.End
+}
+
 // DropSequenceStatement represents:
 //
 //	DROP SEQUENCE [IF EXISTS | IF NOT EXISTS] name

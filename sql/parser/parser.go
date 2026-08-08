@@ -718,6 +718,15 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 			stmt.SetSpan(models.NewSpan(start, p.currentLocation()))
 			return stmt, nil
 		}
+		if p.IsPostgreSQL() && p.isTokenMatch("DOMAIN") {
+			p.advance() // consume DOMAIN
+			stmt, err := p.parseAlterDomainStatement()
+			if err != nil {
+				return nil, err
+			}
+			stmt.SetSpan(models.NewSpan(start, p.currentLocation()))
+			return stmt, nil
+		}
 		return p.parseAlterTableStmt()
 	case models.TokenTypeMerge:
 		p.advance()
