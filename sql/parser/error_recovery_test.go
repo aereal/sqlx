@@ -15,10 +15,10 @@
 package parser
 
 import (
-	"github.com/aereal/sqlx/models"
 	"strings"
 	"testing"
 
+	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/token"
 )
 

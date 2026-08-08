@@ -326,6 +326,40 @@ func (p *Parser) parseAlterConnectorStatement(stmt *ast.AlterStatement) (*ast.Al
 	return stmt, nil
 }
 
+func (p *Parser) parseAlterTypeStatement() (ast.AlterTypeStatement, error) {
+	name, start, end, err := p.parseQualifiedName()
+	if err != nil {
+		return nil, err
+	}
+	switch {
+	case p.isTokenMatch("RENAME"), p.isTokenMatch("SET"), p.isTokenMatch("ADD"):
+		return nil, p.expectedError("currently only OWNER TO command is supported")
+	}
+	if !p.isTokenMatch("OWNER") {
+		return nil, p.expectedError("OWNER")
+	}
+	p.advance() // consume OWNER
+	if !p.isTokenMatch("TO") {
+		return nil, p.expectedError("TO")
+	}
+	p.advance() // consume TO
+
+	userName := p.parseIdent()
+	if userName == nil {
+		return nil, p.expectedError("user name")
+	}
+
+	stmt := &ast.AlterTypeOwnerToStatement{
+		Name: &ast.Identifier{
+			Name:  name,
+			Start: start,
+			End:   end,
+		},
+		UserName: userName.Name,
+	}
+	return stmt, nil
+}
+
 // parseRoleOption parses a role option
 func (p *Parser) parseRoleOption() (*ast.RoleOption, error) {
 	option := &ast.RoleOption{}

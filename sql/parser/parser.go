@@ -695,7 +695,7 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 		}
 		return stmt, nil
 	case models.TokenTypeAlter:
-		stmtPos := p.currentLocation()
+		start := p.currentLocation()
 		p.advance()
 		// MariaDB: ALTER SEQUENCE [IF EXISTS] name [options...]
 		if p.isMariaDB() && p.isTokenMatch("SEQUENCE") {
@@ -705,8 +705,17 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 				return nil, err
 			}
 			if stmt.Pos.IsZero() {
-				stmt.Pos = stmtPos
+				stmt.Pos = start
 			}
+			return stmt, nil
+		}
+		if p.IsPostgreSQL() && p.isTokenMatch("TYPE") {
+			p.advance() // consume TYPE
+			stmt, err := p.parseAlterTypeStatement()
+			if err != nil {
+				return nil, err
+			}
+			stmt.SetSpan(models.NewSpan(start, p.currentLocation()))
 			return stmt, nil
 		}
 		return p.parseAlterTableStmt()

@@ -834,6 +834,48 @@ func (s *CreateCompositeTypeStatement) SetSpan(span models.Span) {
 }
 func (s *CreateCompositeTypeStatement) TypeName() *Identifier { return s.Name }
 
+type AlterTypeStatement interface {
+	Statement
+	TypeName() *Identifier
+	Span() models.Span
+	SetSpan(span models.Span)
+	alterTypeStatement()
+}
+
+// AlterTypeOwnerToStatement represents:
+//
+//	ALTER TYPE name [options...]
+type AlterTypeOwnerToStatement struct {
+	Name       *Identifier
+	UserName   string
+	Start, End models.Location
+}
+
+var _ AlterTypeStatement = (*AlterTypeOwnerToStatement)(nil)
+
+func (AlterTypeOwnerToStatement) statementNode() {}
+
+func (AlterTypeOwnerToStatement) alterTypeStatement() {}
+
+func (AlterTypeOwnerToStatement) TokenLiteral() string { return "ALTER" }
+
+func (s *AlterTypeOwnerToStatement) Children() []Node {
+	children := make([]Node, 0)
+	if s.Name != nil {
+		children = append(children, s.Name)
+	}
+	return children
+}
+
+func (s *AlterTypeOwnerToStatement) Span() models.Span { return models.NewSpan(s.Start, s.End) }
+
+func (s *AlterTypeOwnerToStatement) SetSpan(span models.Span) {
+	s.Start = span.Start
+	s.End = span.End
+}
+
+func (s *AlterTypeOwnerToStatement) TypeName() *Identifier { return s.Name }
+
 // DropSequenceStatement represents:
 //
 //	DROP SEQUENCE [IF EXISTS | IF NOT EXISTS] name
