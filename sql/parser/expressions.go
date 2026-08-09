@@ -22,7 +22,6 @@
 package parser
 
 import (
-	"fmt"
 	"strings"
 
 	goerrors "github.com/aereal/sqlx/errors"
@@ -231,8 +230,12 @@ func (p *Parser) parseJSONExpression() (ast.Expression, error) {
 	for p.isType(models.TokenTypeDoubleColon) {
 		p.advance() // Consume ::
 
+		if !p.isIdentifier() && !p.isDataTypeKeyword() {
+			return nil, p.expectedError("data type")
+		}
+
 		// Parse the target data type
-		dataType, err := p.parseDataType()
+		dataType, err := p.parseColumnTypeName()
 		if err != nil {
 			return nil, err
 		}
@@ -270,7 +273,11 @@ func (p *Parser) parseJSONExpression() (ast.Expression, error) {
 		for p.isType(models.TokenTypeDoubleColon) {
 			p.advance() // Consume ::
 
-			dataType, err := p.parseDataType()
+			if !p.isIdentifier() && !p.isDataTypeKeyword() {
+				return nil, p.expectedError("data type")
+			}
+
+			dataType, err := p.parseColumnTypeName()
 			if err != nil {
 				return nil, err
 			}
@@ -283,70 +290,6 @@ func (p *Parser) parseJSONExpression() (ast.Expression, error) {
 	}
 
 	return left, nil
-}
-
-// parseDataType parses a SQL data type for CAST or :: expressions
-// Handles: simple types (INTEGER, TEXT), parameterized types (VARCHAR(100), NUMERIC(10,2))
-func (p *Parser) parseDataType() (string, error) {
-	// Data type can be an identifier or a keyword like INT, VARCHAR, etc.
-	if !p.isIdentifier() && !p.isDataTypeKeyword() {
-		return "", p.expectedError("data type")
-	}
-
-	// Use strings.Builder for efficient string concatenation
-	var sb strings.Builder
-	sb.WriteString(p.currentToken.Token.Value)
-	p.advance() // Consume type name
-
-	// Check for type parameters (e.g., VARCHAR(100), DECIMAL(10,2))
-	if p.isType(models.TokenTypeLParen) {
-		p.advance() // Consume (
-		sb.WriteByte('(')
-
-		paramCount := 0
-		for !p.isType(models.TokenTypeRParen) {
-			if paramCount > 0 {
-				if !p.isType(models.TokenTypeComma) {
-					return "", p.expectedError(", or )")
-				}
-				sb.WriteString(p.currentToken.Token.Value)
-				p.advance() // Consume comma
-			}
-
-			// Parse parameter (should be a number or identifier)
-			// Use token type constants for consistency
-			if !p.isType(models.TokenTypeNumber) && !p.isType(models.TokenTypeIdentifier) && !p.isNumericLiteral() {
-				return "", goerrors.InvalidSyntaxError(
-					fmt.Sprintf("expected numeric type parameter, got '%s'", p.currentToken.Token.Value),
-					p.currentLocation(),
-					"Use TYPE(precision[, scale]) syntax",
-				)
-			}
-
-			sb.WriteString(p.currentToken.Token.Value)
-			p.advance()
-			paramCount++
-		}
-
-		sb.WriteByte(')')
-
-		if !p.isType(models.TokenTypeRParen) {
-			return "", p.expectedError(")")
-		}
-		p.advance() // Consume )
-	}
-
-	// Check for array type suffix (e.g., INTEGER[], TEXT[])
-	if p.isType(models.TokenTypeLBracket) {
-		p.advance() // Consume [
-		if !p.isType(models.TokenTypeRBracket) {
-			return "", p.expectedError("]")
-		}
-		p.advance() // Consume ]
-		sb.WriteString("[]")
-	}
-
-	return sb.String(), nil
 }
 
 // isNumericLiteral checks if current token is a numeric literal (handles INT/NUMBER token types)

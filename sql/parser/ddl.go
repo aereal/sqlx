@@ -83,7 +83,7 @@ func (p *Parser) parseCreateStatement() (ast.Statement, error) {
 		}
 		p.advance()                     // Consume INDEX
 		return p.parseCreateIndex(true) // Unique
-	} else if p.isMariaDB() && p.isTokenMatch("SEQUENCE") {
+	} else if (p.isMariaDB() || p.IsPostgreSQL()) && p.isTokenMatch("SEQUENCE") {
 		seqPos := p.currentLocation() // position of SEQUENCE token
 		p.advance()                   // Consume SEQUENCE
 		stmt, err := p.parseCreateSequenceStatement(orReplace)
@@ -666,6 +666,43 @@ func (p *Parser) parseCreateCompositeTypeStatement() (*ast.CreateCompositeTypeSt
 		return nil, p.expectedError(")")
 	}
 
+	return stmt, nil
+}
+
+// parseCreateSequenceStatement parses:
+//
+//	CREATE [OR REPLACE] SEQUENCE [IF NOT EXISTS] name [options...]
+//
+// The caller has already consumed CREATE and SEQUENCE.
+func (p *Parser) parseCreateSequenceStatement(orReplace bool) (*ast.CreateSequenceStatement, error) {
+	stmt := ast.NewCreateSequenceStatement()
+	stmt.OrReplace = orReplace
+
+	// IF NOT EXISTS
+	if strings.EqualFold(p.currentToken.Token.Value, "IF") {
+		p.advance()
+		if !strings.EqualFold(p.currentToken.Token.Value, "NOT") {
+			return nil, p.expectedError("NOT")
+		}
+		p.advance()
+		if !strings.EqualFold(p.currentToken.Token.Value, "EXISTS") {
+			return nil, p.expectedError("EXISTS")
+		}
+		p.advance()
+		stmt.IfNotExists = true
+	}
+
+	name, nameStart, nameEnd, err := p.parseQualifiedName()
+	if err != nil {
+		return nil, err
+	}
+	stmt.Name = &ast.Identifier{Name: name, Start: nameStart, End: nameEnd}
+
+	opts, err := p.parseSequenceOptions()
+	if err != nil {
+		return nil, err
+	}
+	stmt.Options = opts
 	return stmt, nil
 }
 

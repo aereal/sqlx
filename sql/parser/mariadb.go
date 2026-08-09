@@ -47,43 +47,6 @@ func (p *Parser) isMariaDBClauseStart() bool {
 	return false
 }
 
-// parseCreateSequenceStatement parses:
-//
-//	CREATE [OR REPLACE] SEQUENCE [IF NOT EXISTS] name [options...]
-//
-// The caller has already consumed CREATE and SEQUENCE.
-func (p *Parser) parseCreateSequenceStatement(orReplace bool) (*ast.CreateSequenceStatement, error) {
-	stmt := ast.NewCreateSequenceStatement()
-	stmt.OrReplace = orReplace
-
-	// IF NOT EXISTS
-	if strings.EqualFold(p.currentToken.Token.Value, "IF") {
-		p.advance()
-		if !strings.EqualFold(p.currentToken.Token.Value, "NOT") {
-			return nil, p.expectedError("NOT")
-		}
-		p.advance()
-		if !strings.EqualFold(p.currentToken.Token.Value, "EXISTS") {
-			return nil, p.expectedError("EXISTS")
-		}
-		p.advance()
-		stmt.IfNotExists = true
-	}
-
-	name := p.parseIdent()
-	if name == nil || name.Name == "" {
-		return nil, p.expectedError("sequence name")
-	}
-	stmt.Name = name
-
-	opts, err := p.parseSequenceOptions()
-	if err != nil {
-		return nil, err
-	}
-	stmt.Options = opts
-	return stmt, nil
-}
-
 // parseDropSequenceStatement parses: DROP SEQUENCE [IF EXISTS | IF NOT EXISTS] name
 // The caller has already consumed DROP and SEQUENCE.
 func (p *Parser) parseDropSequenceStatement() (*ast.DropSequenceStatement, error) {

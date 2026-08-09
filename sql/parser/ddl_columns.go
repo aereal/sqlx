@@ -18,11 +18,13 @@
 package parser
 
 import (
+	"slices"
 	"strings"
 
 	goerrors "github.com/aereal/sqlx/errors"
 	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
+	"github.com/aereal/sqlx/sql/dialect"
 	"github.com/aereal/sqlx/sql/keywords"
 )
 
@@ -63,59 +65,15 @@ func (p *Parser) parseColumnDef() (*ast.ColumnDef, error) {
 		)
 	}
 
-	// Parse data type (including parameterized types like VARCHAR(100), DECIMAL(10,2)).
-	// Use parseColumnName to accept keyword-based type names such as INTEGER, TEXT, REAL.
-	dataType := p.parseColumnName()
-	if dataType == nil {
-		return nil, goerrors.ExpectedTokenError(
-			"data type",
-			p.currentToken.Token.Type.String(),
-			p.currentLocation(),
-			"",
-		)
-	}
-
-	dataTypeStr := dataType.Name
-
-	// Check for type parameters. The simple form is VARCHAR(100) or
-	// DECIMAL(10,2), but ClickHouse also has nested/parameterised types like
-	// Array(Nullable(String)), Map(String, Array(UInt32)), Tuple(a UInt8, b String),
-	// FixedString(16), DateTime64(3, 'UTC'), LowCardinality(String), Decimal(38, 18),
-	// and engines like ReplicatedMergeTree('/path', '{replica}'). Use a depth-tracking
-	// token collector that round-trips the type string.
-	if p.isType(models.TokenTypeLParen) {
-		args, err := p.parseTypeArgsString()
-		if err != nil {
-			return nil, err
-		}
-		dataTypeStr += args
+	dataTypeStr, err := p.parseColumnTypeName()
+	if err != nil {
+		return nil, err
 	}
 
 	colDef := &ast.ColumnDef{
 		Name:  name.Name,
 		Type:  dataTypeStr,
 		Start: start,
-	}
-
-	// ClickHouse column options that may appear between the type and the
-	// standard constraint list: CODEC(...), DEFAULT expr, MATERIALIZED expr,
-	// ALIAS expr, EPHEMERAL expr, TTL expr. Consume permissively; they are
-	// appended to the type string for now so formatters can round-trip, and
-	// not yet modeled on the AST.
-	if p.dialect == string(keywords.DialectClickHouse) {
-		for {
-			upper := strings.ToUpper(p.currentToken.Token.Value)
-			if upper == "CODEC" && p.peekToken().Token.Type == models.TokenTypeLParen {
-				p.advance() // CODEC
-				args, err := p.parseTypeArgsString()
-				if err != nil {
-					return nil, err
-				}
-				colDef.Type += " CODEC" + args
-				continue
-			}
-			break
-		}
 	}
 
 	// Parse column constraints
@@ -132,6 +90,193 @@ func (p *Parser) parseColumnDef() (*ast.ColumnDef, error) {
 
 	colDef.End = p.currentLocation()
 	return colDef, nil
+}
+
+func (p *Parser) parseColumnTypeName() (string, error) {
+	// Parse data type (including parameterized types like VARCHAR(100), DECIMAL(10,2)).
+	// Use parseColumnName to accept keyword-based type names such as INTEGER, TEXT, REAL.
+	dataType := p.parseColumnName()
+	if dataType == nil {
+		return "", p.expectedError("data type")
+	}
+
+	typName := new(strings.Builder)
+	typName.WriteString(dataType.Name)
+
+	if p.matchType(models.TokenTypePeriod) {
+		typName.WriteString(".")
+		ident := p.parseColumnName()
+		if ident == nil {
+			return "", p.expectedError("data type")
+		}
+		typName.WriteString(ident.Name)
+	}
+
+	if p.dialectTyped == dialect.PostgreSQL {
+		strings.EqualFold(typName.String(), "character")
+		switch {
+		case strings.EqualFold(typName.String(), "character"):
+			if p.isTokenMatch("varying") {
+				typName.WriteString(" ")
+				typName.WriteString(p.currentToken.Token.Value)
+				p.advance()
+			}
+		case strings.EqualFold(typName.String(), "double"):
+			if p.isTokenMatch("precision") {
+				typName.WriteString(" ")
+				typName.WriteString(p.currentToken.Token.Value)
+				p.advance()
+			}
+		case strings.EqualFold(typName.String(), "interval"):
+			if err := p.parsePGIntervalDefinition(typName); err != nil {
+				return "", err
+			}
+		case strings.EqualFold(typName.String(), "timestamp"), strings.EqualFold(typName.String(), "time"):
+			if err := p.parsePGTimestampDefinition(typName); err != nil {
+				return "", err
+			}
+		}
+	}
+
+	// Check for type parameters. The simple form is VARCHAR(100) or
+	// DECIMAL(10,2), but ClickHouse also has nested/parameterised types like
+	// Array(Nullable(String)), Map(String, Array(UInt32)), Tuple(a UInt8, b String),
+	// FixedString(16), DateTime64(3, 'UTC'), LowCardinality(String), Decimal(38, 18),
+	// and engines like ReplicatedMergeTree('/path', '{replica}'). Use a depth-tracking
+	// token collector that round-trips the type string.
+	if p.isType(models.TokenTypeLParen) {
+		args, err := p.parseTypeArgsString()
+		if err != nil {
+			return "", err
+		}
+		typName.WriteString(args)
+	}
+
+	// ClickHouse column options that may appear between the type and the
+	// standard constraint list: CODEC(...), DEFAULT expr, MATERIALIZED expr,
+	// ALIAS expr, EPHEMERAL expr, TTL expr. Consume permissively; they are
+	// appended to the type string for now so formatters can round-trip, and
+	// not yet modeled on the AST.
+	if p.dialect == string(keywords.DialectClickHouse) {
+		for {
+			upper := strings.ToUpper(p.currentToken.Token.Value)
+			if upper == "CODEC" && p.peekToken().Token.Type == models.TokenTypeLParen {
+				p.advance() // CODEC
+				args, err := p.parseTypeArgsString()
+				if err != nil {
+					return "", err
+				}
+				typName.WriteString(" CODEC")
+				typName.WriteString(args)
+				continue
+			}
+			break
+		}
+	}
+
+	if p.isType(models.TokenTypeLBracket) {
+		p.advance() // consume [
+		if !p.isType(models.TokenTypeRBracket) {
+			return "", p.expectedError("]")
+		}
+		p.advance() // consume ]
+		typName.WriteString("[]")
+	}
+
+	return typName.String(), nil
+}
+
+func (p *Parser) parsePGTimestampDefinition(typName *strings.Builder) error {
+	if p.isType(models.TokenTypeLParen) {
+		args, err := p.parseTypeArgsString()
+		if err != nil {
+			return err
+		}
+		typName.WriteString(args)
+	}
+
+	if !p.isTokenMatch("with") && !p.isTokenMatch("without") {
+		return nil
+	}
+
+	typName.WriteString(" ")
+	typName.WriteString(p.currentToken.Token.Value)
+	p.advance() // consume WITH/WITHOUT
+
+	idTime := p.parseIdentAsString()
+	if !strings.EqualFold(idTime, "time") {
+		return p.expectedError("TIME")
+	}
+	typName.WriteString(" ")
+	typName.WriteString(idTime)
+
+	idZone := p.parseIdentAsString()
+	if !strings.EqualFold(idZone, "zone") {
+		return p.expectedError("ZONE")
+	}
+	typName.WriteString(" ")
+	typName.WriteString(idZone)
+	return nil
+}
+
+func (p *Parser) parsePGIntervalDefinition(typName *strings.Builder) error {
+	switch {
+	case p.isTokenMatch("MONTH") || p.isTokenMatch("SECOND"):
+		typName.WriteString(" ")
+		typName.WriteString(p.currentToken.Token.Value)
+		p.advance() // consume MONTH/SECOND
+	case p.isTokenMatch("DAY"):
+		if err := p.parsePGIntervalRange(typName, "HOUR", "MINUTE", "SECOND"); err != nil {
+			return err
+		}
+	case p.isTokenMatch("HOUR"):
+		if err := p.parsePGIntervalRange(typName, "MINUTE", "SECOND"); err != nil {
+			return err
+		}
+	case p.isTokenMatch("MINUTE"):
+		if err := p.parsePGIntervalRange(typName, "SECOND"); err != nil {
+			return err
+		}
+	case p.isTokenMatch("YEAR"):
+		if err := p.parsePGIntervalRange(typName, "MONTH"); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (p *Parser) parsePGIntervalRange(typName *strings.Builder, rangeFinite string, additionalRangeFinites ...string) error {
+	typName.WriteString(" ")
+	typName.WriteString(p.currentToken.Token.Value)
+	p.advance() // consume range start
+	if !p.isTokenMatch("TO") {
+		return nil
+	}
+	typName.WriteString(" ")
+	typName.WriteString(p.currentToken.Token.Value)
+	p.advance() // consume TO
+
+	parsedEnd := p.parseIdentAsString()
+	if !strings.EqualFold(parsedEnd, rangeFinite) && !slices.ContainsFunc(additionalRangeFinites, func(s string) bool { return strings.EqualFold(s, parsedEnd) }) {
+		msg := new(strings.Builder)
+		var seen bool
+		for _, fin := range additionalRangeFinites {
+			if seen {
+				msg.WriteString(", ")
+			}
+			msg.WriteString(fin)
+			seen = true
+		}
+		if seen {
+			msg.WriteString(", or ")
+		}
+		msg.WriteString(rangeFinite)
+		return p.expectedError(msg.String())
+	}
+
+	typName.WriteString(" ")
+	typName.WriteString(parsedEnd)
+	return nil
 }
 
 // parseColumnConstraint parses a single column constraint

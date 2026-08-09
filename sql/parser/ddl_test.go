@@ -21,6 +21,7 @@ import (
 	"testing"
 
 	"github.com/aereal/sqlx/sql/ast"
+	"github.com/aereal/sqlx/sql/keywords"
 	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
@@ -571,6 +572,147 @@ func TestParser_CreateTableSimple(t *testing.T) {
 
 			if stmt.Temporary != tt.temporary {
 				t.Errorf("expected Temporary=%v, got %v", tt.temporary, stmt.Temporary)
+			}
+		})
+	}
+}
+
+func TestParser_CreateTable_postgresql_column(t *testing.T) {
+	tests := []struct {
+		name           string
+		sql            string
+		tableName      string
+		wantColumnDefs []ast.ColumnDef
+		shouldErr      bool
+	}{
+		{
+			name:      "simple CREATE TABLE",
+			sql:       "CREATE TABLE users (id INT, name VARCHAR(255), age SMALLINT)",
+			tableName: "users",
+			shouldErr: false,
+			wantColumnDefs: []ast.ColumnDef{
+				{Name: "id", Type: "INT"},
+				{Name: "name", Type: "VARCHAR(255)"},
+				{Name: "age", Type: "SMALLINT"},
+			},
+		},
+		{
+			name:      "character varying",
+			sql:       "CREATE TABLE users (id INT, name character varying(255), age SMALLINT)",
+			tableName: "users",
+			shouldErr: false,
+			wantColumnDefs: []ast.ColumnDef{
+				{Name: "id", Type: "INT"},
+				{Name: "name", Type: "character varying(255)"},
+				{Name: "age", Type: "SMALLINT"},
+			},
+		},
+		{
+			name:      "double precision",
+			sql:       "CREATE TABLE users (id INT, rate double precision, age SMALLINT)",
+			tableName: "users",
+			shouldErr: false,
+			wantColumnDefs: []ast.ColumnDef{
+				{Name: "id", Type: "INT"},
+				{Name: "rate", Type: "double precision"},
+				{Name: "age", Type: "SMALLINT"},
+			},
+		},
+		{
+			name:      "timestamp with zone",
+			sql:       "CREATE TABLE users (created_at timestamp with time zone not null, age SMALLINT)",
+			tableName: "users",
+			wantColumnDefs: []ast.ColumnDef{
+				{Name: "created_at", Type: "timestamp with time zone"},
+				{Name: "age", Type: "SMALLINT"},
+			},
+		},
+		{
+			name:      "timestamp with zone w/precision",
+			sql:       "CREATE TABLE users (created_at timestamp(3) with time zone not null, age SMALLINT)",
+			tableName: "users",
+			wantColumnDefs: []ast.ColumnDef{
+				{Name: "created_at", Type: "timestamp(3) with time zone"},
+				{Name: "age", Type: "SMALLINT"},
+			},
+		},
+		{
+			name:      "duration with fields",
+			sql:       "CREATE TABLE users (dur INTERVAL YEAR TO MONTH, age SMALLINT)",
+			tableName: "users",
+			wantColumnDefs: []ast.ColumnDef{
+				{Name: "dur", Type: "INTERVAL YEAR TO MONTH"},
+				{Name: "age", Type: "SMALLINT"},
+			},
+		},
+		{
+			name:      "qualified type",
+			sql:       "CREATE TABLE users (age public.unsigned_smallint NOT NULL)",
+			tableName: "users",
+			wantColumnDefs: []ast.ColumnDef{
+				{Name: "age", Type: "public.unsigned_smallint"},
+			},
+		},
+		{
+			name:           "ng/varying after int",
+			sql:            "CREATE TABLE users (name int varying(255))",
+			tableName:      "users",
+			shouldErr:      true,
+			wantColumnDefs: nil,
+		},
+	}
+
+	for _, tc := range tests {
+		t.Run(tc.name, func(t *testing.T) {
+			d := keywords.DialectPostgreSQL
+			tkz, err := tokenizer.NewWithDialect(d)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			tokens, err := tkz.Tokenize([]byte(tc.sql))
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			parser := NewParser(WithDialect(string(d)))
+			result, err := parser.ParseFromModelTokens(tokens)
+			if tc.shouldErr {
+				if err == nil {
+					t.Fatal("expected error but got nothing")
+				}
+				return
+			}
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if len(result.Statements) != 1 {
+				t.Fatalf("expected 1 statement, got %d", len(result.Statements))
+			}
+
+			stmt, ok := result.Statements[0].(*ast.CreateTableStatement)
+			if !ok {
+				t.Fatalf("expected CreateTableStatement, got %T", result.Statements[0])
+			}
+
+			if stmt.Table.Name != tc.tableName {
+				t.Errorf("expected table name %q, got %q", tc.tableName, stmt.Table.Name)
+			}
+
+			if len(stmt.Columns) != len(tc.wantColumnDefs) {
+				t.Fatalf("len(Columns): want=%d got=%d", len(tc.wantColumnDefs), len(stmt.Columns))
+			}
+
+			for i := range stmt.Columns {
+				got := stmt.Columns[i]
+				want := tc.wantColumnDefs[i]
+				if got.Name != want.Name {
+					t.Errorf("Columns[%d].Name: want=%s got=%s", i, want.Name, got.Name)
+				}
+				if got.Type != want.Type {
+					t.Errorf("Columns[%d].Type: want=%s got=%s", i, want.Type, got.Type)
+				}
 			}
 		})
 	}
