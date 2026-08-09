@@ -44,7 +44,11 @@ func (p *Parser) parseAlterStatement() (*ast.AlterStatement, error) {
 
 // parseAlterTableStatement parses ALTER TABLE statements
 func (p *Parser) parseAlterTableStatement(stmt *ast.AlterStatement) (*ast.AlterStatement, error) {
-	stmt.Name = p.parseIdentAsString()
+	tableName, _, _, err := p.parseQualifiedName()
+	if err != nil {
+		return nil, err
+	}
+	stmt.Name = tableName
 	op := &ast.AlterTableOperation{}
 
 	switch {
@@ -135,6 +139,21 @@ func (p *Parser) parseAlterTableStatement(stmt *ast.AlterStatement) (*ast.AlterS
 			return nil, err
 		}
 		op.ColumnDef = colDef
+
+	case p.IsPostgreSQL() && p.isTokenMatch("OWNER"):
+		p.advance() // consume OWNER
+		if !p.isTokenMatch("TO") {
+			return nil, p.expectedError("TO")
+		}
+		p.advance() // consume TO
+
+		op.Type = ast.OwnerTo
+
+		userName := p.parseIdent()
+		if userName == nil {
+			return nil, p.expectedError("user name")
+		}
+		op.UserName = userName.Name
 
 	default:
 		return nil, p.expectedError("ADD, DROP, RENAME, or ALTER")

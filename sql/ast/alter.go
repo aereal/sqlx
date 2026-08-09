@@ -153,6 +153,7 @@ type AlterTableOperation struct {
 	ColumnName       *Ident                // Used for AlterColumn
 	AlterColumnOp    *AlterColumnOperation // Used for AlterColumn
 	CascadeDrops     bool                  // Used for DropColumn, DropConstraint
+	UserName         string                // Used for OwnerTo
 }
 
 func (a *AlterTableOperation) alterOperationNode() {}
@@ -200,6 +201,7 @@ const (
 	RenameConstraint
 	RenamePartitions
 	RenameTable
+	OwnerTo
 )
 
 // RoleOption represents an option in ROLE statement
