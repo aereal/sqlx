@@ -697,8 +697,8 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 	case models.TokenTypeAlter:
 		start := p.currentLocation()
 		p.advance()
-		// MariaDB: ALTER SEQUENCE [IF EXISTS] name [options...]
-		if p.isMariaDB() && p.isTokenMatch("SEQUENCE") {
+		// ALTER SEQUENCE [IF EXISTS] name [options...]
+		if (p.isMariaDB() || p.IsPostgreSQL()) && p.isTokenMatch("SEQUENCE") {
 			p.advance() // Consume SEQUENCE
 			stmt, err := p.parseAlterSequenceStatement()
 			if err != nil {

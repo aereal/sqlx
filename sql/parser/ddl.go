@@ -24,6 +24,7 @@ package parser
 import (
 	"strings"
 
+	goerrors "github.com/aereal/sqlx/errors"
 	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
 	"github.com/aereal/sqlx/sql/keywords"
@@ -704,6 +705,139 @@ func (p *Parser) parseCreateSequenceStatement(orReplace bool) (*ast.CreateSequen
 	}
 	stmt.Options = opts
 	return stmt, nil
+}
+
+// parseAlterSequenceStatement parses: ALTER SEQUENCE [IF EXISTS] name [options...]
+// The caller has already consumed ALTER and SEQUENCE.
+func (p *Parser) parseAlterSequenceStatement() (*ast.AlterSequenceStatement, error) {
+	stmt := &ast.AlterSequenceStatement{}
+
+	if strings.EqualFold(p.currentToken.Token.Value, "IF") {
+		p.advance()
+		if !strings.EqualFold(p.currentToken.Token.Value, "EXISTS") {
+			return nil, p.expectedError("EXISTS")
+		}
+		p.advance()
+		stmt.IfExists = true
+	}
+
+	name, nameStart, nameEnd, err := p.parseQualifiedName()
+	if err != nil {
+		return nil, err
+	}
+	stmt.Name = &ast.Identifier{Name: name, Start: nameStart, End: nameEnd}
+
+	opts, err := p.parseSequenceOptions()
+	if err != nil {
+		return nil, err
+	}
+	stmt.Options = opts
+	return stmt, nil
+}
+
+// parseSequenceOptions parses sequence option keywords until no more are found.
+func (p *Parser) parseSequenceOptions() (ast.SequenceOptions, error) {
+	var opts ast.SequenceOptions
+	for {
+		if p.isType(models.TokenTypeSemicolon) || p.isType(models.TokenTypeEOF) {
+			break
+		}
+
+		word := strings.ToUpper(p.currentToken.Token.Value)
+		switch word {
+		case "START":
+			p.advance()
+			with := p.isTokenMatch("WITH")
+			if with {
+				p.advance()
+			}
+			lit, err := p.parseNumericLit()
+			if err != nil {
+				return opts, err
+			}
+			opts.StartWith = lit
+		case "INCREMENT":
+			p.advance()
+			if strings.EqualFold(p.currentToken.Token.Value, "BY") {
+				p.advance()
+			}
+			lit, err := p.parseNumericLit()
+			if err != nil {
+				return opts, err
+			}
+			opts.IncrementBy = lit
+		case "MINVALUE":
+			p.advance()
+			lit, err := p.parseNumericLit()
+			if err != nil {
+				return opts, err
+			}
+			opts.MinValue = lit
+		case "MAXVALUE":
+			p.advance()
+			lit, err := p.parseNumericLit()
+			if err != nil {
+				return opts, err
+			}
+			opts.MaxValue = lit
+		case "NO":
+			p.advance()
+			sub := strings.ToUpper(p.currentToken.Token.Value)
+			p.advance()
+			switch sub {
+			case "MINVALUE":
+				opts.MinValue = nil
+			case "MAXVALUE":
+				opts.MaxValue = nil
+			case "CYCLE":
+				opts.CycleMode = ast.NoCycleBehavior
+			case "CACHE":
+				opts.Cache = nil
+				opts.NoCache = true
+			default:
+				return opts, p.expectedError("MINVALUE, MAXVALUE, CYCLE, or CACHE after NO")
+			}
+		case "CYCLE":
+			p.advance()
+			opts.CycleMode = ast.CycleBehavior
+		case "NOCYCLE":
+			p.advance()
+			opts.CycleMode = ast.NoCycleBehavior
+		case "CACHE":
+			p.advance()
+			lit, err := p.parseNumericLit()
+			if err != nil {
+				return opts, err
+			}
+			opts.Cache = lit
+		case "NOCACHE":
+			p.advance()
+			opts.NoCache = true
+		case "RESTART":
+			p.advance()
+			if strings.EqualFold(p.currentToken.Token.Value, "WITH") {
+				p.advance()
+				lit, err := p.parseNumericLit()
+				if err != nil {
+					return opts, err
+				}
+				opts.RestartWith = lit
+			} else {
+				opts.Restart = true
+			}
+		default:
+			return opts, nil
+		}
+	}
+	// Validate: CACHE n and NOCACHE are mutually exclusive.
+	if opts.Cache != nil && opts.NoCache {
+		return opts, goerrors.InvalidSyntaxError(
+			"contradictory sequence options: CACHE and NOCACHE cannot both be specified",
+			p.currentLocation(),
+			"",
+		)
+	}
+	return opts, nil
 }
 
 // parsePartitionByClause parses PARTITION BY RANGE/LIST/HASH (columns)

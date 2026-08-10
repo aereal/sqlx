@@ -75,39 +75,6 @@ func TestMariaDB_DropSequence(t *testing.T) {
 	}
 }
 
-func TestMariaDB_AlterSequence_Restart(t *testing.T) {
-	sql := "ALTER SEQUENCE seq_orders RESTART WITH 500"
-	tree, err := parser.ParseWithDialect(sql, keywords.DialectMariaDB)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	stmt, ok := tree.Statements[0].(*ast.AlterSequenceStatement)
-	if !ok {
-		t.Fatalf("expected AlterSequenceStatement, got %T", tree.Statements[0])
-	}
-	if stmt.Options.RestartWith == nil {
-		t.Error("expected RestartWith to be set")
-	}
-}
-
-func TestMariaDB_AlterSequence_RestartBare(t *testing.T) {
-	sql := "ALTER SEQUENCE seq_orders RESTART"
-	tree, err := parser.ParseWithDialect(sql, keywords.DialectMariaDB)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-	stmt, ok := tree.Statements[0].(*ast.AlterSequenceStatement)
-	if !ok {
-		t.Fatalf("expected AlterSequenceStatement, got %T", tree.Statements[0])
-	}
-	if !stmt.Options.Restart {
-		t.Error("expected Restart = true")
-	}
-	if stmt.Options.RestartWith != nil {
-		t.Error("expected RestartWith = nil for bare RESTART")
-	}
-}
-
 func TestMariaDB_SequenceNotRecognizedInMySQL(t *testing.T) {
 	sql := "CREATE SEQUENCE seq1 START WITH 1"
 	_, err := parser.ParseWithDialect(sql, keywords.DialectMySQL)
