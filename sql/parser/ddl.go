@@ -27,6 +27,7 @@ import (
 	goerrors "github.com/aereal/sqlx/errors"
 	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
+	"github.com/aereal/sqlx/sql/dialect"
 	"github.com/aereal/sqlx/sql/keywords"
 )
 
@@ -713,6 +714,9 @@ func (p *Parser) parseAlterSequenceStatement() (*ast.AlterSequenceStatement, err
 	}
 
 	name, err := p.parseQualifiedIdentifier()
+	if err != nil {
+		return nil, err
+	}
 	stmt.Name = name
 
 	opts, err := p.parseSequenceOptions()
@@ -813,6 +817,20 @@ func (p *Parser) parseSequenceOptions() (ast.SequenceOptions, error) {
 			} else {
 				opts.Restart = true
 			}
+		case "OWNER":
+			if p.dialectTyped != dialect.PostgreSQL {
+				return opts, nil
+			}
+			p.advance() // consume OWNER
+			if !p.isTokenMatch("TO") {
+				return opts, p.expectedError("TO")
+			}
+			p.advance() // consume TO
+			user := p.parseIdentAsString()
+			if user == "" {
+				return opts, p.expectedError("user name")
+			}
+			opts.OwnerName = user
 		default:
 			return opts, nil
 		}

@@ -713,6 +713,7 @@ type SequenceOptions struct {
 	NoCache     bool          // NOCACHE (explicit; Cache=nil alone is ambiguous)
 	Restart     bool          // bare RESTART (reset to start value)
 	RestartWith *LiteralValue // RESTART WITH n (explicit restart value)
+	OwnerName   string
 }
 
 // CreateSequenceStatement represents:

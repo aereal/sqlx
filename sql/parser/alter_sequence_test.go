@@ -68,3 +68,57 @@ func TestAlterSequenceStatement(t *testing.T) {
 		}
 	}
 }
+
+func TestAlterSequenceStatement_ownerTo(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name          string
+		sql           string
+		dialect       keywords.SQLDialect
+		wantOwnerName string
+		shouldErr     bool
+	}{
+		{
+			name:          "MariaDB/owner to",
+			sql:           "ALTER SEQUENCE public.seq_orders OWNER TO app",
+			dialect:       keywords.DialectMariaDB,
+			wantOwnerName: "",
+			shouldErr:     true,
+		},
+		{
+			name:          "PostgreSQL/owner to",
+			sql:           "ALTER SEQUENCE public.seq_orders OWNER TO app",
+			dialect:       keywords.DialectPostgreSQL,
+			wantOwnerName: "app",
+			shouldErr:     false,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			tree, err := parser.ParseWithDialect(tc.sql, tc.dialect)
+			if tc.shouldErr {
+				if err == nil {
+					t.Errorf("expected some error but got nothing")
+				}
+			} else {
+				if err != nil {
+					t.Fatalf("expected no error but got %s", err)
+				}
+			}
+			if err != nil {
+				return
+			}
+
+			stmt, ok := tree.Statements[0].(*ast.AlterSequenceStatement)
+			if !ok {
+				t.Fatalf("expected AlterSequenceStatement, got %T", tree.Statements[0])
+			}
+			if stmt.Options.OwnerName != tc.wantOwnerName {
+				t.Errorf("Options.OwnerName: want=%v got=%v", tc.wantOwnerName, stmt.Options.OwnerName)
+			}
+		})
+	}
+}
