@@ -106,7 +106,7 @@ func (p *Parser) parseFromTableReference() (ast.TableReference, error) {
 		}
 	} else {
 		// Parse regular table name (supports schema.table qualification)
-		qualifiedName, _, _, err := p.parseQualifiedName()
+		qualifiedName, err := p.parseQualifiedIdentifierString()
 		if err != nil {
 			return tableRef, err
 		}
@@ -298,7 +298,7 @@ func (p *Parser) parseJoinedTableRef(joinType string) (ast.TableReference, error
 
 		ref = ast.TableReference{Subquery: selectStmt, Lateral: isLateral}
 	} else {
-		joinedName, _, _, err := p.parseQualifiedName()
+		joinedName, err := p.parseQualifiedIdentifierString()
 		if err != nil {
 			return ref, goerrors.ExpectedTokenError(
 				"table name after "+joinType+" JOIN",

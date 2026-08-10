@@ -43,11 +43,11 @@ func (p *Parser) parseCreateIndex(unique bool) (*ast.CreateIndexStatement, error
 	}
 
 	// Parse index name (supports schema.index qualification and double-quoted identifiers)
-	indexName, _, _, err := p.parseQualifiedName()
+	index, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, p.expectedError("index name")
 	}
-	stmt.Name = indexName
+	stmt.Name = index.Name
 
 	// Expect ON
 	if !p.isType(models.TokenTypeOn) {
@@ -56,7 +56,7 @@ func (p *Parser) parseCreateIndex(unique bool) (*ast.CreateIndexStatement, error
 	p.advance() // Consume ON
 
 	// Parse table name (supports schema.table qualification and double-quoted identifiers)
-	indexTableName, _, _, err := p.parseQualifiedName()
+	indexTableName, err := p.parseQualifiedIdentifierString()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}

@@ -44,11 +44,11 @@ func (p *Parser) parseAlterStatement() (*ast.AlterStatement, error) {
 
 // parseAlterTableStatement parses ALTER TABLE statements
 func (p *Parser) parseAlterTableStatement(stmt *ast.AlterStatement) (*ast.AlterStatement, error) {
-	tableName, _, _, err := p.parseQualifiedName()
+	tableName, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, err
 	}
-	stmt.Name = tableName
+	stmt.Name = tableName.Name
 	op := &ast.AlterTableOperation{}
 
 	switch {
@@ -346,7 +346,7 @@ func (p *Parser) parseAlterConnectorStatement(stmt *ast.AlterStatement) (*ast.Al
 }
 
 func (p *Parser) parseAlterTypeStatement() (ast.AlterTypeStatement, error) {
-	name, start, end, err := p.parseQualifiedName()
+	name, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, err
 	}
@@ -369,18 +369,14 @@ func (p *Parser) parseAlterTypeStatement() (ast.AlterTypeStatement, error) {
 	}
 
 	stmt := &ast.AlterTypeOwnerToStatement{
-		Name: &ast.Identifier{
-			Name:  name,
-			Start: start,
-			End:   end,
-		},
+		Name:     name,
 		UserName: userName.Name,
 	}
 	return stmt, nil
 }
 
 func (p *Parser) parseAlterDomainStatement() (ast.AlterDomainStatement, error) {
-	name, start, end, err := p.parseQualifiedName()
+	name, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, err
 	}
@@ -399,11 +395,7 @@ func (p *Parser) parseAlterDomainStatement() (ast.AlterDomainStatement, error) {
 		return nil, p.expectedError("user name")
 	}
 	stmt := &ast.AlterDomainOwnerToStatement{
-		Name: &ast.Identifier{
-			Name:  name,
-			Start: start,
-			End:   end,
-		},
+		Name:     name,
 		UserName: userName.Name,
 	}
 	return stmt, nil

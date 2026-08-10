@@ -46,7 +46,7 @@ func (p *Parser) parseCreateView(orReplace, temporary bool) (*ast.CreateViewStat
 	}
 
 	// Parse view name (supports schema.view qualification and double-quoted identifiers)
-	viewName, _, _, err := p.parseQualifiedName()
+	viewName, err := p.parseQualifiedIdentifierString()
 	if err != nil {
 		return nil, p.expectedError("view name")
 	}
@@ -150,7 +150,7 @@ func (p *Parser) parseCreateMaterializedView() (*ast.CreateMaterializedViewState
 	}
 
 	// Parse view name (supports schema.view qualification and double-quoted identifiers)
-	matViewName, _, _, err := p.parseQualifiedName()
+	matViewName, err := p.parseQualifiedIdentifierString()
 	if err != nil {
 		return nil, p.expectedError("materialized view name")
 	}
@@ -191,7 +191,7 @@ func (p *Parser) parseCreateMaterializedView() (*ast.CreateMaterializedViewState
 	// ClickHouse: optional TO <table> before ENGINE/AS
 	if p.dialect == string(keywords.DialectClickHouse) && p.isType(models.TokenTypeTo) {
 		p.advance() // Consume TO
-		toName, _, _, toErr := p.parseQualifiedName()
+		toName, toErr := p.parseQualifiedIdentifierString()
 		if toErr != nil {
 			return nil, p.expectedError("target table after TO")
 		}
@@ -277,7 +277,7 @@ func (p *Parser) parseRefreshStatement() (*ast.RefreshMaterializedViewStatement,
 	}
 
 	// Parse view name (supports schema.view qualification and double-quoted identifiers)
-	refreshViewName, _, _, err := p.parseQualifiedName()
+	refreshViewName, err := p.parseQualifiedIdentifierString()
 	if err != nil {
 		return nil, p.expectedError("materialized view name")
 	}

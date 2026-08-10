@@ -104,7 +104,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		if p.isType(models.TokenTypeTable) {
 			show.ShowType = "CREATE TABLE"
 			p.advance() // Consume TABLE
-			name, _, _, err := p.parseQualifiedName()
+			name, err := p.parseQualifiedIdentifierString()
 			if err != nil {
 				return nil, p.expectedError("table name")
 			}
@@ -112,7 +112,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		} else {
 			show.ShowType = "CREATE " + strings.ToUpper(p.currentToken.Token.Value)
 			p.advance()
-			name, _, _, err := p.parseQualifiedName()
+			name, err := p.parseQualifiedIdentifierString()
 			if err != nil {
 				return nil, p.expectedError("object name")
 			}
@@ -123,7 +123,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		p.advance()
 		if p.isType(models.TokenTypeFrom) {
 			p.advance()
-			name, _, _, err := p.parseQualifiedName()
+			name, err := p.parseQualifiedIdentifierString()
 			if err != nil {
 				return nil, p.expectedError("table name")
 			}
@@ -134,7 +134,7 @@ func (p *Parser) parseShowStatement() (ast.Statement, error) {
 		p.advance()
 		if p.isType(models.TokenTypeFrom) {
 			p.advance()
-			name, _, _, err := p.parseQualifiedName()
+			name, err := p.parseQualifiedIdentifierString()
 			if err != nil {
 				return nil, p.expectedError("table name")
 			}
@@ -188,7 +188,7 @@ func (p *Parser) parseDescribeStatement() (ast.Statement, error) {
 		p.advance()
 	}
 
-	name, _, _, err := p.parseQualifiedName()
+	name, err := p.parseQualifiedIdentifierString()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}
@@ -206,7 +206,7 @@ func (p *Parser) parseReplaceStatement() (ast.Statement, error) {
 	p.advance()
 
 	// Parse table name
-	tableName, _, _, err := p.parseQualifiedName()
+	tableName, err := p.parseQualifiedIdentifierString()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}

@@ -853,7 +853,7 @@ func (p *Parser) parseSnowflakeUseStatement() (ast.Statement, error) {
 		rawParts = append(rawParts, strings.ToUpper(p.currentToken.Token.Value))
 		p.advance()
 	}
-	name, _, _, err := p.parseQualifiedName()
+	name, err := p.parseQualifiedIdentifierString()
 	if err != nil {
 		return nil, p.expectedError("name after USE")
 	}
@@ -1129,37 +1129,48 @@ func (p *Parser) parseStringLiteral() string {
 	return value
 }
 
-// parseQualifiedName parses a potentially schema-qualified name (e.g., schema.table or db.schema.table).
+// parseQualifiedIdentifier parses a potentially schema-qualified name (e.g., schema.table or db.schema.table).
 // Returns the full dotted name as a string. Supports up to 3-part names.
-func (p *Parser) parseQualifiedName() (string, models.Location, models.Location, error) {
+func (p *Parser) parseQualifiedIdentifier() (*ast.Identifier, error) {
 	if !p.isIdentifier() && !p.isNonReservedKeyword() {
-		return "", models.Location{}, models.Location{}, p.expectedError("identifier")
+		return nil, p.expectedError("identifier")
 	}
-	name := p.currentToken.Token.Value
-	start := p.currentLocation()
+	id := &ast.Identifier{
+		Name:  p.currentToken.Token.Value,
+		Start: p.currentLocation(),
+	}
 	p.advance()
 
 	// Check for schema.table or db.schema.table
 	for p.isType(models.TokenTypePeriod) {
 		p.advance() // Consume .
 		if !p.isIdentifier() && !p.isNonReservedKeyword() {
-			return "", models.Location{}, models.Location{}, p.expectedError("identifier after .")
+			return nil, p.expectedError("identifier after .")
 		}
-		name = name + "." + p.currentToken.Token.Value
+		id.Name += "." + p.currentToken.Token.Value
 		p.advance()
 	}
-	end := p.currentLocation()
+	id.End = p.currentLocation()
 
-	return name, start, end, nil
+	return id, nil
+}
+
+// parseQualifiedIdentifierString is almost same as [Parser.parseQualifiedIdentifier] but just returns [ast.Identifier.Name].
+func (p *Parser) parseQualifiedIdentifierString() (string, error) {
+	id, err := p.parseQualifiedIdentifier()
+	if err != nil {
+		return "", err
+	}
+	return id.Name, nil
 }
 
 // Accepts IDENT or non-reserved keywords that can be used as table names
 func (p *Parser) parseTableReference() (*ast.TableReference, error) {
-	name, start, end, err := p.parseQualifiedName()
+	id, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, err
 	}
-	return &ast.TableReference{Name: name, Start: start, End: end}, nil
+	return &ast.TableReference{Name: id.Name, Start: id.Start, End: id.End}, nil
 }
 
 // isNonReservedKeyword checks if current token is a non-reserved keyword

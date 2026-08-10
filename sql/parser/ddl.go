@@ -143,7 +143,7 @@ func (p *Parser) parseCreateStatement() (ast.Statement, error) {
 				}
 			}
 			// Object name (qualified identifier)
-			name, _, _, _ := p.parseQualifiedName()
+			name, _ := p.parseQualifiedIdentifierString()
 			if name != "" {
 				rawParts = append(rawParts, name)
 			}
@@ -466,17 +466,13 @@ func (p *Parser) parseCreateTable(temporary bool) (*ast.CreateTableStatement, er
 }
 
 func (p *Parser) parseCreateDomainStatement() (*ast.CreateDomainStatement, error) {
-	stmt := &ast.CreateDomainStatement{
-		Name: new(ast.Identifier),
-	}
+	stmt := &ast.CreateDomainStatement{}
 
-	domainName, start, end, err := p.parseQualifiedName()
+	domainName, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, p.expectedError("domain name")
 	}
-	stmt.Name.Name = domainName
-	stmt.Name.Start = start
-	stmt.Name.End = end
+	stmt.Name = domainName
 
 	if p.isType(models.TokenTypeAs) { // optional AS
 		p.advance()
@@ -583,14 +579,9 @@ func (p *Parser) parseCreateTypeStatement() (ast.CreateTypeStatement, error) {
 	if !p.isIdentifier() {
 		return nil, p.expectedError("type name")
 	}
-	rawName, nameStart, nameEnd, err := p.parseQualifiedName()
+	nameIdent, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, err
-	}
-	nameIdent := &ast.Identifier{
-		Name:  rawName,
-		Start: nameStart,
-		End:   nameEnd,
 	}
 
 	if !p.matchType(models.TokenTypeAs) { // TODO: support other form
@@ -693,11 +684,11 @@ func (p *Parser) parseCreateSequenceStatement(orReplace bool) (*ast.CreateSequen
 		stmt.IfNotExists = true
 	}
 
-	name, nameStart, nameEnd, err := p.parseQualifiedName()
+	name, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, err
 	}
-	stmt.Name = &ast.Identifier{Name: name, Start: nameStart, End: nameEnd}
+	stmt.Name = name
 
 	opts, err := p.parseSequenceOptions()
 	if err != nil {
@@ -721,11 +712,8 @@ func (p *Parser) parseAlterSequenceStatement() (*ast.AlterSequenceStatement, err
 		stmt.IfExists = true
 	}
 
-	name, nameStart, nameEnd, err := p.parseQualifiedName()
-	if err != nil {
-		return nil, err
-	}
-	stmt.Name = &ast.Identifier{Name: name, Start: nameStart, End: nameEnd}
+	name, err := p.parseQualifiedIdentifier()
+	stmt.Name = name
 
 	opts, err := p.parseSequenceOptions()
 	if err != nil {
@@ -1060,7 +1048,7 @@ func (p *Parser) parseDropStatement() (*ast.DropStatement, error) {
 
 	// Parse object names (can be comma-separated, supports schema.name qualification)
 	for {
-		dropName, _, _, err := p.parseQualifiedName()
+		dropName, err := p.parseQualifiedIdentifierString()
 		if err != nil {
 			return nil, p.expectedError("object name")
 		}
@@ -1097,7 +1085,7 @@ func (p *Parser) parseTruncateStatement() (*ast.TruncateStatement, error) {
 
 	// Parse table names (can be comma-separated, supports schema.table qualification)
 	for {
-		truncTableName, _, _, err := p.parseQualifiedName()
+		truncTableName, err := p.parseQualifiedIdentifierString()
 		if err != nil {
 			return nil, p.expectedError("table name")
 		}
