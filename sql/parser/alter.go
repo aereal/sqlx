@@ -44,6 +44,10 @@ func (p *Parser) parseAlterStatement() (*ast.AlterStatement, error) {
 
 // parseAlterTableStatement parses ALTER TABLE statements
 func (p *Parser) parseAlterTableStatement(stmt *ast.AlterStatement) (*ast.AlterStatement, error) {
+	if p.IsPostgreSQL() {
+		_ = p.matchType(models.TokenTypeOnly) // discards ONLY
+	}
+
 	tableName, err := p.parseQualifiedIdentifier()
 	if err != nil {
 		return nil, err

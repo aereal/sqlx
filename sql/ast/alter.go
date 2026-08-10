@@ -114,6 +114,21 @@ func (a AlterStatement) Children() []Node {
 // AlterType represents the type of object being altered
 type AlterType int
 
+func (at AlterType) String() string {
+	switch at {
+	case AlterTypeTable:
+		return "TABLE"
+	case AlterTypeRole:
+		return "ROLE"
+	case AlterTypePolicy:
+		return "POLICY"
+	case AlterTypeConnector:
+		return "CONNECTOR"
+	default:
+		return fmt.Sprintf("AlterType(%d)", at)
+	}
+}
+
 const (
 	AlterTypeTable AlterType = iota
 	AlterTypeRole
