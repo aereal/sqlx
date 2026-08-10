@@ -831,6 +831,25 @@ func (p *Parser) parseSequenceOptions() (ast.SequenceOptions, error) {
 				return opts, p.expectedError("user name")
 			}
 			opts.OwnerName = user
+		case "OWNED":
+			if p.dialectTyped != dialect.PostgreSQL {
+				return opts, nil
+			}
+			p.advance() // consume OWNED
+			if !p.isTokenMatch("BY") {
+				return opts, p.expectedError("BY")
+			}
+			p.advance() // consume BY
+			if p.isTokenMatch("NONE") {
+				p.advance() // consume NONE
+				opts.OwnerRelation = ast.SequenceOwnerRelationNone{}
+			} else {
+				owner, err := p.parseQualifiedIdentifier()
+				if err != nil {
+					return opts, err
+				}
+				opts.OwnerRelation = &ast.SequenceOwnerRelationColumn{Column: owner}
+			}
 		default:
 			return opts, nil
 		}

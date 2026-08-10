@@ -122,3 +122,79 @@ func TestAlterSequenceStatement_ownerTo(t *testing.T) {
 		})
 	}
 }
+
+func TestAlterSequenceStatement_ownedBy(t *testing.T) {
+	t.Parallel()
+
+	testCases := []struct {
+		name         string
+		sql          string
+		dialect      keywords.SQLDialect
+		wantOwnerRel string
+		want         ast.SequenceOwnerRelation
+		shouldErr    bool
+	}{
+		{
+			name:      "MariaDB/owned by",
+			sql:       "ALTER SEQUENCE public.seq_orders OWNED BY public.orders.id",
+			dialect:   keywords.DialectMariaDB,
+			want:      nil,
+			shouldErr: true,
+		},
+		{
+			name:    "PostgreSQL/owned by column",
+			sql:     "ALTER SEQUENCE public.seq_orders OWNED BY public.orders.id",
+			dialect: keywords.DialectPostgreSQL,
+			want: &ast.SequenceOwnerRelationColumn{
+				Column: &ast.Identifier{Name: "public.orders.id"},
+			},
+			shouldErr: false,
+		},
+		{
+			name:      "PostgreSQL/owned by none",
+			sql:       "ALTER SEQUENCE public.seq_orders OWNED BY NONE",
+			dialect:   keywords.DialectPostgreSQL,
+			want:      ast.SequenceOwnerRelationNone{},
+			shouldErr: false,
+		},
+	}
+	for _, tc := range testCases {
+		t.Run(tc.name, func(t *testing.T) {
+			t.Parallel()
+
+			tree, err := parser.ParseWithDialect(tc.sql, tc.dialect)
+			if tc.shouldErr {
+				if err == nil {
+					t.Errorf("expected some error but got nothing")
+				}
+			} else {
+				if err != nil {
+					t.Fatalf("expected no error but got %s", err)
+				}
+			}
+			if err != nil {
+				return
+			}
+
+			stmt, ok := tree.Statements[0].(*ast.AlterSequenceStatement)
+			if !ok {
+				t.Fatalf("expected AlterSequenceStatement, got %T", tree.Statements[0])
+			}
+			if _, ok := stmt.Options.OwnerRelation.(ast.SequenceOwnerRelationNone); ok {
+				if _, ok := tc.want.(ast.SequenceOwnerRelationNone); !ok {
+					t.Fatalf("expected %T but got %T", tc.want, stmt.Options.OwnerRelation)
+				}
+			} else if got, ok := stmt.Options.OwnerRelation.(*ast.SequenceOwnerRelationColumn); ok {
+				want, ok := tc.want.(*ast.SequenceOwnerRelationColumn)
+				if !ok {
+					t.Fatalf("expected %T but got %T", tc.want, stmt.Options.OwnerRelation)
+				}
+				if got.Column.Name != want.Column.Name {
+					t.Errorf(".Column.Name: want=%q got=%q", want.Column.Name, got.Column.Name)
+				}
+			} else {
+				t.Errorf("unknown OwnerRelation type: %T", stmt.Options.OwnerRelation)
+			}
+		})
+	}
+}

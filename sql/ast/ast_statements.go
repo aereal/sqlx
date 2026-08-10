@@ -704,17 +704,36 @@ const (
 // SequenceOptions holds configuration for CREATE SEQUENCE and ALTER SEQUENCE.
 // Fields are pointers so that unspecified options are distinguishable from zero values.
 type SequenceOptions struct {
-	StartWith   *LiteralValue // START WITH n
-	IncrementBy *LiteralValue // INCREMENT BY n (default 1)
-	MinValue    *LiteralValue // MINVALUE n or nil when NO MINVALUE
-	MaxValue    *LiteralValue // MAXVALUE n or nil when NO MAXVALUE
-	Cache       *LiteralValue // CACHE n or nil when NO CACHE / NOCACHE
-	CycleMode   CycleOption   // CYCLE / NOCYCLE / NO CYCLE (CycleUnspecified if not specified)
-	NoCache     bool          // NOCACHE (explicit; Cache=nil alone is ambiguous)
-	Restart     bool          // bare RESTART (reset to start value)
-	RestartWith *LiteralValue // RESTART WITH n (explicit restart value)
-	OwnerName   string
+	StartWith     *LiteralValue // START WITH n
+	IncrementBy   *LiteralValue // INCREMENT BY n (default 1)
+	MinValue      *LiteralValue // MINVALUE n or nil when NO MINVALUE
+	MaxValue      *LiteralValue // MAXVALUE n or nil when NO MAXVALUE
+	Cache         *LiteralValue // CACHE n or nil when NO CACHE / NOCACHE
+	CycleMode     CycleOption   // CYCLE / NOCYCLE / NO CYCLE (CycleUnspecified if not specified)
+	NoCache       bool          // NOCACHE (explicit; Cache=nil alone is ambiguous)
+	Restart       bool          // bare RESTART (reset to start value)
+	RestartWith   *LiteralValue // RESTART WITH n (explicit restart value)
+	OwnerName     string
+	OwnerRelation SequenceOwnerRelation
 }
+
+type SequenceOwnerRelation interface {
+	sequenceOwnerRelation()
+}
+
+type SequenceOwnerRelationNone struct{}
+
+var _ SequenceOwnerRelation = (SequenceOwnerRelationNone{})
+
+func (SequenceOwnerRelationNone) sequenceOwnerRelation() {}
+
+type SequenceOwnerRelationColumn struct {
+	Column *Identifier
+}
+
+var _ SequenceOwnerRelation = (*SequenceOwnerRelationColumn)(nil)
+
+func (SequenceOwnerRelationColumn) sequenceOwnerRelation() {}
 
 // CreateSequenceStatement represents:
 //
