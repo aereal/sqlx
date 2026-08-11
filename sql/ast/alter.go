@@ -169,6 +169,7 @@ type AlterTableOperation struct {
 	AlterColumnOp    *AlterColumnOperation // Used for AlterColumn
 	CascadeDrops     bool                  // Used for DropColumn, DropConstraint
 	UserName         string                // Used for OwnerTo
+	Default          Expression
 }
 
 func (a *AlterTableOperation) alterOperationNode() {}
@@ -192,6 +193,9 @@ func (a AlterTableOperation) Children() []Node {
 	}
 	if a.AlterColumnOp != nil {
 		children = append(children, a.AlterColumnOp)
+	}
+	if a.Default != nil {
+		children = append(children, a.Default)
 	}
 	return children
 }

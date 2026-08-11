@@ -21,7 +21,6 @@ import (
 	"slices"
 	"strings"
 
-	goerrors "github.com/aereal/sqlx/errors"
 	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
 	"github.com/aereal/sqlx/sql/dialect"
@@ -57,39 +56,42 @@ func (p *Parser) parseColumnDef() (*ast.ColumnDef, error) {
 	start := p.currentLocation()
 	name := p.parseColumnName()
 	if name == nil {
-		return nil, goerrors.ExpectedTokenError(
-			"column name",
-			p.currentToken.Token.Type.String(),
-			p.currentLocation(),
-			"",
-		)
-	}
-
-	dataTypeStr, err := p.parseColumnTypeName()
-	if err != nil {
-		return nil, err
+		return nil, p.expectedError("column name")
 	}
 
 	colDef := &ast.ColumnDef{
 		Name:  name.Name,
-		Type:  dataTypeStr,
 		Start: start,
 	}
+	if err := p.parseColumnTypeDef(colDef); err != nil {
+		return nil, err
+	}
+
+	colDef.End = p.currentLocation()
+	return colDef, nil
+}
+
+// parseColumnTypeDef parses column definition and modify given definition.
+func (p *Parser) parseColumnTypeDef(def *ast.ColumnDef) error {
+	dataTypeStr, err := p.parseColumnTypeName()
+	if err != nil {
+		return err
+	}
+	def.Type = dataTypeStr
 
 	// Parse column constraints
 	for {
 		constraint, ok, err := p.parseColumnConstraint()
 		if err != nil {
-			return nil, err
+			return err
 		}
 		if !ok {
 			break
 		}
-		colDef.Constraints = append(colDef.Constraints, *constraint)
+		def.Constraints = append(def.Constraints, *constraint)
 	}
 
-	colDef.End = p.currentLocation()
-	return colDef, nil
+	return nil
 }
 
 func (p *Parser) parseColumnTypeName() (string, error) {

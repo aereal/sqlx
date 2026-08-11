@@ -15,6 +15,8 @@
 package parser
 
 import (
+	"fmt"
+
 	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
 )
@@ -128,7 +130,7 @@ func (p *Parser) parseAlterTableStatement(stmt *ast.AlterStatement) (*ast.AlterS
 		}
 
 	case p.matchType(models.TokenTypeAlter):
-		if !p.matchType(models.TokenTypeColumn) {
+		if !p.matchType(models.TokenTypeColumn) && !p.IsPostgreSQL() {
 			return nil, p.expectedError("COLUMN")
 		}
 		op.Type = ast.AlterColumn
@@ -138,11 +140,45 @@ func (p *Parser) parseAlterTableStatement(stmt *ast.AlterStatement) (*ast.AlterS
 			return nil, p.expectedError("column name")
 		}
 		op.ColumnName = &ast.Ident{Name: ident.Name}
-		colDef, err := p.parseColumnDef()
-		if err != nil {
-			return nil, err
+
+		if p.isType(models.TokenTypeAdd) || p.isType(models.TokenTypeDrop) || p.isTokenMatch("RESET") {
+			// not yet implemented
+			return nil, p.expectedError("SET")
 		}
-		op.ColumnDef = colDef
+
+		if p.matchType(models.TokenTypeSet) {
+			switch {
+			case p.isTokenMatch("DATA"):
+				p.advance() // consume DATA
+			case p.isTokenMatch("DEFAULT"):
+				p.advance() // consume DEFAULT
+				expr, err := p.parseExpression()
+				if err != nil {
+					return nil, err
+				}
+				op.Default = expr
+			case p.matchType(models.TokenTypeNull):
+				op.AlterColumnOp = new(ast.AlterColumnSetNotNull)
+			default:
+				return nil, p.expectedError("DATA or DEFAULT")
+			}
+		} else {
+			if !p.isTokenMatch("TYPE") {
+				return nil, p.expectedError("TYPE")
+			}
+			p.advance() // consume TYPE
+
+			colDef := &ast.ColumnDef{
+				Name:  ident.Name,
+				Start: ident.Start,
+			}
+			if err := p.parseColumnTypeDef(colDef); err != nil {
+				return nil, fmt.Errorf("parseColumnDef_: %w", err)
+			}
+			colDef.End = p.currentLocation()
+
+			op.ColumnDef = colDef
+		}
 
 	case p.IsPostgreSQL() && p.isTokenMatch("OWNER"):
 		p.advance() // consume OWNER
