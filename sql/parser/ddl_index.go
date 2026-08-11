@@ -69,7 +69,7 @@ func (p *Parser) parseCreateIndex(unique bool) (*ast.CreateIndexStatement, error
 			return nil, p.expectedError("index method")
 		}
 		stmt.Using = p.currentToken.Token.Value
-		p.advance()
+		p.advance() // consume index method
 	}
 
 	// Expect opening parenthesis
@@ -85,7 +85,15 @@ func (p *Parser) parseCreateIndex(unique bool) (*ast.CreateIndexStatement, error
 			return nil, p.expectedError("column name")
 		}
 		col.Column = p.currentToken.Token.Value
-		p.advance()
+		p.advance() // consume column name
+
+		if p.IsPostgreSQL() && p.matchType(models.TokenTypeCollate) {
+			collate := p.parseIdentAsString()
+			if collate == "" {
+				return nil, p.expectedError("collation name")
+			}
+			col.Collate = collate
+		}
 
 		// Parse optional direction
 		if p.isType(models.TokenTypeAsc) {

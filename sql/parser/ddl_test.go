@@ -513,6 +513,95 @@ func TestParser_CreateTableWithPartitioning(t *testing.T) {
 	}
 }
 
+func TestParser_CreateIndex_postgresql(t *testing.T) {
+	t.Parallel()
+
+	tests := []struct {
+		name      string
+		sql       string
+		indexName string
+		tableName string
+		columns   []ast.IndexColumn
+	}{
+		{
+			name:      "simple",
+			sql:       "CREATE INDEX idx_email ON users (email)",
+			indexName: "idx_email",
+			tableName: "users",
+			columns: []ast.IndexColumn{
+				{Column: "email", Collate: "", Direction: "", NullsLast: false},
+			},
+		},
+		{
+			name:      "with collate",
+			sql:       `CREATE INDEX users_name ON public.users USING btree (name COLLATE "ja-JP-x-icu")`,
+			indexName: "users_name",
+			tableName: "public.users",
+			columns: []ast.IndexColumn{
+				{Column: "name", Collate: "ja-JP-x-icu", Direction: "", NullsLast: false},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			t.Parallel()
+
+			d := keywords.DialectPostgreSQL
+			tkz, err := tokenizer.NewWithDialect(d)
+			if err != nil {
+				t.Fatal(err)
+			}
+			tokens, err := tkz.TokenizeContext(t.Context(), []byte(tt.sql))
+			if err != nil {
+				t.Fatal(err)
+			}
+			parser := NewParser(WithDialect(string(d)))
+			tree, err := parser.ParseContextFromModelTokens(t.Context(), tokens)
+			if err != nil {
+				t.Fatal(err)
+			}
+
+			if len(tree.Statements) != 1 {
+				t.Fatalf("expected 1 statement, got %d", len(tree.Statements))
+			}
+
+			stmt, ok := tree.Statements[0].(*ast.CreateIndexStatement)
+			if !ok {
+				t.Fatalf("expected CreateIndexStatement, got %T", tree.Statements[0])
+			}
+
+			if stmt.Name != tt.indexName {
+				t.Errorf("expected index name %q, got %q", tt.indexName, stmt.Name)
+			}
+
+			if stmt.Table != tt.tableName {
+				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table)
+			}
+
+			if len(stmt.Columns) != len(tt.columns) {
+				t.Fatalf("len(Columns): want=%d got=%d", len(tt.columns), len(stmt.Columns))
+			}
+
+			for i := range stmt.Columns {
+				got := stmt.Columns[i]
+				want := tt.columns[i]
+				if got.Column != want.Column {
+					t.Errorf("Columns[%d]: Column: want=%s got=%s", i, want.Column, got.Column)
+				}
+				if got.Collate != want.Collate {
+					t.Errorf("Columns[%d]: Collate: want=%s got=%s", i, want.Collate, got.Collate)
+				}
+				if got.Direction != want.Direction {
+					t.Errorf("Columns[%d]: Direction: want=%s got=%s", i, want.Direction, got.Direction)
+				}
+				if got.NullsLast != want.NullsLast {
+					t.Errorf("Columns[%d]: NullsLast: want=%v got=%v", i, want.NullsLast, got.NullsLast)
+				}
+			}
+		})
+	}
+}
+
 func TestParser_CreateTableSimple(t *testing.T) {
 	tests := []struct {
 		name        string
