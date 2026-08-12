@@ -7,6 +7,16 @@ on:
     branches: [main]
 
 jobs:
+  ok:
+    runs-on: ubuntu-slim
+    needs:
+      - test
+      - race-check
+      - lint
+    if: failure()
+    steps:
+      - run: exit 1
+
   build:
     runs-on: ubuntu-24.04
     strategy:
