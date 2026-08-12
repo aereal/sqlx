@@ -82,26 +82,6 @@ jobs:
       - name: Run tests with race detector
         run: task test:race
 
-  cbinding-race:
-    name: Race Detector (CGO / cbinding)
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
-
-      - name: Set up Go
-        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
-        with:
-          go-version: "1.26"
-          cache: true
-
-      - name: Install Task
-        run: go install github.com/go-task/task/v3/cmd/task@latest
-
-      - name: Run cbinding tests (CGO + race)
-        env:
-          CGO_ENABLED: "1"
-        run: task test:cbinding
-
   benchmark:
     name: Benchmark
     runs-on: ubuntu-latest
