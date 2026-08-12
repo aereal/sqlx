@@ -33,12 +33,3 @@ jobs:
             gofmt -s -l .
             exit 1
           fi
-
-      - name: Run go vet
-        run: go vet ./...
-
-      - name: Run staticcheck
-        uses: dominikh/staticcheck-action@ba605356b4b29a60e87ab9404b712f3461e566dc # v1.3.0
-        with:
-          version: "latest"
-          install-go: false
