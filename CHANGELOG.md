@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+2026-08-06 - forked from [ajitpratap0/GoSQLX][origin].
+
+### Changed
+
+- changed module name (new: `github.com/aereal/sqlx`)
+- changed package structures (removed `pkg/` prefix)
+
+### Removed
+
+- VS Code extension
+- some Go packages
+  - gosqlx command
+  - gosqlx-mcp command
+  - advisor package
+  - cbinding package
+  - linter package
+  - lsp package
+  - mcp package
+
 ## [1.14.0] - 2026-04-12 — Dialect-Aware Transforms, Snowflake 100%, Schema Introspection
 
 Headline themes: dialect-aware transforms, Snowflake at 100% of the QA corpus, ClickHouse significantly expanded (83% of the QA corpus, up from 53%), live schema introspection, SQL transpilation, and first-class integration sub-modules (OpenTelemetry and GORM). Drop-in upgrade from v1.13.0 — no breaking changes.
@@ -1794,7 +1813,6 @@ This substantial test coverage increase provides strong confidence in the AST pa
 
 For questions about upgrading or changelog entries:
 - Open an issue: https://github.com/aereal/sqlx/issues
-- Join discussions: https://github.com/aereal/sqlx/discussions
 
 [Unreleased]: https://github.com/aereal/sqlx/compare/v1.12.1...HEAD
 [1.13.0]: https://github.com/aereal/sqlx/compare/v1.12.1...v1.13.0
@@ -1814,3 +1832,4 @@ For questions about upgrading or changelog entries:
 [1.0.0]: https://github.com/aereal/sqlx/compare/v0.9.0...v1.0.0
 [0.9.0]: https://github.com/aereal/sqlx/compare/v0.8.0...v0.9.0
 [0.8.0]: https://github.com/aereal/sqlx/releases/tag/v0.8.0
+[origin]: https://github.com/ajitpratap0/GoSQLX

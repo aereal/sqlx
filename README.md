@@ -1,240 +1,25 @@
-# GoSQLX
+[![PkgGoDev][pkg-go-dev-badge]][pkg-go-dev]
 
-<div align="center">
+# sqlx
 
-<img src="https://raw.githubusercontent.com/ajitpratap0/GoSQLX/main/.github/logo.png" alt="GoSQLX Logo" width="180"/>
+**sqlx** provides SQL parser that works.
 
-### Parse SQL at the speed of Go
+This repository originates from [ajitpratap0/GoSQLX][original] but has some modifications:
 
-[![Go Version](https://img.shields.io/badge/Go-1.26+-00ADD8?style=for-the-badge&logo=go)](https://go.dev)
-[![Release](https://img.shields.io/github/v/release/ajitpratap0/GoSQLX?style=for-the-badge&color=orange)](https://github.com/aereal/sqlx/releases)
-[![License](https://img.shields.io/badge/License-Apache--2.0-blue.svg?style=for-the-badge)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=for-the-badge)](http://makeapullrequest.com)
+- simplify project: just provides parser features
+- enhance some SQL language supports
 
-[![Website](https://img.shields.io/badge/gosqlx.dev-Website-blue?style=for-the-badge&logo=google-chrome)](https://gosqlx.dev)
-[![VS Code](https://img.shields.io/visual-studio-marketplace/v/ajitpratap0.gosqlx?style=for-the-badge&logo=visual-studio-code&label=VS%20Code)](https://marketplace.visualstudio.com/items?itemName=ajitpratap0.gosqlx)
-[![MCP](https://img.shields.io/badge/MCP-Remote%20Server-blue?style=for-the-badge&logo=cloud)](https://mcp.gosqlx.dev/health)
-[![Glama MCP Server](https://glama.ai/mcp/servers/ajitpratap0/GoSQLX/badges/score.svg)](https://glama.ai/mcp/servers/ajitpratap0/GoSQLX)
-[![Lint Action](https://img.shields.io/badge/Lint%20Action-GitHub-blue?style=for-the-badge&logo=github)](https://github.com/marketplace/actions/gosqlx-lint-action)
+## Installation
 
-[![Tests](https://img.shields.io/github/actions/workflow/status/ajitpratap0/GoSQLX/test.yml?branch=main&label=Tests&style=flat-square)](https://github.com/aereal/sqlx/actions)
-[![Go Report](https://goreportcard.com/badge/github.com/aereal/sqlx?style=flat-square)](https://goreportcard.com/report/github.com/aereal/sqlx)
-[![GoDoc](https://pkg.go.dev/badge/github.com/aereal/sqlx?style=flat-square)](https://pkg.go.dev/github.com/aereal/sqlx)
-[![Stars](https://img.shields.io/github/stars/ajitpratap0/GoSQLX?style=social)](https://github.com/aereal/sqlx)
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/aereal/sqlx/badge)](https://securityscorecards.dev/viewer/?uri=github.com/aereal/sqlx)
-
-<br/>
-
-**[🌐 Try the Playground](https://gosqlx.dev/playground/)** &nbsp;·&nbsp; **[📖 Read the Docs](https://gosqlx.dev/docs/)** &nbsp;·&nbsp; **[🚀 Get Started](docs/GETTING_STARTED.md)** &nbsp;·&nbsp; **[📊 Benchmarks](https://gosqlx.dev/benchmarks/)**
-
-<br/>
-
-| **1.38M+ ops/sec** | **<1μs latency** | **85% SQL-99** | **8 dialects** | **0 race conditions** |
-|:---:|:---:|:---:|:---:|:---:|
-
-</div>
-
-<br/>
-
-## What is GoSQLX?
-
-GoSQLX is a **production-ready SQL parsing SDK** for Go. It tokenizes, parses, and generates ASTs from SQL with zero-copy optimizations and intelligent object pooling - handling **1.38M+ operations per second** with sub-microsecond latency.
-
-```go
-// v1.15+ recommended entry point: ParseTree returns an opaque Tree,
-// so you don't need to import pkg/sql/ast just to get started.
-tree, _ := gosqlx.ParseTree(ctx, "SELECT u.name, COUNT(*) FROM users u JOIN orders o ON u.id = o.user_id GROUP BY u.name",
-    gosqlx.WithDialect("postgresql"))
-fmt.Println("Tables:", tree.Tables())
-fmt.Println(tree.Format(gosqlx.WithIndent(2), gosqlx.WithUppercaseKeywords(true)))
-```
-
-### Why GoSQLX?
-
-- **Not an ORM** - a parser. You get the AST, you decide what to do with it.
-- **Not slow** - zero-copy tokenization, sync.Pool recycling, no allocations on hot paths.
-- **Not limited** - PostgreSQL, MySQL, MariaDB, SQL Server, Oracle, SQLite, Snowflake, ClickHouse. CTEs, window functions, MERGE, set operations.
-- **Not just a library** - CLI, VS Code extension, GitHub Action, MCP server, WASM playground, Python bindings.
-
-<br/>
-
-## Get Started in 60 Seconds
-
-```bash
+```sh
 go get github.com/aereal/sqlx
 ```
-
-```go
-package main
-
-import (
-    "fmt"
-    "github.com/aereal/sqlx/gosqlx"
-)
-
-func main() {
-    ctx := context.Background()
-
-    // ParseTree (v1.15+) is the recommended entry point. It returns an
-    // opaque handle with built-in helpers — no need to import pkg/sql/ast.
-    tree, err := gosqlx.ParseTree(ctx, "SELECT id, name FROM users WHERE active = true",
-        gosqlx.WithDialect("postgresql"))
-    if err != nil {
-        // Sentinel errors work with errors.Is
-        if errors.Is(err, gosqlx.ErrSyntax) {
-            log.Fatalf("syntax error: %v", err)
-        }
-        log.Fatal(err)
-    }
-    fmt.Println("Tables:", tree.Tables())
-    fmt.Println(tree.Format(gosqlx.WithIndent(2), gosqlx.WithUppercaseKeywords(true)))
-
-    // Walk the AST — typed walkers avoid the type-assertion dance:
-    tree.WalkSelects(func(s *ast.SelectStatement) bool {
-        fmt.Printf("  SELECT with %d columns\n", len(s.Columns))
-        return true
-    })
-
-    // The legacy Parse/Format/Validate API still works for v1.x code.
-    // See docs/MIGRATION.md for the Tree migration guide.
-}
-```
-
-<br/>
-
-## Install Everywhere
-
-<table>
-<tr>
-<td width="50%">
-
-### 📦 Go Library
-```bash
-go get github.com/aereal/sqlx
-```
-
-### 🖥️ CLI Tool
-```bash
-go install github.com/aereal/sqlx/cmd/gosqlx@latest
-gosqlx validate "SELECT * FROM users"
-gosqlx format query.sql
-gosqlx lint query.sql
-```
-
-</td>
-<td width="50%">
-
-### 💻 VS Code Extension
-```bash
-code --install-extension ajitpratap0.gosqlx
-```
-Bundles the binary - zero setup. [Learn more →](https://gosqlx.dev/vscode/)
-
-### 🤖 MCP Server (AI Integration)
-```bash
-claude mcp add --transport http gosqlx \
-  https://mcp.gosqlx.dev/mcp
-```
-7 SQL tools in Claude, Cursor, or any MCP client. [Guide →](https://gosqlx.dev/docs/mcp_guide/)
-
-</td>
-</tr>
-</table>
-
-<br/>
-
-## Features at a Glance
-
-<table>
-<tr>
-<td align="center" width="33%"><h3>⚡ Parser</h3>Zero-copy tokenizer<br/>Recursive descent parser<br/>Full AST generation<br/>Multi-dialect engine</td>
-<td align="center" width="33%"><h3>🛡️ Analysis</h3>SQL injection scanner<br/>30 lint rules (L001–L030)<br/>20 optimizer rules<br/>Metadata extraction</td>
-<td align="center" width="33%"><h3>🔧 Tooling</h3>AST-based formatter<br/>Query transforms API<br/>VS Code extension<br/>GitHub Action</td>
-</tr>
-<tr>
-<td align="center"><h3>🌐 Multi-Dialect</h3>PostgreSQL · MySQL · MariaDB<br/>SQL Server · Oracle<br/>SQLite · Snowflake · ClickHouse</td>
-<td align="center"><h3>🤖 AI-Ready</h3>MCP server (7 tools)<br/>Public remote endpoint<br/>Streamable HTTP</td>
-<td align="center"><h3>🧪 Battle-Tested</h3>20K+ concurrent ops<br/>Zero race conditions<br/>~85% SQL-99 compliance</td>
-</tr>
-</table>
-
-<br/>
-
-## Documentation
-
-| | Resource | Description |
-|---|---|---|
-| 🌐 | **[gosqlx.dev](https://gosqlx.dev)** | Website with interactive playground |
-| 🚀 | **[Getting Started](https://gosqlx.dev/docs/getting_started/)** | Parse your first SQL in 5 minutes |
-| 📖 | **[Usage Guide](https://gosqlx.dev/docs/usage_guide/)** | Comprehensive patterns and examples |
-| 📄 | **[API Reference](https://gosqlx.dev/docs/api_reference/)** | Complete API documentation |
-| 🖥️ | **[CLI Guide](https://gosqlx.dev/docs/cli_guide/)** | Command-line tool reference |
-| 🌍 | **[SQL Compatibility](https://gosqlx.dev/docs/sql_compatibility/)** | Dialect support matrix |
-| 🤖 | **[MCP Guide](https://gosqlx.dev/docs/mcp_guide/)** | AI assistant integration |
-| 🏗️ | **[Architecture](https://gosqlx.dev/docs/architecture/)** | System design deep-dive |
-| 📊 | **[Benchmarks](https://gosqlx.dev/benchmarks/)** | Performance data and methodology |
-| 📝 | **[Release Notes](https://gosqlx.dev/blog/)** | What's new in each version |
-
-<br/>
-
-## Contributing
-
-GoSQLX is built by contributors like you. Whether it's a bug fix, new feature, documentation improvement, or just a typo - every contribution matters.
-
-```bash
-git clone https://github.com/aereal/sqlx.git && cd GoSQLX
-task check    # fmt → vet → lint → test (with race detection)
-```
-
-1. **Fork & branch** from `main`
-2. **Write tests** - we use TDD and require race-free code
-3. **Run `task check`** - must pass before PR
-4. **Open a PR** - we review within 24 hours
-
-📋 [Contributing Guide](CONTRIBUTING.md) · 📜 [Code of Conduct](CODE_OF_CONDUCT.md) · 🏛️ [Governance](GOVERNANCE.md)
-
-<br/>
-
-## Who's Using GoSQLX?
-
-GoSQLX is downloaded and cloned by developers worldwide -- 595 unique cloners in just 14 days. If you're using GoSQLX in your project or organization, we'd love to hear about it!
-
-| Project / Company | Use Case |
-|---|---|
-| *Your project here* | [Add yourself via PR](https://github.com/aereal/sqlx/edit/main/README.md) or [tell us in Discussions](https://github.com/aereal/sqlx/discussions) |
-
-Using GoSQLX at work? Building something cool with it? Share your story in [GitHub Discussions](https://github.com/aereal/sqlx/discussions) -- it helps the community grow and motivates continued development.
-
-<br/>
-
-## Community
-
-<div align="center">
-
-**Got questions? Ideas? Found a bug?**
-
-<a href="https://github.com/aereal/sqlx/discussions"><img src="https://img.shields.io/badge/💬_Discussions-Ask_&_Share-purple?style=for-the-badge" alt="Discussions"></a>
-<a href="https://github.com/aereal/sqlx/issues/new/choose"><img src="https://img.shields.io/badge/🐛_Issues-Report_&_Request-red?style=for-the-badge" alt="Issues"></a>
-<a href="https://gosqlx.dev/blog/"><img src="https://img.shields.io/badge/📝_Blog-Release_Notes-green?style=for-the-badge" alt="Blog"></a>
-
-</div>
-
-<br/>
 
 ## License
 
-Apache License 2.0 - see [LICENSE](LICENSE) for details.
+See [LICENSE][] file.
 
----
-
-<div align="center">
-
-<sub>Built with ❤️ by the GoSQLX community</sub>
-
-**[gosqlx.dev](https://gosqlx.dev)** · **[Playground](https://gosqlx.dev/playground/)** · **[Docs](https://gosqlx.dev/docs/)** · **[MCP Server](https://mcp.gosqlx.dev/mcp)** · **[VS Code](https://marketplace.visualstudio.com/items?itemName=ajitpratap0.gosqlx)**
-
-<br/>
-
-If GoSQLX helps your project, consider giving it a ⭐
-
-</div>
+[pkg-go-dev]: https://pkg.go.dev/github.com/aereal/sqlx
+[pkg-go-dev-badge]: https://pkg.go.dev/badge/aereal/sqlx
+[LICENSE]: /LICENSE
+[original]: https://github.com/ajitpratap0/GoSQLX
