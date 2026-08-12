@@ -170,13 +170,13 @@ public class BasicParsing {
 
 #### GoSQLX (Go)
 ```go
-// go get github.com/ajitpratap0/GoSQLX
+// go get github.com/aereal/sqlx
 package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func main() {
@@ -247,8 +247,8 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 func main() {
@@ -329,9 +329,9 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -412,8 +412,8 @@ package main
 import (
     "fmt"
     "strings"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func main() {
@@ -492,8 +492,8 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 func main() {
@@ -648,7 +648,7 @@ package main
 
 import (
     "sync"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 type ParseResult struct {
@@ -731,8 +731,8 @@ package main
 import (
     "encoding/json"
     "net/http"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 type QueryRequest struct {
@@ -852,7 +852,7 @@ GROUP BY u.id, u.name
 
 ### Phase 2: Proof of Concept (Week 1-2)
 - [ ] Install Go 1.21+ on development machines
-- [ ] Install GoSQLX: `go get github.com/ajitpratap0/GoSQLX`
+- [ ] Install GoSQLX: `go get github.com/aereal/sqlx`
 - [ ] Port one Java class to Go
 - [ ] Test with your SQL queries
 - [ ] Benchmark performance improvement
@@ -929,8 +929,8 @@ public class QueryAnalyzerService {
 package analyzer
 
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 type QueryAnalysis struct {
@@ -1075,8 +1075,8 @@ See code examples above for table/column extraction.
 - **[API Reference](../API_REFERENCE.md)** - Complete API documentation
 
 ### Community Support
-- **[GitHub Issues](https://github.com/ajitpratap0/GoSQLX/issues)** - Report bugs or request features
-- **[GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions)** - Ask questions
+- **[GitHub Issues](https://github.com/aereal/sqlx/issues)** - Report bugs or request features
+- **[GitHub Discussions](https://github.com/aereal/sqlx/discussions)** - Ask questions
 - **[Examples Directory](../../examples/)** - Real-world code examples
 
 ### Learning Go

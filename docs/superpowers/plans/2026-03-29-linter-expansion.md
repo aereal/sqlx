@@ -59,10 +59,10 @@ package safety_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/safety"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/safety"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func makeContext(t *testing.T, sql string) *linter.Context {
@@ -171,9 +171,9 @@ package safety
 package safety
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // DeleteWithoutWhereRule (L011) flags DELETE statements that have no WHERE clause.
@@ -227,9 +227,9 @@ func (r *DeleteWithoutWhereRule) Fix(content string, violations []linter.Violati
 package safety
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // UpdateWithoutWhereRule (L012) flags UPDATE statements that have no WHERE clause.
@@ -284,9 +284,9 @@ package safety
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // DropWithoutConditionRule (L013) flags DROP TABLE/INDEX/VIEW without IF EXISTS.
@@ -351,9 +351,9 @@ func (r *DropWithoutConditionRule) Fix(content string, violations []linter.Viola
 package safety
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // TruncateTableRule (L014) warns when TRUNCATE TABLE is used in non-DDL contexts.
@@ -405,9 +405,9 @@ package safety
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // SelectIntoOutfileRule (L015) flags SELECT ... INTO OUTFILE / INTO DUMPFILE.
@@ -499,10 +499,10 @@ package performance_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/linter/rules/performance"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/pkg/linter/rules/performance"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func makeCtx(t *testing.T, sql string) *linter.Context {
@@ -593,9 +593,9 @@ package performance
 package performance
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // SelectStarRule (L016) flags SELECT * usage in non-trivial queries.
@@ -653,9 +653,9 @@ package performance
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/linter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/pkg/linter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // LeadingWildcardRule (L018) flags LIKE patterns with a leading wildcard.

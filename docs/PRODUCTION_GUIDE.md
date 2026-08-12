@@ -25,12 +25,12 @@ GoSQLX is **production-ready** for enterprise deployment with validated performa
 
 ### 1. Go Module (Recommended)
 ```bash
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 ### 2. Source Build
 ```bash
-git clone https://github.com/ajitpratap0/GoSQLX.git
+git clone https://github.com/aereal/sqlx.git
 cd GoSQLX
 go mod download
 go build ./pkg/...
@@ -59,7 +59,7 @@ CMD ["./app"]
 package main
 
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -86,7 +86,7 @@ package sqlprocessor
 import (
     "context"
     "time"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 type SQLProcessor struct {
@@ -338,7 +338,7 @@ func (p *SQLProcessor) ProcessWithSecurity(sql []byte) ([]interface{}, error) {
 GoSQLX includes a built-in security scanner for detecting SQL injection patterns:
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+import "github.com/aereal/sqlx/sql/security"
 
 func (p *SQLProcessor) ScanForInjection(sql []byte) error {
     // Parse SQL first
@@ -383,7 +383,7 @@ func (p *SQLProcessor) ScanForInjection(sql []byte) error {
 ### 1. Performance Metrics
 ```go
 // Optional: Use pkg/metrics for production monitoring
-import "github.com/ajitpratap0/GoSQLX/pkg/metrics"
+import "github.com/aereal/sqlx/pkg/metrics"
 
 func init() {
     metrics.Enable() // Optional monitoring
@@ -551,7 +551,7 @@ type ProductionConfig struct {
 ### Debugging Tools
 ```bash
 # Use built-in metrics package for performance monitoring
-# Import and use: github.com/ajitpratap0/GoSQLX/pkg/metrics
+# Import and use: github.com/aereal/sqlx/pkg/metrics
 
 # Example: Check metrics snapshot
 metrics.GetSnapshot() // Returns current metrics

@@ -19,8 +19,8 @@ import (
 	"fmt"
 	"log"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 func main() {

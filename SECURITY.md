@@ -25,7 +25,7 @@ We take the security of GoSQLX seriously. If you believe you have found a securi
 - Exploit the vulnerability in production systems
 
 ### Please DO:
-- Open a security advisory: https://github.com/ajitpratap0/GoSQLX/security/advisories/new
+- Open a security advisory: https://github.com/aereal/sqlx/security/advisories/new
 - Or create a private issue with "SECURITY:" prefix
 - Provide detailed steps to reproduce the issue
 - Allow us reasonable time to fix the issue before public disclosure
@@ -200,7 +200,7 @@ We appreciate responsible disclosure of security vulnerabilities. Security resea
 
 ## Contact
 
-- **Security Advisory Page**: https://github.com/ajitpratap0/GoSQLX/security/advisories
+- **Security Advisory Page**: https://github.com/aereal/sqlx/security/advisories
 - **GitHub Issues (private)**: Use "SECURITY:" prefix in title
 - **Email**: For urgent security matters, contact the maintainers directly through GitHub
 - **Response Time**: Initial acknowledgment within 48 hours for critical issues

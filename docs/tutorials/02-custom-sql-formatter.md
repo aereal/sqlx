@@ -23,7 +23,7 @@ In this tutorial, you'll create a SQL formatter that enforces your team's coding
 - Go 1.21 or higher installed
 - Completion of Tutorial 1 (recommended but not required)
 - Basic understanding of SQL formatting preferences
-- GoSQLX installed: `go get github.com/ajitpratap0/GoSQLX`
+- GoSQLX installed: `go get github.com/aereal/sqlx`
 
 ## Step 1: Understanding SQL Formatting
 
@@ -61,7 +61,7 @@ Create a new directory for your formatter:
 mkdir sql-formatter
 cd sql-formatter
 go mod init sql-formatter
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 ## Step 3: Define Configuration
@@ -156,9 +156,9 @@ import (
     "fmt"
     "strings"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 // Formatter handles SQL formatting with custom rules
@@ -820,7 +820,7 @@ jobs:
 
     - name: Install SQL Formatter
       run: |
-        git clone https://github.com/ajitpratap0/GoSQLX.git
+        git clone https://github.com/aereal/sqlx.git
         cd GoSQLX/examples/tutorials/02-sql-formatter
         go build -o sql-formatter
         sudo mv sql-formatter /usr/local/bin/
@@ -862,7 +862,7 @@ check-sql-format:
   stage: format-check
   image: golang:1.21
   script:
-    - git clone https://github.com/ajitpratap0/GoSQLX.git
+    - git clone https://github.com/aereal/sqlx.git
     - cd GoSQLX/examples/tutorials/02-sql-formatter
     - go build -o sql-formatter
     - cd ../../../

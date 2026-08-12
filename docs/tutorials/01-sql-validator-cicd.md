@@ -23,7 +23,7 @@ In this tutorial, you'll create a SQL validation tool that scans directories for
 - Go 1.21 or higher installed
 - Basic understanding of SQL
 - Familiarity with command-line tools
-- GoSQLX installed: `go get github.com/ajitpratap0/GoSQLX`
+- GoSQLX installed: `go get github.com/aereal/sqlx`
 
 ## Step 1: Project Setup
 
@@ -33,7 +33,7 @@ Create a new directory for your validator:
 mkdir sql-validator
 cd sql-validator
 go mod init sql-validator
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 ## Step 2: Understanding the Core Validation Logic
@@ -80,9 +80,9 @@ import (
     "path/filepath"
     "strings"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 // ValidationResult holds the result of validating a single SQL file
@@ -359,7 +359,7 @@ jobs:
 
     - name: Install SQL Validator
       run: |
-        git clone https://github.com/ajitpratap0/GoSQLX.git
+        git clone https://github.com/aereal/sqlx.git
         cd GoSQLX/examples/tutorials/01-sql-validator
         go build -o sql-validator
         sudo mv sql-validator /usr/local/bin/
@@ -381,7 +381,7 @@ validate-sql:
   stage: validate
   image: golang:1.21
   script:
-    - git clone https://github.com/ajitpratap0/GoSQLX.git
+    - git clone https://github.com/aereal/sqlx.git
     - cd GoSQLX/examples/tutorials/01-sql-validator
     - go build -o sql-validator
     - ./sql-validator ../../sql

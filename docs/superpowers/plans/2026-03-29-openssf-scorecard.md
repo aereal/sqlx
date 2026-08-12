@@ -159,15 +159,15 @@ Expected: existing badges on lines 1-5. Note the line number of the last existin
 - [ ] **Step 2: Add the OpenSSF Scorecard badge**
 
 The badge URL format for OpenSSF Scorecard is:
-`https://api.securityscorecards.dev/projects/github.com/ajitpratap0/GoSQLX/badge`
+`https://api.securityscorecards.dev/projects/github.com/aereal/sqlx/badge`
 
 The link URL is:
-`https://securityscorecards.dev/viewer/?uri=github.com/ajitpratap0/GoSQLX`
+`https://securityscorecards.dev/viewer/?uri=github.com/aereal/sqlx`
 
 Find the badge block in README.md and add after the existing badges:
 
 ```markdown
-[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/ajitpratap0/GoSQLX/badge)](https://securityscorecards.dev/viewer/?uri=github.com/ajitpratap0/GoSQLX)
+[![OpenSSF Scorecard](https://api.securityscorecards.dev/projects/github.com/aereal/sqlx/badge)](https://securityscorecards.dev/viewer/?uri=github.com/aereal/sqlx)
 ```
 
 Add it adjacent to existing security/quality badges. Use the Edit tool to insert it in the right position.
@@ -224,7 +224,7 @@ Expected: `"uploaded"` or `"complete"`
 - [ ] **Step 5: View initial score**
 
 After the run completes, the results appear at:
-`https://securityscorecards.dev/viewer/?uri=github.com/ajitpratap0/GoSQLX`
+`https://securityscorecards.dev/viewer/?uri=github.com/aereal/sqlx`
 
 The initial score should be ≥ 6/10 because:
 - SECURITY.md exists ✅

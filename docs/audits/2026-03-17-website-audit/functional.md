@@ -84,7 +84,7 @@ Note: Both paths return 200 directly rather than 301 redirecting to the canonica
 
 ## GitHub Links
 - Correct repo (ajitpratap0/GoSQLX): ✗
-- All GitHub links site-wide point to **`github.com/ajitpsingh/GoSQLX`** instead of `github.com/ajitpratap0/GoSQLX`
+- All GitHub links site-wide point to **`github.com/ajitpsingh/GoSQLX`** instead of `github.com/aereal/sqlx`
 - Affected links (present on every page in header and footer):
   - `https://github.com/ajitpsingh/GoSQLX` (main repo link)
   - `https://github.com/ajitpsingh/GoSQLX/issues`

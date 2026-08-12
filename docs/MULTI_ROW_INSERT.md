@@ -1,6 +1,6 @@
 # Multi-Row INSERT VALUES Support
 
-**Issue:** [#179](https://github.com/ajitpratap0/GoSQLX/issues/179)
+**Issue:** [#179](https://github.com/aereal/sqlx/issues/179)
 **Status:** ✅ Implemented
 **Version:** Available in v1.7.0+
 
@@ -34,7 +34,7 @@ VALUES
 ### Basic Multi-Row INSERT
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+import "github.com/aereal/sqlx/gosqlx"
 
 sql := `INSERT INTO users (name, email) VALUES
     ('John', 'john@example.com'),
@@ -406,4 +406,4 @@ func buildUpsert(table string, columns []string, rows [][]interface{}, conflictC
 ## Contributing
 
 Found a bug or have a feature request? Please open an issue on GitHub:
-https://github.com/ajitpratap0/GoSQLX/issues
+https://github.com/aereal/sqlx/issues

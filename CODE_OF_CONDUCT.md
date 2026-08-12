@@ -37,7 +37,7 @@ This Code of Conduct applies within all community spaces - GitHub issues, pull r
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening a private security advisory at https://github.com/ajitpratap0/GoSQLX/security/advisories/new or by emailing the maintainer directly (see the GitHub profile for contact information).
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by opening a private security advisory at https://github.com/aereal/sqlx/security/advisories/new or by emailing the maintainer directly (see the GitHub profile for contact information).
 
 All complaints will be reviewed and investigated promptly and fairly. Maintainers are obligated to maintain confidentiality with regard to the reporter of an incident.
 

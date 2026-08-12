@@ -75,7 +75,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/fingerprint"
+	"github.com/aereal/sqlx/fingerprint"
 )
 
 func TestNormalize_ReplacesStringLiterals(t *testing.T) {
@@ -201,7 +201,7 @@ func TestFingerprint_Deterministic(t *testing.T) {
 go test ./pkg/fingerprint/ -v 2>&1 | head -20
 ```
 
-Expected: `cannot find package "github.com/ajitpratap0/GoSQLX/pkg/fingerprint"`
+Expected: `cannot find package "github.com/aereal/sqlx/fingerprint"`
 
 ---
 
@@ -220,10 +220,10 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/formatter"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/formatter"
+	"github.com/aereal/sqlx/sql/ast"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 // literalNormalizer is an AST visitor that replaces all literal values with "?".
@@ -412,7 +412,7 @@ func Fingerprint(sql string) (string, error) {
 Also add the import in the `import` block:
 
 ```go
-"github.com/ajitpratap0/GoSQLX/pkg/fingerprint"
+"github.com/aereal/sqlx/fingerprint"
 ```
 
 - [ ] **Step 2: Verify the package builds**

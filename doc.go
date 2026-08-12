@@ -79,7 +79,7 @@
 //
 // Install the CLI:
 //
-//	go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+//	go install github.com/aereal/sqlx/cmd/gosqlx@latest
 //
 // CLI Commands:
 //
@@ -107,9 +107,9 @@
 // Basic Usage:
 //
 //	import (
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-//	    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+//	    "github.com/aereal/sqlx/sql/tokenizer"
+//	    "github.com/aereal/sqlx/sql/parser"
+//	    "github.com/aereal/sqlx/sql/ast"
 //	)
 //
 //	// Get a tokenizer from the pool
@@ -295,5 +295,5 @@
 // v1.0.0: Initial release with basic SQL parsing
 //
 // For more examples and detailed documentation, see:
-// https://github.com/ajitpratap0/GoSQLX
+// https://github.com/aereal/sqlx
 package gosqlx

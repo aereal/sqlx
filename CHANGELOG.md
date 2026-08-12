@@ -7,6 +7,25 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+2026-08-06 - forked from [ajitpratap0/GoSQLX][origin].
+
+### Changed
+
+- changed module name (new: `github.com/aereal/sqlx`)
+- changed package structures (removed `pkg/` prefix)
+
+### Removed
+
+- VS Code extension
+- some Go packages
+  - gosqlx command
+  - gosqlx-mcp command
+  - advisor package
+  - cbinding package
+  - linter package
+  - lsp package
+  - mcp package
+
 ## [1.14.0] - 2026-04-12 — Dialect-Aware Transforms, Snowflake 100%, Schema Introspection
 
 Headline themes: dialect-aware transforms, Snowflake at 100% of the QA corpus, ClickHouse significantly expanded (83% of the QA corpus, up from 53%), live schema introspection, SQL transpilation, and first-class integration sub-modules (OpenTelemetry and GORM). Drop-in upgrade from v1.13.0 — no breaking changes.
@@ -688,7 +707,7 @@ if tok.Type == models.TokenTypeSelect { ... }
 
 **Who is affected:** Only users who directly access `token.Token` fields or use string-based token constants from `pkg/sql/token`. Users of the high-level `gosqlx.Parse()` / `gosqlx.Validate()` API are **not affected**.
 
-See [Migration Guide](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/MIGRATION.md) for detailed migration instructions.
+See [Migration Guide](https://github.com/aereal/sqlx/blob/main/docs/MIGRATION.md) for detailed migration instructions.
 
 ---
 
@@ -1369,7 +1388,7 @@ This release positions GoSQLX as the most thoroughly tested Go SQL parser librar
 
 ### Related Pull Request
 
-**PR #85**: [Phase 1 Test Coverage Achievement - CLI, Parser, and Tokenizer](https://github.com/ajitpratap0/GoSQLX/pull/85)
+**PR #85**: [Phase 1 Test Coverage Achievement - CLI, Parser, and Tokenizer](https://github.com/aereal/sqlx/pull/85)
 - 81 files changed, 25,883 insertions, 1,735 deletions
 - 20 commits including 8 CI/CD fix commits
 - All 16 CI checks passing (tests across 3 platforms × 3 Go versions, linting, security, benchmarks)
@@ -1793,24 +1812,24 @@ This substantial test coverage increase provides strong confidence in the AST pa
 ## Support
 
 For questions about upgrading or changelog entries:
-- Open an issue: https://github.com/ajitpratap0/GoSQLX/issues
-- Join discussions: https://github.com/ajitpratap0/GoSQLX/discussions
+- Open an issue: https://github.com/aereal/sqlx/issues
 
-[Unreleased]: https://github.com/ajitpratap0/GoSQLX/compare/v1.12.1...HEAD
-[1.13.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.12.1...v1.13.0
-[1.12.1]: https://github.com/ajitpratap0/GoSQLX/compare/v1.12.0...v1.12.1
-[1.12.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.10.2...v1.12.0
-[1.8.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.7.0...v1.8.0
-[1.7.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.6.0...v1.7.0
-[1.6.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.5.1...v1.6.0
-[1.5.1]: https://github.com/ajitpratap0/GoSQLX/compare/v1.5.0...v1.5.1
-[1.5.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.4.0...v1.5.0
-[1.4.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.3.0...v1.4.0
-[1.3.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.2.0...v1.3.0
-[1.2.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.1.0...v1.2.0
-[1.1.0]: https://github.com/ajitpratap0/GoSQLX/compare/v1.0.2...v1.1.0
-[1.0.2]: https://github.com/ajitpratap0/GoSQLX/compare/v1.0.1...v1.0.2
-[1.0.1]: https://github.com/ajitpratap0/GoSQLX/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/ajitpratap0/GoSQLX/compare/v0.9.0...v1.0.0
-[0.9.0]: https://github.com/ajitpratap0/GoSQLX/compare/v0.8.0...v0.9.0
-[0.8.0]: https://github.com/ajitpratap0/GoSQLX/releases/tag/v0.8.0
+[Unreleased]: https://github.com/aereal/sqlx/compare/v1.12.1...HEAD
+[1.13.0]: https://github.com/aereal/sqlx/compare/v1.12.1...v1.13.0
+[1.12.1]: https://github.com/aereal/sqlx/compare/v1.12.0...v1.12.1
+[1.12.0]: https://github.com/aereal/sqlx/compare/v1.10.2...v1.12.0
+[1.8.0]: https://github.com/aereal/sqlx/compare/v1.7.0...v1.8.0
+[1.7.0]: https://github.com/aereal/sqlx/compare/v1.6.0...v1.7.0
+[1.6.0]: https://github.com/aereal/sqlx/compare/v1.5.1...v1.6.0
+[1.5.1]: https://github.com/aereal/sqlx/compare/v1.5.0...v1.5.1
+[1.5.0]: https://github.com/aereal/sqlx/compare/v1.4.0...v1.5.0
+[1.4.0]: https://github.com/aereal/sqlx/compare/v1.3.0...v1.4.0
+[1.3.0]: https://github.com/aereal/sqlx/compare/v1.2.0...v1.3.0
+[1.2.0]: https://github.com/aereal/sqlx/compare/v1.1.0...v1.2.0
+[1.1.0]: https://github.com/aereal/sqlx/compare/v1.0.2...v1.1.0
+[1.0.2]: https://github.com/aereal/sqlx/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/aereal/sqlx/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/aereal/sqlx/compare/v0.9.0...v1.0.0
+[0.9.0]: https://github.com/aereal/sqlx/compare/v0.8.0...v0.9.0
+[0.8.0]: https://github.com/aereal/sqlx/releases/tag/v0.8.0
+[origin]: https://github.com/ajitpratap0/GoSQLX

@@ -127,7 +127,7 @@ import (
 	_ "github.com/lib/pq"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	pgschema "github.com/ajitpratap0/GoSQLX/pkg/schema/postgres"
+	pgschema "github.com/aereal/sqlx/pkg/schema/postgres"
 )
 
 func startPostgres(t *testing.T) *sql.DB {
@@ -272,7 +272,7 @@ import (
 	"database/sql"
 	"fmt"
 
-	schemalib "github.com/ajitpratap0/GoSQLX/pkg/schema"
+	schemalib "github.com/aereal/sqlx/pkg/schema"
 )
 
 // Loader implements schema.Loader for PostgreSQL.
@@ -536,8 +536,8 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
-	myschema "github.com/ajitpratap0/GoSQLX/pkg/schema/mysql"
-	schemalib "github.com/ajitpratap0/GoSQLX/pkg/schema"
+	myschema "github.com/aereal/sqlx/pkg/schema/mysql"
+	schemalib "github.com/aereal/sqlx/pkg/schema"
 )
 
 func startMySQL(t *testing.T) *sql.DB {
@@ -670,7 +670,7 @@ import (
 	"fmt"
 	"strings"
 
-	schemalib "github.com/ajitpratap0/GoSQLX/pkg/schema"
+	schemalib "github.com/aereal/sqlx/pkg/schema"
 )
 
 // Loader implements schema.Loader for MySQL.
@@ -889,7 +889,7 @@ import (
 	"testing"
 
 	_ "modernc.org/sqlite"
-	sqschema "github.com/ajitpratap0/GoSQLX/pkg/schema/sqlite"
+	sqschema "github.com/aereal/sqlx/pkg/schema/sqlite"
 )
 
 func openSQLite(t *testing.T) *sql.DB {
@@ -963,7 +963,7 @@ import (
 	"fmt"
 	"strings"
 
-	schemalib "github.com/ajitpratap0/GoSQLX/pkg/schema"
+	schemalib "github.com/aereal/sqlx/pkg/schema"
 )
 
 // Loader implements schema.Loader for SQLite.
@@ -1155,8 +1155,8 @@ import (
 	"testing"
 
 	_ "modernc.org/sqlite"
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	sqschema "github.com/ajitpratap0/GoSQLX/pkg/schema/sqlite"
+	"github.com/aereal/sqlx/gosqlx"
+	sqschema "github.com/aereal/sqlx/pkg/schema/sqlite"
 )
 
 func TestGoSQLX_LoadSchema(t *testing.T) {
@@ -1192,7 +1192,7 @@ Add to `pkg/gosqlx/gosqlx.go` after existing functions:
 import (
     // existing imports...
     "database/sql"
-    schemalib "github.com/ajitpratap0/GoSQLX/pkg/schema"
+    schemalib "github.com/aereal/sqlx/pkg/schema"
 )
 
 // LoadSchema connects to a live database and returns its schema metadata.

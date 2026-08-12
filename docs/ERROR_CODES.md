@@ -781,8 +781,8 @@ See [pkg/sql/security/scanner.go](/Users/ajitpratapsingh/dev/GoSQLX/pkg/sql/secu
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/errors"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/errors"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 p := parser.NewParser()
@@ -833,7 +833,7 @@ Error E2002 at line 3, column 10: expected FROM, got WHERE
   4 | ORDER BY name
 
 Hint: Add FROM clause before WHERE
-Help: https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md
+Help: https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md
 ```
 
 ### Intelligent Error Suggestions
@@ -898,7 +898,7 @@ See [LSP_GUIDE.md](LSP_GUIDE.md) for complete LSP documentation.
 
 - **Troubleshooting Guide**: See [TROUBLESHOOTING.md](TROUBLESHOOTING.md)
 - **LSP Guide**: See [LSP_GUIDE.md](LSP_GUIDE.md) for IDE integration
-- **GitHub Issues**: [github.com/ajitpratap0/GoSQLX/issues](https://github.com/ajitpratap0/GoSQLX/issues)
+- **GitHub Issues**: [github.com/aereal/sqlx/issues](https://github.com/aereal/sqlx/issues)
 - **Help URLs**: Each error includes a help URL pointing to this document on GitHub
 
 ---
@@ -941,7 +941,7 @@ Additionally, GoSQLX provides:
 - **LSP Integration**: Real-time error detection in IDEs
 - **Intelligent Error Suggestions**: Context-aware hints and fixes
 
-For the latest updates and contributions, visit [github.com/ajitpratap0/GoSQLX](https://github.com/ajitpratap0/GoSQLX).
+For the latest updates and contributions, visit [github.com/aereal/sqlx](https://github.com/aereal/sqlx).
 
 ---
 

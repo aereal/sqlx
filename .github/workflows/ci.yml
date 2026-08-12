@@ -1,0 +1,160 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+jobs:
+  ok:
+    runs-on: ubuntu-slim
+    needs:
+      - test
+      - race-check
+      - lint
+    if: failure()
+    steps:
+      - run: exit 1
+
+  build:
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        go-version: ["1.26"]
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: ${{ matrix.go-version }}
+
+      - name: Build
+        run: go build -v ./...
+
+  test:
+    name: Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, macos-26, windows-2025]
+        go: ["1.26"]
+    env:
+      # Prevent Go from auto-downloading toolchain which conflicts with setup-go cache
+      GOTOOLCHAIN: local
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: ${{ matrix.go }}
+          cache: true
+
+      - name: Get dependencies
+        run: go mod download
+
+      - name: Run tests
+        run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
+
+  race-check:
+    name: Race Detector
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - name: Run tests with race detector
+        run: go test -race -timeout 120s ./...
+        env:
+          CGO_ENABLED: '1' # required for -race
+
+  benchmark:
+    name: Benchmark
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - name: Run benchmarks
+        run: |
+          go test -run=^$ -bench=. -benchmem -timeout=5m ./sql/tokenizer/
+          go test -run=^$ -bench=. -benchmem -timeout=5m ./sql/parser/
+          go test -run=^$ -bench=. -benchmem -timeout=5m ./sql/ast/
+
+  perf-regression:
+    name: Performance Regression
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - name: Run performance regression tests
+        continue-on-error: true
+        run: go test -run TestPerformanceRegression -timeout=5m ./sql/parser/
+
+  fuzz-regression:
+    name: Fuzz Regression
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: "1.26"
+          cache: true
+
+      - name: Run fuzz regression (corpus only)
+        run: |
+          go test -fuzz=FuzzTokenizer -fuzztime=10s -timeout=2m ./sql/tokenizer/ || true
+          go test -fuzz=FuzzScanSQL -fuzztime=10s -timeout=2m ./sql/security/ || true
+
+  lint:
+    name: Lint
+    runs-on: ubuntu-24.04
+
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4.4.0
+
+      - name: Set up Go
+        uses: actions/setup-go@40f1582b2485089dde7abd97c1529aa768e1baff # v5.6.0
+        with:
+          go-version: "1.26"
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@9fae48acfc02a90574d7c304a1758ef9895495fa # v7.0.1
+        with:
+          version: v2.11.3
+          args: --timeout=10m --config=.golangci.yml
+          verify: false
+
+      - name: Run go fmt
+        run: |
+          if [ "$(gofmt -s -l . | wc -l)" -gt 0 ]; then
+            echo "Please run 'go fmt ./...'"
+            gofmt -s -l .
+            exit 1
+          fi

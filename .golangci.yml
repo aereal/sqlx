@@ -13,6 +13,7 @@ linters:
     - staticcheck
     - misspell
     - gocritic
+    - unused
   settings:
     errcheck:
       exclude-functions:
@@ -30,6 +31,8 @@ linters:
     gocritic:
       disabled-checks:
         - ifElseChain
+    unused:
+      exported-fields-are-used: false
 
 issues:
   max-issues-per-linter: 0

@@ -6,7 +6,7 @@
 
 **Architecture:** Each integration lives under `integrations/<name>/` with its own `go.mod` (pointing back to the root module via `replace` directive during development). OTel integration wraps `gosqlx.Parse()` and emits a span with SQL metadata attributes. GORM integration adds a plugin (`gorm.io/gorm/plugin` interface) that parses each executed query with GoSQLX and attaches extracted table/column metadata to GORM callbacks.
 
-**Tech Stack:** `go.opentelemetry.io/otel v1.26+` (tracing + attributes), `go.opentelemetry.io/otel/sdk` (test SDK), `gorm.io/gorm v2`, `gorm.io/driver/sqlite` (pure-Go, for testing without Docker), `github.com/ajitpratap0/GoSQLX` (root module).
+**Tech Stack:** `go.opentelemetry.io/otel v1.26+` (tracing + attributes), `go.opentelemetry.io/otel/sdk` (test SDK), `gorm.io/gorm v2`, `gorm.io/driver/sqlite` (pure-Go, for testing without Docker), `github.com/aereal/sqlx` (root module).
 
 ---
 
@@ -21,18 +21,18 @@
 
 ```
 // integrations/opentelemetry/go.mod
-module github.com/ajitpratap0/GoSQLX/integrations/opentelemetry
+module github.com/aereal/sqlx/integrations/opentelemetry
 
 go 1.23
 
 require (
-    github.com/ajitpratap0/GoSQLX v1.13.0
+    github.com/aereal/sqlx v1.13.0
     go.opentelemetry.io/otel v1.26.0
     go.opentelemetry.io/otel/sdk v1.26.0
     go.opentelemetry.io/otel/trace v1.26.0
 )
 
-replace github.com/ajitpratap0/GoSQLX => ../../
+replace github.com/aereal/sqlx => ../../
 ```
 
 - [ ] **Step 2: Write the test (it will fail — package doesn't exist)**
@@ -45,7 +45,7 @@ import (
 	"context"
 	"testing"
 
-	gosqlxotel "github.com/ajitpratap0/GoSQLX/integrations/opentelemetry"
+	gosqlxotel "github.com/aereal/sqlx/integrations/opentelemetry"
 	"go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/sdk/trace/tracetest"
 )
@@ -149,14 +149,14 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/sql/ast"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/codes"
 	"go.opentelemetry.io/otel/trace"
 )
 
-const tracerName = "github.com/ajitpratap0/GoSQLX"
+const tracerName = "github.com/aereal/sqlx"
 
 // InstrumentedParse parses SQL and records a span with statement metadata.
 // The returned AST is the same as gosqlx.Parse(); the span is recorded on tp.
@@ -255,18 +255,18 @@ git commit -m "feat(integrations): OpenTelemetry instrumentation for gosqlx.Pars
 
 ```
 // integrations/gorm/go.mod
-module github.com/ajitpratap0/GoSQLX/integrations/gorm
+module github.com/aereal/sqlx/integrations/gorm
 
 go 1.23
 
 require (
-    github.com/ajitpratap0/GoSQLX v1.13.0
+    github.com/aereal/sqlx v1.13.0
     gorm.io/gorm v1.25.10
     gorm.io/driver/sqlite v1.5.6
     modernc.org/sqlite v1.30.1
 )
 
-replace github.com/ajitpratap0/GoSQLX => ../../
+replace github.com/aereal/sqlx => ../../
 ```
 
 - [ ] **Step 2: Write the test**
@@ -278,7 +278,7 @@ package gosqlxgorm_test
 import (
 	"testing"
 
-	gosqlxgorm "github.com/ajitpratap0/GoSQLX/integrations/gorm"
+	gosqlxgorm "github.com/aereal/sqlx/integrations/gorm"
 	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -396,7 +396,7 @@ package gosqlxgorm
 import (
 	"sync"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+	"github.com/aereal/sqlx/gosqlx"
 	"gorm.io/gorm"
 )
 
@@ -510,8 +510,8 @@ func stmtTypeName(stmt interface{}) string {
 ```go
 import (
     "sync"
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+    "github.com/aereal/sqlx/gosqlx"
+    "github.com/aereal/sqlx/sql/ast"
     "gorm.io/gorm"
 )
 

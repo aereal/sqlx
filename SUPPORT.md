@@ -4,7 +4,7 @@
 
 ### 🐛 Found a bug?
 
-Open a [bug report](https://github.com/ajitpratap0/GoSQLX/issues/new?template=bug_report.md). Include:
+Open a [bug report](https://github.com/aereal/sqlx/issues/new?template=bug_report.md). Include:
 - GoSQLX version (`gosqlx --version` or `const Version` in `pkg/gosqlx/gosqlx.go`)
 - Go version (`go version`)
 - Minimal reproducing SQL and Go snippet
@@ -12,11 +12,11 @@ Open a [bug report](https://github.com/ajitpratap0/GoSQLX/issues/new?template=bu
 
 ### 💡 Feature request?
 
-Open a [feature request](https://github.com/ajitpratap0/GoSQLX/issues/new?template=feature_request.md). Describe the SQL pattern you need parsed and the use case.
+Open a [feature request](https://github.com/aereal/sqlx/issues/new?template=feature_request.md). Describe the SQL pattern you need parsed and the use case.
 
 ### ❓ Questions and discussions
 
-For usage questions, design discussions, and "how do I…" questions, use [GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions):
+For usage questions, design discussions, and "how do I…" questions, use [GitHub Discussions](https://github.com/aereal/sqlx/discussions):
 
 | Category | Use for |
 |----------|---------|
@@ -27,7 +27,7 @@ For usage questions, design discussions, and "how do I…" questions, use [GitHu
 
 ### 🚀 Performance issues?
 
-Open a [performance issue](https://github.com/ajitpratap0/GoSQLX/issues/new?template=performance_issue.md) with benchmark output (`go test -bench=. -benchmem ./...`).
+Open a [performance issue](https://github.com/aereal/sqlx/issues/new?template=performance_issue.md) with benchmark output (`go test -bench=. -benchmem ./...`).
 
 ### 🔒 Security vulnerabilities?
 
@@ -45,7 +45,7 @@ Open a [performance issue](https://github.com/ajitpratap0/GoSQLX/issues/new?temp
 | [Error Codes](docs/ERROR_CODES.md) | E1xxx / E2xxx / E3xxx reference |
 | [SQL Compatibility](docs/SQL_COMPATIBILITY.md) | What SQL is supported per dialect |
 | [Migration Guide](docs/MIGRATION.md) | Upgrading between versions |
-| [pkg.go.dev](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX) | Generated Go API docs |
+| [pkg.go.dev](https://pkg.go.dev/github.com/aereal/sqlx) | Generated Go API docs |
 
 ## Response Times
 
@@ -66,4 +66,4 @@ This is an open source project maintained in spare time. Typical response times:
 | v1.8.x | ⚠️ Security fixes only | Go 1.21+ |
 | < v1.8 | ❌ End of life | - |
 
-Upgrade with: `go get github.com/ajitpratap0/GoSQLX@latest`
+Upgrade with: `go get github.com/aereal/sqlx@latest`

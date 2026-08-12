@@ -35,7 +35,7 @@ The GoSQLX Command Line Interface (CLI) provides high-performance SQL parsing, v
 ### Build from Source
 
 ```bash
-git clone https://github.com/ajitpratap0/GoSQLX.git
+git clone https://github.com/aereal/sqlx.git
 cd GoSQLX
 task build:cli  # or: go build -o gosqlx ./cmd/gosqlx
 ```
@@ -43,7 +43,7 @@ task build:cli  # or: go build -o gosqlx ./cmd/gosqlx
 ### Install via Go
 
 ```bash
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+go install github.com/aereal/sqlx/cmd/gosqlx@latest
 ```
 
 ### Install Globally (from project)
@@ -1005,7 +1005,7 @@ $ gosqlx validate /dev/null
 Error: not a regular file: /dev/null
 ```
 
-For more details, see the [Security Validation Package](https://github.com/ajitpratap0/GoSQLX/tree/main/cmd/gosqlx/internal/validate).
+For more details, see the [Security Validation Package](https://github.com/aereal/sqlx/tree/main/cmd/gosqlx/internal/validate).
 
 ---
 
@@ -1028,7 +1028,7 @@ jobs:
         with:
           go-version: '1.21'
       - name: Install GoSQLX
-        run: go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+        run: go install github.com/aereal/sqlx/cmd/gosqlx@latest
       - name: Validate SQL
         run: gosqlx validate -r --strict queries/
       - name: Lint SQL
@@ -1054,7 +1054,7 @@ jobs:
 sql-validation:
   stage: test
   script:
-    - go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+    - go install github.com/aereal/sqlx/cmd/gosqlx@latest
     - gosqlx validate -r --strict queries/
     - gosqlx lint --fail-on-warn -r queries/
     - gosqlx format --check -r queries/
@@ -1388,7 +1388,7 @@ To contribute to the GoSQLX CLI:
 3. Add tests for new CLI features
 4. Submit a pull request
 
-See [CONTRIBUTING.md](https://github.com/ajitpratap0/GoSQLX/blob/main/CONTRIBUTING.md) for detailed guidelines.
+See [CONTRIBUTING.md](https://github.com/aereal/sqlx/blob/main/CONTRIBUTING.md) for detailed guidelines.
 
 ---
 

@@ -26,9 +26,9 @@ Before any code changes:
 
 - Version: `"0.1.0"` → `"1.10.1"`
 - Add `"icon": "images/icon.png"` (icon already exists at `vscode-extension/images/icon.png`)
-- Add `"repository"`: `{ "type": "git", "url": "https://github.com/ajitpratap0/GoSQLX" }`
-- Add `"bugs"`: `{ "url": "https://github.com/ajitpratap0/GoSQLX/issues" }`
-- Add `"homepage"`: `"https://github.com/ajitpratap0/GoSQLX#readme"`
+- Add `"repository"`: `{ "type": "git", "url": "https://github.com/aereal/sqlx" }`
+- Add `"bugs"`: `{ "url": "https://github.com/aereal/sqlx/issues" }`
+- Add `"homepage"`: `"https://github.com/aereal/sqlx#readme"`
 - Add `"categories"`: `["Programming Languages", "Linters", "Formatters"]`
 - Add `"keywords"`: `["sql", "parser", "linter", "formatter", "gosqlx"]`
 - Ensure `"engines.vscode"` is set to `"^1.85.0"` (reasonable minimum)

@@ -13,28 +13,28 @@ Interactive Playground: https://gosqlx.dev/playground/
 
 ## Core API
 
-- [Package gosqlx](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/gosqlx): High-level entry point - `Parse()`, `Validate()`, `Format()`, `ParseWithDialect()`, `ParseWithRecovery()`
-- [Package parser](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/sql/parser): Recursive-descent parser with one-token lookahead and object pooling
-- [Package tokenizer](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer): Zero-copy SQL lexer with full UTF-8 support
-- [Package ast](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/sql/ast): AST node types and visitor pattern
-- [Package security](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/sql/security): SQL injection scanner - tautology, UNION, time-based, comment-bypass patterns
-- [Package linter](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/linter): 10 built-in lint rules (L001–L010)
-- [Package transform](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/transform): Programmatic SQL rewriting - add WHERE, columns, JOINs, pagination
-- [Package lsp](https://pkg.go.dev/github.com/ajitpratap0/GoSQLX/pkg/lsp): Language Server Protocol server for IDE integration
+- [Package gosqlx](https://pkg.go.dev/github.com/aereal/sqlx/gosqlx): High-level entry point - `Parse()`, `Validate()`, `Format()`, `ParseWithDialect()`, `ParseWithRecovery()`
+- [Package parser](https://pkg.go.dev/github.com/aereal/sqlx/sql/parser): Recursive-descent parser with one-token lookahead and object pooling
+- [Package tokenizer](https://pkg.go.dev/github.com/aereal/sqlx/sql/tokenizer): Zero-copy SQL lexer with full UTF-8 support
+- [Package ast](https://pkg.go.dev/github.com/aereal/sqlx/sql/ast): AST node types and visitor pattern
+- [Package security](https://pkg.go.dev/github.com/aereal/sqlx/sql/security): SQL injection scanner - tautology, UNION, time-based, comment-bypass patterns
+- [Package linter](https://pkg.go.dev/github.com/aereal/sqlx/pkg/linter): 10 built-in lint rules (L001–L010)
+- [Package transform](https://pkg.go.dev/github.com/aereal/sqlx/transform): Programmatic SQL rewriting - add WHERE, columns, JOINs, pagination
+- [Package lsp](https://pkg.go.dev/github.com/aereal/sqlx/pkg/lsp): Language Server Protocol server for IDE integration
 
 ## Documentation
 
-- [Getting Started](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/GETTING_STARTED.md): Install and first parse in 5 minutes
-- [Usage Guide](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/USAGE_GUIDE.md): Comprehensive patterns for all API surfaces
-- [CLI Guide](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/CLI_GUIDE.md): `gosqlx validate`, `format`, `parse`, `analyze`, `lint`, `lsp` commands
-- [API Reference](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/API_REFERENCE.md): Complete API documentation with examples
-- [SQL Compatibility](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/SQL_COMPATIBILITY.md): Feature support matrix across 6 SQL dialects
-- [Error Codes](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ERROR_CODES.md): E1xxx tokenizer, E2xxx parser, E3xxx semantic, E4xxx unsupported
-- [Security](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/SECURITY.md): SQL injection detection API, tautology patterns, UNION split
-- [Architecture](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/ARCHITECTURE.md): Tokenizer → Parser → AST pipeline, object pooling design
-- [Migration Guide](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/MIGRATION.md): Breaking change notes per version
-- [Performance Tuning](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/PERFORMANCE_TUNING.md): Pool configuration, batch parsing, profiling tips
-- [Linting Rules](https://github.com/ajitpratap0/GoSQLX/blob/main/docs/LINTING_RULES.md): L001–L010 rule reference
+- [Getting Started](https://github.com/aereal/sqlx/blob/main/docs/GETTING_STARTED.md): Install and first parse in 5 minutes
+- [Usage Guide](https://github.com/aereal/sqlx/blob/main/docs/USAGE_GUIDE.md): Comprehensive patterns for all API surfaces
+- [CLI Guide](https://github.com/aereal/sqlx/blob/main/docs/CLI_GUIDE.md): `gosqlx validate`, `format`, `parse`, `analyze`, `lint`, `lsp` commands
+- [API Reference](https://github.com/aereal/sqlx/blob/main/docs/API_REFERENCE.md): Complete API documentation with examples
+- [SQL Compatibility](https://github.com/aereal/sqlx/blob/main/docs/SQL_COMPATIBILITY.md): Feature support matrix across 6 SQL dialects
+- [Error Codes](https://github.com/aereal/sqlx/blob/main/docs/ERROR_CODES.md): E1xxx tokenizer, E2xxx parser, E3xxx semantic, E4xxx unsupported
+- [Security](https://github.com/aereal/sqlx/blob/main/docs/SECURITY.md): SQL injection detection API, tautology patterns, UNION split
+- [Architecture](https://github.com/aereal/sqlx/blob/main/docs/ARCHITECTURE.md): Tokenizer → Parser → AST pipeline, object pooling design
+- [Migration Guide](https://github.com/aereal/sqlx/blob/main/docs/MIGRATION.md): Breaking change notes per version
+- [Performance Tuning](https://github.com/aereal/sqlx/blob/main/docs/PERFORMANCE_TUNING.md): Pool configuration, batch parsing, profiling tips
+- [Linting Rules](https://github.com/aereal/sqlx/blob/main/docs/LINTING_RULES.md): L001–L010 rule reference
 
 ## Key Capabilities
 
@@ -53,7 +53,7 @@ Interactive Playground: https://gosqlx.dev/playground/
 ## Quick Start
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+import "github.com/aereal/sqlx/gosqlx"
 
 // Parse - returns *ast.AST
 tree, err := gosqlx.Parse("SELECT u.name, COUNT(o.id) FROM users u JOIN orders o ON u.id = o.user_id GROUP BY u.name")
@@ -87,7 +87,7 @@ trees, err := gosqlx.ParseMultiple([]string{sql1, sql2, sql3})
 
 ## Optional
 
-- [CHANGELOG](https://github.com/ajitpratap0/GoSQLX/blob/main/CHANGELOG.md): Full version history
-- [Contributing](https://github.com/ajitpratap0/GoSQLX/blob/main/CONTRIBUTING.md): How to contribute
+- [CHANGELOG](https://github.com/aereal/sqlx/blob/main/CHANGELOG.md): Full version history
+- [Contributing](https://github.com/aereal/sqlx/blob/main/CONTRIBUTING.md): How to contribute
 - [GitHub Action](https://github.com/marketplace/actions/gosqlx-sql-validator): GoSQLX SQL Validator CI action
-- [Python Bindings](https://github.com/ajitpratap0/GoSQLX/blob/main/python/README.md): PyGoSQLX
+- [Python Bindings](https://github.com/aereal/sqlx/blob/main/python/README.md): PyGoSQLX

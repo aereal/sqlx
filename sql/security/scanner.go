@@ -1,0 +1,1187 @@
+// Copyright 2026 GoSQLX Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+// Package security provides SQL injection detection and security scanning for GoSQLX.
+//
+// The primary entry points are NewScanner (creates a scanner that reports all severity
+// levels), NewScannerWithSeverity (creates a scanner filtered to a minimum severity),
+// Scanner.Scan (analyzes a parsed *ast.AST via deep tree traversal), and Scanner.ScanSQL
+// (analyzes a raw SQL string using pre-compiled regex patterns). Both methods return a
+// *ScanResult containing all Findings with severity, pattern type, risk description, and
+// remediation suggestions, plus summary counts accessible via HasCritical(),
+// HasHighOrAbove(), and IsClean().
+//
+// # Overview
+//
+// The security scanner performs static analysis on SQL to detect potential
+// injection attacks and unsafe patterns. It uses a combination of AST traversal,
+// pattern matching, and heuristic analysis to identify security issues.
+//
+// # Pattern Detection
+//
+// The scanner detects 8 types of SQL injection patterns:
+//
+//   - TAUTOLOGY: Always-true conditions (1=1, 'a'='a') used to bypass authentication
+//   - COMMENT_BYPASS: Comment-based injection (--, /**/, #) to bypass validation
+//   - UNION_BASED: UNION SELECT patterns for data extraction and schema enumeration
+//   - STACKED_QUERY: Multiple statements with destructive operations (DROP, DELETE)
+//   - TIME_BASED: Time delay functions (SLEEP, WAITFOR, pg_sleep) for blind injection
+//   - OUT_OF_BAND: External data exfiltration (xp_cmdshell, LOAD_FILE, UTL_HTTP)
+//   - DANGEROUS_FUNCTION: Dynamic SQL execution (EXEC, sp_executesql, PREPARE FROM)
+//   - BOOLEAN_BASED: Conditional logic exploitation for data extraction
+//
+// # Severity Levels
+//
+// Each finding is assigned one of four severity levels:
+//
+//   - CRITICAL: Definite injection pattern detected (e.g., OR 1=1 --)
+//   - HIGH: Highly suspicious patterns requiring immediate review
+//   - MEDIUM: Potentially unsafe patterns that need investigation
+//   - LOW: Informational findings and best practice violations
+//
+// # Basic Usage
+//
+// AST-based scanning:
+//
+//	import (
+//	    "github.com/aereal/sqlx/sql/parser"
+//	    "github.com/aereal/sqlx/sql/security"
+//	)
+//
+//	// Parse SQL into AST
+//	ast, err := parser.Parse(tokens)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//
+//	// Scan for security issues
+//	scanner := security.NewScanner()
+//	results := scanner.Scan(ast)
+//
+//	// Review findings
+//	for _, finding := range results.Findings {
+//	    fmt.Printf("[%s] %s: %s\n",
+//	        finding.Severity,
+//	        finding.Pattern,
+//	        finding.Description)
+//	}
+//
+// Raw SQL scanning:
+//
+//	scanner := security.NewScanner()
+//	results := scanner.ScanSQL("SELECT * FROM users WHERE id = 1 OR 1=1 --")
+//
+//	if results.HasCritical() {
+//	    fmt.Println("CRITICAL security issues found!")
+//	    for _, f := range results.Findings {
+//	        fmt.Printf("  - %s: %s\n", f.Pattern, f.Description)
+//	        fmt.Printf("    Risk: %s\n", f.Risk)
+//	        fmt.Printf("    Suggestion: %s\n", f.Suggestion)
+//	    }
+//	}
+//
+// # Filtering by Severity
+//
+// Filter findings by minimum severity level:
+//
+//	// Only report HIGH and CRITICAL findings
+//	scanner, err := security.NewScannerWithSeverity(security.SeverityHigh)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//
+//	results := scanner.Scan(ast)
+//	fmt.Printf("Found %d high-severity issues\n", results.HighCount + results.CriticalCount)
+//
+// # Scan Results
+//
+// The ScanResult structure provides comprehensive information:
+//
+//	results := scanner.Scan(ast)
+//
+//	fmt.Printf("Total findings: %d\n", results.TotalCount)
+//	fmt.Printf("Critical: %d, High: %d, Medium: %d, Low: %d\n",
+//	    results.CriticalCount,
+//	    results.HighCount,
+//	    results.MediumCount,
+//	    results.LowCount)
+//
+//	// Check severity thresholds
+//	if results.IsClean() {
+//	    fmt.Println("No security issues detected")
+//	}
+//
+//	if results.HasHighOrAbove() {
+//	    fmt.Println("High-priority security issues require attention")
+//	}
+//
+// # Finding Details
+//
+// Each Finding contains detailed information:
+//
+//	for _, finding := range results.Findings {
+//	    fmt.Printf("Pattern: %s\n", finding.Pattern)      // Pattern type
+//	    fmt.Printf("Severity: %s\n", finding.Severity)    // Risk level
+//	    fmt.Printf("Description: %s\n", finding.Description) // What was found
+//	    fmt.Printf("Risk: %s\n", finding.Risk)           // Security impact
+//	    fmt.Printf("Suggestion: %s\n", finding.Suggestion) // Remediation advice
+//	    if finding.Line > 0 {
+//	        fmt.Printf("Location: Line %d, Column %d\n", finding.Line, finding.Column)
+//	    }
+//	}
+//
+// # Performance Considerations
+//
+// The scanner uses pre-compiled regex patterns (initialized once at package load)
+// for optimal performance. Scanning is thread-safe and suitable for concurrent use.
+//
+// # Production Integration
+//
+// Example CI/CD integration:
+//
+//	scanner := security.NewScanner()
+//	results := scanner.ScanSQL(userProvidedSQL)
+//
+//	if results.HasCritical() {
+//	    // Block deployment
+//	    log.Fatal("CRITICAL security vulnerabilities detected")
+//	}
+//
+//	if results.HasHighOrAbove() {
+//	    // Require security review
+//	    fmt.Println("WARNING: High-severity security issues require review")
+//	}
+//
+// # Pattern Examples
+//
+// TAUTOLOGY detection:
+//
+//	"SELECT * FROM users WHERE username='admin' OR 1=1 --"
+//	→ CRITICAL: Always-true condition detected
+//
+// UNION_BASED detection:
+//
+//	"SELECT name FROM products UNION SELECT password FROM users"
+//	→ CRITICAL: UNION-based data extraction
+//
+// TIME_BASED detection:
+//
+//	"SELECT * FROM orders WHERE id=1 AND SLEEP(5)"
+//	→ HIGH: Time-based blind injection
+//
+// STACKED_QUERY detection:
+//
+//	"SELECT * FROM users; DROP TABLE users --"
+//	→ CRITICAL: Stacked query with destructive operation
+//
+// # Version
+//
+// This package is part of GoSQLX v1.6.0 and is production-ready for enterprise use.
+package security
+
+import (
+	"fmt"
+	"regexp"
+	"strings"
+	"sync"
+
+	"github.com/aereal/sqlx/sql/ast"
+)
+
+// Severity represents the severity level of a security finding.
+// It is used to categorize the risk and priority of detected vulnerabilities.
+type Severity string
+
+const (
+	// SeverityCritical indicates definite injection (e.g., OR 1=1 --)
+	SeverityCritical Severity = "CRITICAL"
+	// SeverityHigh indicates likely injection (suspicious patterns)
+	SeverityHigh Severity = "HIGH"
+	// SeverityMedium indicates potentially unsafe patterns (needs review)
+	SeverityMedium Severity = "MEDIUM"
+	// SeverityLow indicates informational findings
+	SeverityLow Severity = "LOW"
+)
+
+// severityOrder maps severity levels to numeric values for comparison.
+// Unknown severities default to highest priority (included in all scans).
+var severityOrder = map[Severity]int{
+	SeverityLow:      0,
+	SeverityMedium:   1,
+	SeverityHigh:     2,
+	SeverityCritical: 3,
+}
+
+// Pre-compiled regex patterns for performance (compiled once at package init)
+var (
+	compiledPatterns     map[PatternType][]*regexp.Regexp
+	compiledPatternsOnce sync.Once
+
+	// Comment detection patterns (pre-compiled)
+	commentPatterns []struct {
+		re          *regexp.Regexp
+		description string
+		severity    Severity
+	}
+	commentPatternsOnce sync.Once
+
+	// tautologyCapturePatterns are used by detectTautologyInSQL to find candidate
+	// equality pairs. Each pattern captures a left-hand value; the caller verifies
+	// that the right-hand value matches. Go RE2 does not support backreferences so
+	// the two-step approach is used instead.
+	tautologyCapturePatterns []*regexp.Regexp
+	tautologyCaptureOnce     sync.Once
+)
+
+// initCompiledPatterns initializes all regex patterns once at package level.
+func initCompiledPatterns() {
+	compiledPatterns = make(map[PatternType][]*regexp.Regexp)
+
+	// Time-based blind injection functions
+	compiledPatterns[PatternTimeBased] = []*regexp.Regexp{
+		regexp.MustCompile(`(?i)\bSLEEP\s*\(`),
+		regexp.MustCompile(`(?i)\bWAITFOR\s+DELAY\b`),
+		regexp.MustCompile(`(?i)\bpg_sleep\s*\(`),
+		regexp.MustCompile(`(?i)\bBENCHMARK\s*\(`),
+		regexp.MustCompile(`(?i)\bDBMS_LOCK\.SLEEP\s*\(`),
+	}
+
+	// Out-of-band / dangerous functions
+	compiledPatterns[PatternOutOfBand] = []*regexp.Regexp{
+		regexp.MustCompile(`(?i)\bxp_cmdshell\b`),
+		regexp.MustCompile(`(?i)\bLOAD_FILE\s*\(`),
+		regexp.MustCompile(`(?i)\bINTO\s+OUTFILE\b`),
+		regexp.MustCompile(`(?i)\bINTO\s+DUMPFILE\b`),
+		regexp.MustCompile(`(?i)\bUTL_HTTP\b`),
+		regexp.MustCompile(`(?i)\bDBMS_LDAP\b`),
+		regexp.MustCompile(`(?i)\bEXEC\s+master\b`),
+		regexp.MustCompile(`(?i)\bsp_oacreate\b`),
+	}
+
+	// Dangerous functions that might indicate injection
+	compiledPatterns[PatternDangerousFunc] = []*regexp.Regexp{
+		regexp.MustCompile(`(?i)\bEXEC\s*\(`),
+		regexp.MustCompile(`(?i)\bEXECUTE\s+IMMEDIATE\b`),
+		regexp.MustCompile(`(?i)\bsp_executesql\b`),
+		regexp.MustCompile(`(?i)\bPREPARE\s+\w+\s+FROM\b`),
+	}
+
+	// Tautology patterns (always-true conditions used in SQL injection).
+	// Note: Go's RE2 engine does not support backreferences, so equality of the
+	// two sides is verified in detectTautologyInSQL (called separately from ScanSQL).
+	// These patterns are intentionally left empty; tautology detection in raw SQL
+	// is handled by the dedicated detectTautologyInSQL helper.
+	compiledPatterns[PatternTautology] = []*regexp.Regexp{
+		// OR TRUE
+		regexp.MustCompile(`(?i)\bOR\s+TRUE\b`),
+	}
+
+	// UNION injection fingerprints (CRITICAL): system table access or NULL-padding.
+	// Also detects bare references to system catalogs, which are injection fingerprints
+	// regardless of whether a UNION is present.
+	compiledPatterns[PatternUnionInjection] = []*regexp.Regexp{
+		// System table access via UNION (injection fingerprint)
+		regexp.MustCompile(`(?i)UNION\s+(ALL\s+)?SELECT.*\b(information_schema|pg_catalog|mysql\b|sys\.)\b`),
+		// NULL-padded columns (classic injection to match column count)
+		regexp.MustCompile(`(?i)UNION\s+(ALL\s+)?SELECT\s+(?:NULL,?\s*){2,}`),
+		// Bare system catalog references (schema enumeration fingerprint)
+		regexp.MustCompile(`(?i)\binformation_schema\b`),
+	}
+
+	// Generic UNION SELECT (HIGH): may be legitimate or injection
+	compiledPatterns[PatternUnionGeneric] = []*regexp.Regexp{
+		regexp.MustCompile(`(?i)\bUNION\s+(ALL\s+)?SELECT\b`),
+	}
+
+	// Stacked query injection patterns (destructive statements after semicolon)
+	compiledPatterns[PatternStackedQuery] = []*regexp.Regexp{
+		regexp.MustCompile(`;\s*(?i)(DROP|DELETE|TRUNCATE|UPDATE|INSERT|ALTER)\b`),
+		regexp.MustCompile(`;\s*(?i)EXEC\b`),
+		regexp.MustCompile(`;\s*(?i)EXECUTE\b`),
+	}
+}
+
+// initCommentPatterns initializes comment detection patterns once.
+func initCommentPatterns() {
+	commentPatterns = []struct {
+		re          *regexp.Regexp
+		description string
+		severity    Severity
+	}{
+		{regexp.MustCompile(`--\s*$`), "Trailing SQL comment may indicate injection", SeverityMedium},
+		{regexp.MustCompile(`--\s*['")\]]`), "Comment after quote/bracket (potential bypass)", SeverityHigh},
+		{regexp.MustCompile(`/\*[^*]*\*+(?:[^/*][^*]*\*+)*/\s*$`), "Unclosed or trailing block comment may indicate injection", SeverityMedium},
+		{regexp.MustCompile(`/\*!.*\*/`), "MySQL conditional comment (version-specific execution)", SeverityMedium},
+		{regexp.MustCompile(`#\s*$`), "Hash comment at end (MySQL)", SeverityMedium},
+		{regexp.MustCompile(`;\s*--`), "Statement terminator followed by comment", SeverityHigh},
+	}
+}
+
+// maxRegexInputLen guards against ReDoS by limiting the input length
+// fed to regexes with nested quantifiers (e.g. the block-comment pattern).
+const maxRegexInputLen = 10_000
+
+func safeRegexMatch(re *regexp.Regexp, s string) bool {
+	if len(s) > maxRegexInputLen {
+		s = s[:maxRegexInputLen]
+	}
+	return re.MatchString(s)
+}
+
+// initTautologyCapturePatterns initializes patterns used to detect raw-SQL tautologies.
+// Because Go's RE2 engine does not support backreferences, each pattern captures both
+// sides of an equality; detectTautologyInSQL then verifies the two captured groups
+// are equal before reporting a finding.
+func initTautologyCapturePatterns() {
+	tautologyCapturePatterns = []*regexp.Regexp{
+		// Numeric: two identical digit sequences around '=' (bounded to prevent ReDoS)
+		regexp.MustCompile(`(?i)\b(\d{1,6})\s*=\s*(\d{1,6})\b`),
+		// String literal: 'value' = 'value' (max 50 chars per side, no backtracking risk)
+		regexp.MustCompile(`(?i)('[^']{0,50}')\s*=\s*('[^']{0,50}')`),
+		// Identifier: col = col (bounded length, word chars + dots)
+		regexp.MustCompile(`(?i)\b([a-z_][a-z0-9_.]{0,50})\s*=\s*([a-z_][a-z0-9_.]{0,50})\b`),
+	}
+}
+
+// System table prefixes for precise matching (avoids false positives)
+var systemTablePrefixes = []string{
+	"information_schema.",
+	"sys.",
+	"mysql.",
+	"pg_catalog.",
+	"pg_",
+	"sqlite_",
+	"master.dbo.",
+	"msdb.",
+	"tempdb.",
+}
+
+// Exact system table names
+var systemTableNames = []string{
+	"information_schema",
+	"pg_catalog",
+	"sys",
+}
+
+// PatternType categorizes the type of SQL injection pattern detected by the scanner.
+// Each pattern type represents a specific attack vector or vulnerability class.
+type PatternType string
+
+const (
+	// PatternTautology detects always-true conditions (1=1, 'a'='a') used to bypass authentication
+	PatternTautology PatternType = "TAUTOLOGY"
+
+	// PatternComment detects comment-based injection (--, /**/, #) to bypass validation
+	PatternComment PatternType = "COMMENT_BYPASS"
+
+	// PatternStackedQuery detects multiple statements with destructive operations (DROP, DELETE)
+	PatternStackedQuery PatternType = "STACKED_QUERY"
+
+	// PatternUnionBased detects UNION SELECT patterns for data extraction and schema enumeration
+	PatternUnionBased PatternType = "UNION_BASED"
+
+	// PatternUnionInjection detects UNION SELECT patterns with injection fingerprints (system
+	// table access or NULL-column padding). This is a CRITICAL severity signal used by ScanSQL.
+	PatternUnionInjection PatternType = "UNION_INJECTION"
+
+	// PatternUnionGeneric detects any UNION SELECT pattern. HIGH severity - may be legitimate.
+	// Used by ScanSQL to flag generic UNION SELECT for review.
+	PatternUnionGeneric PatternType = "UNION_GENERIC"
+
+	// PatternTimeBased detects time delay functions (SLEEP, WAITFOR, pg_sleep) for blind injection
+	PatternTimeBased PatternType = "TIME_BASED"
+
+	// PatternBooleanBased detects conditional logic exploitation for data extraction
+	PatternBooleanBased PatternType = "BOOLEAN_BASED"
+
+	// PatternOutOfBand detects external data exfiltration (xp_cmdshell, LOAD_FILE, UTL_HTTP)
+	PatternOutOfBand PatternType = "OUT_OF_BAND"
+
+	// PatternDangerousFunc detects dynamic SQL execution (EXEC, sp_executesql, PREPARE FROM)
+	PatternDangerousFunc PatternType = "DANGEROUS_FUNCTION"
+)
+
+// Finding represents a single security finding from the scanner.
+// It contains detailed information about a detected vulnerability including
+// severity, pattern type, location, and remediation suggestions.
+type Finding struct {
+	// Severity indicates the risk level (CRITICAL, HIGH, MEDIUM, LOW)
+	Severity Severity `json:"severity"`
+
+	// Pattern indicates the type of injection pattern detected
+	Pattern PatternType `json:"pattern"`
+
+	// Description provides human-readable explanation of what was found
+	Description string `json:"description"`
+
+	// Risk describes the potential security impact
+	Risk string `json:"risk"`
+
+	// Line number where the issue was detected (if available)
+	Line int `json:"line,omitempty"`
+
+	// Column number where the issue was detected (if available)
+	Column int `json:"column,omitempty"`
+
+	// SQL contains the problematic SQL fragment (if available)
+	SQL string `json:"sql,omitempty"`
+
+	// Suggestion provides remediation advice
+	Suggestion string `json:"suggestion,omitempty"`
+}
+
+// ScanResult contains all findings from a security scan along with summary statistics.
+// Use the helper methods HasCritical(), HasHighOrAbove(), and IsClean() to
+// quickly assess the scan results.
+type ScanResult struct {
+	// Findings contains all detected security issues
+	Findings []Finding `json:"findings"`
+
+	// TotalCount is the total number of findings across all severity levels
+	TotalCount int `json:"total_count"`
+
+	// CriticalCount is the number of CRITICAL severity findings
+	CriticalCount int `json:"critical_count"`
+
+	// HighCount is the number of HIGH severity findings
+	HighCount int `json:"high_count"`
+
+	// MediumCount is the number of MEDIUM severity findings
+	MediumCount int `json:"medium_count"`
+
+	// LowCount is the number of LOW severity findings
+	LowCount int `json:"low_count"`
+}
+
+// Scanner performs security analysis on SQL ASTs and raw SQL strings.
+// It detects SQL injection patterns using a combination of AST traversal,
+// regex pattern matching, and heuristic analysis.
+//
+// Scanner is safe for concurrent use from multiple goroutines as it uses
+// pre-compiled patterns and maintains no mutable state during scanning.
+//
+// Example usage:
+//
+//	scanner := security.NewScanner()
+//	results := scanner.Scan(ast)
+//	if results.HasCritical() {
+//	    log.Fatal("Critical security issues detected")
+//	}
+type Scanner struct {
+	// MinSeverity filters findings below this severity level.
+	// Only findings with severity >= MinSeverity are included in results.
+	MinSeverity Severity
+}
+
+// NewScanner creates a new security scanner with default settings.
+// The default scanner reports all findings (MinSeverity = SeverityLow).
+//
+// The scanner is immediately ready to use and is safe for concurrent scanning
+// from multiple goroutines.
+//
+// Example:
+//
+//	scanner := security.NewScanner()
+//	results := scanner.Scan(ast)
+func NewScanner() *Scanner {
+	// Initialize package-level patterns once
+	compiledPatternsOnce.Do(initCompiledPatterns)
+	commentPatternsOnce.Do(initCommentPatterns)
+	tautologyCaptureOnce.Do(initTautologyCapturePatterns)
+
+	return &Scanner{
+		MinSeverity: SeverityLow,
+	}
+}
+
+// NewScannerWithSeverity creates a scanner filtering by minimum severity.
+// Only findings at or above the specified severity level will be reported.
+//
+// Returns an error if the severity level is not recognized. Valid severity levels are:
+// SeverityLow, SeverityMedium, SeverityHigh, SeverityCritical.
+//
+// Example:
+//
+//	// Only report HIGH and CRITICAL findings
+//	scanner, err := security.NewScannerWithSeverity(security.SeverityHigh)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//	results := scanner.Scan(ast)
+func NewScannerWithSeverity(minSeverity Severity) (*Scanner, error) {
+	// Validate severity
+	if !isValidSeverity(minSeverity) {
+		return nil, fmt.Errorf("invalid severity level: %s", minSeverity)
+	}
+
+	s := NewScanner()
+	s.MinSeverity = minSeverity
+	return s, nil
+}
+
+// isValidSeverity checks if a severity level is recognized.
+func isValidSeverity(severity Severity) bool {
+	_, exists := severityOrder[severity]
+	return exists
+}
+
+// Scan analyzes a parsed SQL AST for SQL injection patterns and vulnerabilities.
+// It performs deep traversal of the AST to detect suspicious patterns including
+// tautologies, dangerous functions, UNION-based injection, and other attack vectors.
+//
+// The method is safe for concurrent use as it does not modify the Scanner state.
+//
+// Returns a ScanResult containing all detected findings that meet the MinSeverity
+// threshold, along with summary statistics by severity level.
+//
+// Example:
+//
+//	ast, err := parser.Parse(tokens)
+//	if err != nil {
+//	    log.Fatal(err)
+//	}
+//
+//	scanner := security.NewScanner()
+//	results := scanner.Scan(ast)
+//
+//	fmt.Printf("Found %d security issues\n", results.TotalCount)
+//	for _, finding := range results.Findings {
+//	    fmt.Printf("[%s] %s\n", finding.Severity, finding.Description)
+//	}
+func (s *Scanner) Scan(tree *ast.AST) *ScanResult {
+	result := &ScanResult{
+		Findings: make([]Finding, 0),
+	}
+
+	if tree == nil {
+		return result
+	}
+
+	for _, stmt := range tree.Statements {
+		s.scanStatement(stmt, result)
+	}
+
+	// Update counts
+	s.updateCounts(result)
+
+	return result
+}
+
+// ScanSQL analyzes raw SQL string for injection patterns using regex-based detection.
+// This method is useful for detecting patterns that might not be visible in the AST,
+// such as SQL comments, or when you don't have a parsed AST available.
+//
+// The method uses pre-compiled regex patterns to detect:
+//   - Comment-based injection (--, /**/, #)
+//   - Time-based blind injection (SLEEP, WAITFOR, pg_sleep, BENCHMARK)
+//   - Out-of-band data exfiltration (xp_cmdshell, LOAD_FILE, UTL_HTTP)
+//   - Dangerous functions (EXEC, sp_executesql, PREPARE FROM)
+//   - UNION-based injection (UNION SELECT, information_schema)
+//   - Stacked query injection (semicolon-separated destructive statements)
+//
+// The method is safe for concurrent use.
+//
+// Example:
+//
+//	scanner := security.NewScanner()
+//	results := scanner.ScanSQL("SELECT * FROM users WHERE id = 1 OR 1=1 --")
+//
+//	if results.HasCritical() {
+//	    fmt.Println("CRITICAL security issue detected!")
+//	    for _, finding := range results.Findings {
+//	        fmt.Printf("  %s: %s\n", finding.Pattern, finding.Description)
+//	    }
+//	}
+func (s *Scanner) ScanSQL(sql string) *ScanResult {
+	result := &ScanResult{
+		Findings: make([]Finding, 0),
+	}
+
+	// Strip dollar-quoted string content to prevent false positives
+	sql = stripDollarQuotedStrings(sql)
+
+	// Check for comment-based bypass patterns in raw SQL
+	s.detectCommentPatterns(sql, result)
+
+	// Check for tautology patterns (OR 1=1, 'a'='a', etc.)
+	// detectRegexPatterns handles the simple OR TRUE pattern; detectTautologyInSQL
+	// handles equality-based tautologies using a two-step capture approach (RE2
+	// does not support backreferences, so equality is verified programmatically).
+	s.detectRegexPatterns(sql, PatternTautology, result)
+	s.detectTautologyInSQL(sql, result)
+
+	// Check for time-based patterns
+	s.detectRegexPatterns(sql, PatternTimeBased, result)
+
+	// Check for out-of-band patterns
+	s.detectRegexPatterns(sql, PatternOutOfBand, result)
+
+	// Check for dangerous function patterns
+	s.detectRegexPatterns(sql, PatternDangerousFunc, result)
+
+	// Check for UNION injection fingerprints (CRITICAL: system tables, NULL-padding)
+	s.detectRegexPatterns(sql, PatternUnionInjection, result)
+
+	// Check for generic UNION SELECT (HIGH: may be legitimate, but warrants review)
+	s.detectRegexPatterns(sql, PatternUnionGeneric, result)
+
+	// Check for stacked query patterns
+	s.detectRegexPatterns(sql, PatternStackedQuery, result)
+
+	// Update counts
+	s.updateCounts(result)
+
+	return result
+}
+
+// scanStatement analyzes a single statement for injection patterns.
+func (s *Scanner) scanStatement(stmt ast.Statement, result *ScanResult) {
+	switch st := stmt.(type) {
+	case *ast.SelectStatement:
+		s.scanSelectStatement(st, result)
+	case *ast.InsertStatement:
+		s.scanInsertStatement(st, result)
+	case *ast.UpdateStatement:
+		s.scanUpdateStatement(st, result)
+	case *ast.DeleteStatement:
+		s.scanDeleteStatement(st, result)
+	case *ast.SetOperation:
+		s.scanSetOperation(st, result)
+	}
+}
+
+// scanSelectStatement analyzes SELECT for injection patterns.
+func (s *Scanner) scanSelectStatement(stmt *ast.SelectStatement, result *ScanResult) {
+	// Check WHERE clause for tautologies
+	if stmt.Where != nil {
+		s.scanExpression(stmt.Where, result, "WHERE clause")
+	}
+
+	// Check HAVING clause
+	if stmt.Having != nil {
+		s.scanExpression(stmt.Having, result, "HAVING clause")
+	}
+
+	// Check for suspicious function calls in columns
+	for _, col := range stmt.Columns {
+		s.scanExpressionForDangerousFunctions(col, result)
+	}
+}
+
+// scanInsertStatement analyzes INSERT for injection patterns.
+func (s *Scanner) scanInsertStatement(stmt *ast.InsertStatement, result *ScanResult) {
+	// Check values for suspicious patterns (multi-row support)
+	for _, row := range stmt.Values {
+		for _, val := range row {
+			s.scanExpressionForDangerousFunctions(val, result)
+		}
+	}
+}
+
+// scanUpdateStatement analyzes UPDATE for injection patterns.
+func (s *Scanner) scanUpdateStatement(stmt *ast.UpdateStatement, result *ScanResult) {
+	// Check WHERE clause
+	if stmt.Where != nil {
+		s.scanExpression(stmt.Where, result, "WHERE clause")
+	}
+
+	// Check SET values
+	for _, assignment := range stmt.Assignments {
+		s.scanExpressionForDangerousFunctions(assignment.Value, result)
+	}
+}
+
+// scanDeleteStatement analyzes DELETE for injection patterns.
+func (s *Scanner) scanDeleteStatement(stmt *ast.DeleteStatement, result *ScanResult) {
+	// Check WHERE clause
+	if stmt.Where != nil {
+		s.scanExpression(stmt.Where, result, "WHERE clause")
+	}
+}
+
+// scanSetOperation analyzes UNION/EXCEPT/INTERSECT for injection patterns.
+func (s *Scanner) scanSetOperation(stmt *ast.SetOperation, result *ScanResult) {
+	// UNION-based injection detection
+	if strings.ToUpper(stmt.Operator) == "UNION" {
+		// Check if UNION might be used for data extraction
+		s.checkUnionInjection(stmt, result)
+	}
+
+	// Recursively scan left and right statements
+	// Note: SetOperation.Left and .Right are already ast.Statement type
+	if stmt.Left != nil {
+		s.scanStatement(stmt.Left, result)
+	}
+	if stmt.Right != nil {
+		s.scanStatement(stmt.Right, result)
+	}
+}
+
+// scanExpression analyzes an expression for injection patterns.
+func (s *Scanner) scanExpression(expr ast.Expression, result *ScanResult, context string) {
+	if expr == nil {
+		return
+	}
+
+	switch e := expr.(type) {
+	case *ast.BinaryExpression:
+		s.scanBinaryExpression(e, result, context)
+	case *ast.FunctionCall:
+		s.scanFunctionCall(e, result)
+	case *ast.UnaryExpression:
+		if e.Expr != nil {
+			s.scanExpression(e.Expr, result, context)
+		}
+	}
+}
+
+// scanBinaryExpression checks for tautologies and suspicious patterns.
+func (s *Scanner) scanBinaryExpression(expr *ast.BinaryExpression, result *ScanResult, context string) {
+	if expr == nil {
+		return
+	}
+
+	// Check for tautologies (always true conditions)
+	if s.isTautology(expr) {
+		finding := Finding{
+			Severity:    SeverityCritical,
+			Pattern:     PatternTautology,
+			Description: "Always-true condition detected (tautology)",
+			Risk:        "Authentication bypass, data extraction",
+			Suggestion:  "Remove or replace with proper condition",
+		}
+		if s.shouldInclude(finding.Severity) {
+			result.Findings = append(result.Findings, finding)
+		}
+	}
+
+	// Check for OR-based injection patterns
+	if strings.ToUpper(expr.Operator) == "OR" {
+		s.checkOrInjection(expr, result)
+	}
+
+	// Recursively check sub-expressions
+	s.scanExpression(expr.Left, result, context)
+	s.scanExpression(expr.Right, result, context)
+}
+
+// isTautology checks if an expression is always true.
+func (s *Scanner) isTautology(expr *ast.BinaryExpression) bool {
+	if expr == nil {
+		return false
+	}
+
+	op := strings.ToUpper(expr.Operator)
+	if op != "=" && op != "==" {
+		return false
+	}
+
+	// Check for LiteralValue tautologies: 1=1, 2=2, 'a'='a', etc.
+	leftLit, leftIsLit := expr.Left.(*ast.LiteralValue)
+	rightLit, rightIsLit := expr.Right.(*ast.LiteralValue)
+
+	if leftIsLit && rightIsLit {
+		// Same literal values
+		leftVal := fmt.Sprintf("%v", leftLit.Value)
+		rightVal := fmt.Sprintf("%v", rightLit.Value)
+		if leftVal == rightVal {
+			return true
+		}
+	}
+
+	// Check for identifier tautologies: col=col
+	leftIdent, leftIsIdent := expr.Left.(*ast.Identifier)
+	rightIdent, rightIsIdent := expr.Right.(*ast.Identifier)
+
+	if leftIsIdent && rightIsIdent {
+		if leftIdent.Name == rightIdent.Name {
+			return true
+		}
+	}
+
+	return false
+}
+
+// checkOrInjection checks for OR-based injection patterns.
+func (s *Scanner) checkOrInjection(expr *ast.BinaryExpression, result *ScanResult) {
+	// Check if the OR condition contains a tautology
+	if rightBin, ok := expr.Right.(*ast.BinaryExpression); ok {
+		if s.isTautology(rightBin) {
+			finding := Finding{
+				Severity:    SeverityCritical,
+				Pattern:     PatternTautology,
+				Description: "OR condition with tautology detected (e.g., OR 1=1)",
+				Risk:        "Authentication bypass, unauthorized data access",
+				Suggestion:  "Review and sanitize input parameters",
+			}
+			if s.shouldInclude(finding.Severity) {
+				result.Findings = append(result.Findings, finding)
+			}
+		}
+	}
+
+	if leftBin, ok := expr.Left.(*ast.BinaryExpression); ok {
+		if s.isTautology(leftBin) {
+			finding := Finding{
+				Severity:    SeverityCritical,
+				Pattern:     PatternTautology,
+				Description: "OR condition with tautology detected",
+				Risk:        "Authentication bypass, unauthorized data access",
+				Suggestion:  "Review and sanitize input parameters",
+			}
+			if s.shouldInclude(finding.Severity) {
+				result.Findings = append(result.Findings, finding)
+			}
+		}
+	}
+}
+
+// checkUnionInjection analyzes UNION for potential data extraction.
+func (s *Scanner) checkUnionInjection(stmt *ast.SetOperation, result *ScanResult) {
+	// Check if right side SELECT has suspicious patterns
+	if rightSelect, ok := stmt.Right.(*ast.SelectStatement); ok {
+		// Check for NULL placeholders (common in UNION injection)
+		nullCount := 0
+		for _, col := range rightSelect.Columns {
+			if ident, ok := col.(*ast.Identifier); ok {
+				if strings.ToUpper(ident.Name) == "NULL" {
+					nullCount++
+				}
+			}
+		}
+
+		// Multiple NULLs in UNION SELECT is suspicious
+		if nullCount >= 2 {
+			finding := Finding{
+				Severity:    SeverityHigh,
+				Pattern:     PatternUnionBased,
+				Description: "UNION SELECT with multiple NULL columns detected",
+				Risk:        "Data extraction via UNION-based injection",
+				Suggestion:  "Verify UNION is intentional and inputs are sanitized",
+			}
+			if s.shouldInclude(finding.Severity) {
+				result.Findings = append(result.Findings, finding)
+			}
+		}
+
+		// Check for system table access using precise matching
+		if rightSelect.TableName != "" {
+			if s.isSystemTable(rightSelect.TableName) {
+				finding := Finding{
+					Severity:    SeverityCritical,
+					Pattern:     PatternUnionBased,
+					Description: "UNION SELECT accessing system tables detected",
+					Risk:        "Database schema enumeration, privilege escalation",
+					Suggestion:  "Block access to system tables from user queries",
+				}
+				if s.shouldInclude(finding.Severity) {
+					result.Findings = append(result.Findings, finding)
+				}
+			}
+		}
+	}
+}
+
+// isSystemTable checks if a table name refers to a system table using precise matching.
+// Uses prefix matching and exact name matching to avoid false positives.
+func (s *Scanner) isSystemTable(tableName string) bool {
+	tableLower := strings.ToLower(tableName)
+
+	// Check exact matches first
+	for _, name := range systemTableNames {
+		if tableLower == name {
+			return true
+		}
+	}
+
+	// Check prefix matches (e.g., "information_schema.tables", "pg_class")
+	for _, prefix := range systemTablePrefixes {
+		if strings.HasPrefix(tableLower, prefix) {
+			return true
+		}
+	}
+
+	return false
+}
+
+// scanFunctionCall checks for dangerous function usage.
+func (s *Scanner) scanFunctionCall(fn *ast.FunctionCall, result *ScanResult) {
+	if fn == nil {
+		return
+	}
+
+	funcName := strings.ToUpper(fn.Name)
+
+	// Time-based blind injection functions
+	timeBasedFuncs := map[string]bool{
+		"SLEEP":     true,
+		"PG_SLEEP":  true,
+		"BENCHMARK": true,
+		"WAITFOR":   true,
+	}
+
+	if timeBasedFuncs[funcName] {
+		finding := Finding{
+			Severity:    SeverityHigh,
+			Pattern:     PatternTimeBased,
+			Description: "Time-based blind injection function detected: " + fn.Name,
+			Risk:        "Time-based blind SQL injection, DoS",
+			Suggestion:  "Block or restrict time delay functions",
+		}
+		if s.shouldInclude(finding.Severity) {
+			result.Findings = append(result.Findings, finding)
+		}
+	}
+
+	// Out-of-band / dangerous functions
+	dangerousFuncs := map[string]string{
+		"LOAD_FILE":     "File system access",
+		"LOAD DATA":     "File system access",
+		"XP_CMDSHELL":   "Command execution",
+		"SP_OACREATE":   "OLE automation",
+		"UTL_HTTP":      "Network access",
+		"DBMS_LDAP":     "LDAP access",
+		"EXEC":          "Dynamic SQL execution",
+		"SP_EXECUTESQL": "Dynamic SQL execution",
+	}
+
+	if risk, found := dangerousFuncs[funcName]; found {
+		finding := Finding{
+			Severity:    SeverityCritical,
+			Pattern:     PatternOutOfBand,
+			Description: "Dangerous function detected: " + fn.Name,
+			Risk:        risk,
+			Suggestion:  "Block dangerous functions or use allowlist",
+		}
+		if s.shouldInclude(finding.Severity) {
+			result.Findings = append(result.Findings, finding)
+		}
+	}
+
+	// Recursively check function arguments
+	for _, arg := range fn.Arguments {
+		s.scanExpressionForDangerousFunctions(arg, result)
+	}
+}
+
+// scanExpressionForDangerousFunctions recursively checks for dangerous functions.
+func (s *Scanner) scanExpressionForDangerousFunctions(expr ast.Expression, result *ScanResult) {
+	if expr == nil {
+		return
+	}
+
+	switch e := expr.(type) {
+	case *ast.FunctionCall:
+		s.scanFunctionCall(e, result)
+	case *ast.BinaryExpression:
+		s.scanExpressionForDangerousFunctions(e.Left, result)
+		s.scanExpressionForDangerousFunctions(e.Right, result)
+	case *ast.UnaryExpression:
+		s.scanExpressionForDangerousFunctions(e.Expr, result)
+	}
+}
+
+// detectCommentPatterns checks raw SQL for comment-based injection.
+func (s *Scanner) detectCommentPatterns(sql string, result *ScanResult) {
+	// Ensure patterns are initialized
+	commentPatternsOnce.Do(initCommentPatterns)
+
+	for _, p := range commentPatterns {
+		if safeRegexMatch(p.re, sql) {
+			finding := Finding{
+				Severity:    p.severity,
+				Pattern:     PatternComment,
+				Description: p.description,
+				Risk:        "SQL injection via comment-based bypass",
+				Suggestion:  "Sanitize input to remove SQL comments",
+			}
+			if s.shouldInclude(finding.Severity) {
+				result.Findings = append(result.Findings, finding)
+			}
+		}
+	}
+}
+
+// detectTautologyInSQL checks raw SQL for tautology patterns (e.g. OR 1=1, 'a'='a').
+// Because Go's RE2 engine does not support backreferences, equality of the two sides
+// is verified programmatically after the regex captures both groups.
+func (s *Scanner) detectTautologyInSQL(sql string, result *ScanResult) {
+	// Ensure patterns are initialized
+	tautologyCaptureOnce.Do(initTautologyCapturePatterns)
+
+	// Guard against very long inputs (ReDoS mitigation)
+	input := sql
+	if len(input) > maxRegexInputLen {
+		input = input[:maxRegexInputLen]
+	}
+
+	for _, re := range tautologyCapturePatterns {
+		matches := re.FindAllStringSubmatch(input, -1)
+		for _, m := range matches {
+			if len(m) == 3 && strings.EqualFold(m[1], m[2]) {
+				finding := Finding{
+					Severity:    SeverityCritical,
+					Pattern:     PatternTautology,
+					Description: "Always-true condition detected (tautology): " + m[0],
+					Risk:        "Authentication bypass via always-true condition",
+					Suggestion:  "Use parameterized queries to prevent tautology injection",
+				}
+				if s.shouldInclude(finding.Severity) {
+					result.Findings = append(result.Findings, finding)
+				}
+				// Report at most one tautology finding per pattern to avoid noise
+				break
+			}
+		}
+	}
+}
+
+// detectRegexPatterns checks SQL against compiled regex patterns.
+func (s *Scanner) detectRegexPatterns(sql string, patternType PatternType, result *ScanResult) {
+	// Ensure patterns are initialized
+	compiledPatternsOnce.Do(initCompiledPatterns)
+
+	patterns, ok := compiledPatterns[patternType]
+	if !ok {
+		return
+	}
+
+	severityMap := map[PatternType]Severity{
+		PatternTautology:      SeverityCritical,
+		PatternTimeBased:      SeverityHigh,
+		PatternOutOfBand:      SeverityCritical,
+		PatternDangerousFunc:  SeverityMedium,
+		PatternUnionBased:     SeverityCritical,
+		PatternUnionInjection: SeverityCritical,
+		PatternUnionGeneric:   SeverityHigh,
+		PatternStackedQuery:   SeverityCritical,
+	}
+
+	riskMap := map[PatternType]string{
+		PatternTautology:      "Authentication bypass via always-true condition",
+		PatternTimeBased:      "Time-based blind SQL injection",
+		PatternOutOfBand:      "Out-of-band data exfiltration or command execution",
+		PatternDangerousFunc:  "Dynamic SQL execution vulnerability",
+		PatternUnionBased:     "UNION-based SQL injection for data extraction",
+		PatternUnionInjection: "UNION-based SQL injection with injection fingerprint (system table or NULL padding)",
+		PatternUnionGeneric:   "Possible UNION-based data extraction; review for legitimacy",
+		PatternStackedQuery:   "Stacked query injection with destructive operations",
+	}
+
+	suggestionMap := map[PatternType]string{
+		PatternTautology:      "Use parameterized queries to prevent tautology injection",
+		PatternTimeBased:      "Review and sanitize SQL input",
+		PatternOutOfBand:      "Review and sanitize SQL input",
+		PatternDangerousFunc:  "Review and sanitize SQL input",
+		PatternUnionBased:     "Use parameterized queries and validate input",
+		PatternUnionInjection: "Use parameterized queries and block system table access",
+		PatternUnionGeneric:   "Verify UNION is intentional and all inputs are parameterized",
+		PatternStackedQuery:   "Block semicolons in user input or use parameterized queries",
+	}
+
+	severity := severityMap[patternType]
+	risk := riskMap[patternType]
+	suggestion := suggestionMap[patternType]
+
+	for _, re := range patterns {
+		if matches := re.FindStringSubmatch(sql); len(matches) > 0 {
+			finding := Finding{
+				Severity:    severity,
+				Pattern:     patternType,
+				Description: "Pattern detected: " + matches[0],
+				Risk:        risk,
+				Suggestion:  suggestion,
+			}
+			if s.shouldInclude(finding.Severity) {
+				result.Findings = append(result.Findings, finding)
+			}
+		}
+	}
+}
+
+// shouldInclude checks if a finding meets the minimum severity threshold.
+// Unknown severities are treated as highest priority (always included) for security.
+func (s *Scanner) shouldInclude(severity Severity) bool {
+	findingSeverity, findingExists := severityOrder[severity]
+	minSeverity, minExists := severityOrder[s.MinSeverity]
+
+	// Unknown severities are always included (fail-safe: don't hide potential issues)
+	if !findingExists {
+		return true
+	}
+
+	// If minimum severity is unknown, default to showing all
+	if !minExists {
+		return true
+	}
+
+	return findingSeverity >= minSeverity
+}
+
+// updateCounts updates the count fields in the result.
+func (s *Scanner) updateCounts(result *ScanResult) {
+	result.TotalCount = len(result.Findings)
+	for _, f := range result.Findings {
+		switch f.Severity {
+		case SeverityCritical:
+			result.CriticalCount++
+		case SeverityHigh:
+			result.HighCount++
+		case SeverityMedium:
+			result.MediumCount++
+		case SeverityLow:
+			result.LowCount++
+		}
+	}
+}
+
+// HasCritical returns true if any CRITICAL severity findings exist.
+// Use this to quickly check for definite security vulnerabilities that
+// require immediate attention.
+//
+// Example:
+//
+//	if results.HasCritical() {
+//	    log.Fatal("CRITICAL security vulnerabilities detected - blocking deployment")
+//	}
+func (r *ScanResult) HasCritical() bool {
+	return r.CriticalCount > 0
+}
+
+// HasHighOrAbove returns true if any HIGH or CRITICAL severity findings exist.
+// Use this to check for issues that require security review before deployment.
+//
+// Example:
+//
+//	if results.HasHighOrAbove() {
+//	    fmt.Println("WARNING: High-priority security issues require review")
+//	    // Trigger security team notification
+//	}
+func (r *ScanResult) HasHighOrAbove() bool {
+	return r.CriticalCount > 0 || r.HighCount > 0
+}
+
+// IsClean returns true if no findings of any severity level exist.
+// A clean result indicates no security issues were detected.
+//
+// Example:
+//
+//	if results.IsClean() {
+//	    fmt.Println("✓ No security issues detected")
+//	} else {
+//	    fmt.Printf("⚠ Found %d security issues\n", results.TotalCount)
+//	}
+func (r *ScanResult) IsClean() bool {
+	return r.TotalCount == 0
+}

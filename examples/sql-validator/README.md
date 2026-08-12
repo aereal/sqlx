@@ -14,7 +14,7 @@ A command-line SQL validation tool powered by GoSQLX.
 ## Installation
 
 ```bash
-go install github.com/ajitpratap0/GoSQLX/examples/sql-validator@latest
+go install github.com/aereal/sqlx/examples/sql-validator@latest
 ```
 
 ## Usage

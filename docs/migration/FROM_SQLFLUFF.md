@@ -157,12 +157,12 @@ else:
 
 #### GoSQLX (Go)
 ```go
-// Install: go get github.com/ajitpratap0/GoSQLX
+// Install: go get github.com/aereal/sqlx
 package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -211,8 +211,8 @@ package main
 import (
     "fmt"
     "strings"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/models"
 )
 
 func main() {
@@ -290,7 +290,7 @@ import (
     "os"
     "path/filepath"
     "sync"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func validateDirectory(directory string) map[string]bool {
@@ -379,7 +379,7 @@ jobs:
           go-version: '1.21'
 
       - name: Install GoSQLX
-        run: go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+        run: go install github.com/aereal/sqlx/cmd/gosqlx@latest
 
       - name: Validate SQL files (fast - ~3.6 seconds for 5000 files)
         run: gosqlx validate migrations/*.sql
@@ -425,7 +425,7 @@ package main
 import (
     "encoding/json"
     "net/http"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 type ValidateRequest struct {
@@ -569,7 +569,7 @@ package main
 import (
     "fmt"
     "strings"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -657,7 +657,7 @@ time gosqlx validate migrations/*.sql
 
 ### Phase 2: Preparation (Day 1-2)
 - Install Go 1.21+ on development machines
-- Install GoSQLX: `go get github.com/ajitpratap0/GoSQLX`
+- Install GoSQLX: `go get github.com/aereal/sqlx`
 - Test GoSQLX with sample queries from your project
 - Benchmark performance improvement on your queries
 - Document any unsupported features
@@ -707,7 +707,7 @@ $ grep -r "sqlfluff" . | wc -l
 45  # 45 places using SQLFluff
 
 # Tested GoSQLX
-$ go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+$ go install github.com/aereal/sqlx/cmd/gosqlx@latest
 $ time gosqlx validate migrations/*.sql
 # Completed in 3.6 seconds vs 41 minutes!
 ```
@@ -741,7 +741,7 @@ import (
     "fmt"
     "os"
     "sync"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -892,8 +892,8 @@ Use SQLFluff for unsupported dialects, or contribute dialect support to GoSQLX!
 - **[API Reference](../API_REFERENCE.md)** - Complete API documentation
 
 ### Community Support
-- **[GitHub Issues](https://github.com/ajitpratap0/GoSQLX/issues)** - Report bugs or request features
-- **[GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions)** - Ask questions
+- **[GitHub Issues](https://github.com/aereal/sqlx/issues)** - Report bugs or request features
+- **[GitHub Discussions](https://github.com/aereal/sqlx/discussions)** - Ask questions
 - **[Examples Directory](../../examples/)** - Real-world code examples
 
 ### Migration Support

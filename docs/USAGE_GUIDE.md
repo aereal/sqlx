@@ -25,7 +25,7 @@
 ### Installation
 
 ```bash
-go get github.com/ajitpratap0/GoSQLX
+go get github.com/aereal/sqlx
 ```
 
 ### Minimum Go Version
@@ -35,9 +35,9 @@ Go 1.21+ or higher is required.
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
+    "github.com/aereal/sqlx/models"
 )
 ```
 
@@ -52,7 +52,7 @@ import (
     "fmt"
     "log"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 func main() {
@@ -102,7 +102,7 @@ package main
 import (
     "fmt"
     "log"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/tokenizer"
 )
 
 func main() {
@@ -139,8 +139,8 @@ package main
 
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
+    "github.com/aereal/sqlx/sql/tokenizer"
+    "github.com/aereal/sqlx/sql/parser"
 )
 
 func ParseSQL(sql string) error {
@@ -363,7 +363,7 @@ GoSQLX fully supports SQL-99 window functions with PARTITION BY, ORDER BY, and f
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 // Ranking functions
@@ -509,7 +509,7 @@ LATERAL allows subqueries in FROM clause to reference columns from preceding tab
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+    "github.com/aereal/sqlx/gosqlx"
 )
 
 // LATERAL with implicit syntax
@@ -842,7 +842,7 @@ GoSQLX v1.6.0 includes a built-in security scanner (`pkg/sql/security`) for dete
 ```go
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+    "github.com/aereal/sqlx/sql/security"
 )
 
 func CheckForInjection(sql string) {
@@ -922,7 +922,7 @@ func ValidateUserQuery(userInput string) error {
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
+    "github.com/aereal/sqlx/sql/security"
 )
 
 func AdvancedSecurityCheck(sql string) (*security.ScanResult, error) {
@@ -964,7 +964,7 @@ GoSQLX v1.6.0 includes a comprehensive SQL linter with 10 built-in rules (L001-L
 ```go
 import (
     "fmt"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter"
 )
 
 func LintSQL(sql string) {
@@ -1041,8 +1041,8 @@ sql := `SELECT u.name FROM users u JOIN profiles p ON u.id = p.user_id`
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules"
+    "github.com/aereal/sqlx/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter/rules"
 )
 
 func CustomLinting(sql string) {
@@ -1073,7 +1073,7 @@ func CustomLinting(sql string) {
 import (
     "io/ioutil"
     "path/filepath"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter"
 )
 
 func LintDirectory(dirPath string) error {
@@ -1138,8 +1138,8 @@ Load configuration programmatically:
 
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/cmd/gosqlx/internal/config"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
+    "github.com/aereal/sqlx/cmd/gosqlx/internal/config"
+    "github.com/aereal/sqlx/pkg/linter"
 )
 
 func LintWithConfig(sql string, configPath string) {
@@ -1289,7 +1289,7 @@ Add to LSP settings:
 ```go
 import (
     "context"
-    "github.com/ajitpratap0/GoSQLX/pkg/lsp"
+    "github.com/aereal/sqlx/pkg/lsp"
 )
 
 func RunLSPServer() error {
@@ -1335,7 +1335,7 @@ GoSQLX v1.6.0 includes a comprehensive CLI tool for SQL operations:
 
 ```bash
 # Install from source
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx@latest
+go install github.com/aereal/sqlx/cmd/gosqlx@latest
 
 # Or build locally
 cd cmd/gosqlx

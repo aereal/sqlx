@@ -21,7 +21,7 @@
 GoSQLX v1.6.0 is organized into the following packages:
 
 ```
-github.com/ajitpratap0/GoSQLX/
+github.com/aereal/sqlx/
 ├── pkg/
 │   ├── gosqlx/          # High-level convenience API
 │   ├── models/          # Core data structures (100% coverage)
@@ -46,7 +46,7 @@ github.com/ajitpratap0/GoSQLX/
 
 ## High-Level API
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/gosqlx`
+### Package: `github.com/aereal/sqlx/gosqlx`
 
 The high-level API provides convenient functions with automatic object pool management.
 
@@ -141,7 +141,7 @@ if err := gosqlx.ValidateMultiple(queries); err != nil {
 
 ## Tokenizer API
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer`
+### Package: `github.com/aereal/sqlx/sql/tokenizer`
 
 ### Functions
 
@@ -218,7 +218,7 @@ tokens, err := tkz.TokenizeContext(ctx, []byte("SELECT * FROM users"))
 
 ## Parser API
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/sql/parser`
+### Package: `github.com/aereal/sqlx/sql/parser`
 
 ### Functions
 
@@ -278,7 +278,7 @@ Reset parser state for reuse.
 
 ## AST API
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/sql/ast`
+### Package: `github.com/aereal/sqlx/sql/ast`
 
 ### Core Interfaces
 
@@ -876,7 +876,7 @@ fmt.Printf("Tables: %v\n", collector.Tables)
 
 ## Keywords Package
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/sql/keywords`
+### Package: `github.com/aereal/sqlx/sql/keywords`
 
 ### Core Types
 
@@ -963,7 +963,7 @@ suggestions := keywords.GetSuggestions("SEL", 5)
 
 ## Models
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/models`
+### Package: `github.com/aereal/sqlx/models`
 
 ### Core Types
 
@@ -1020,7 +1020,7 @@ Get string representation.
 
 ## Error Handling
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/errors`
+### Package: `github.com/aereal/sqlx/errors`
 
 ### Types
 
@@ -1113,7 +1113,7 @@ err := errors.NewSyntaxError("Missing WHERE clause", &loc).
 
 ## Metrics Package
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/metrics`
+### Package: `github.com/aereal/sqlx/pkg/metrics`
 
 ### Configuration
 
@@ -1204,7 +1204,7 @@ type PoolStats struct {
 
 ## Security Package
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/sql/security`
+### Package: `github.com/aereal/sqlx/sql/security`
 
 The security package provides SQL injection pattern detection and security scanning.
 
@@ -1366,7 +1366,7 @@ result = scanner.ScanSQL(sql)
 
 ## Linter Package
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/linter`
+### Package: `github.com/aereal/sqlx/pkg/linter`
 
 The linter package provides SQL linting with 10 built-in rules (L001-L010) and auto-fix capabilities.
 
@@ -1506,8 +1506,8 @@ Format linting results for display.
 **Example:**
 ```go
 import (
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules"
+    "github.com/aereal/sqlx/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter/rules"
 )
 
 // Create linter with all rules
@@ -1566,7 +1566,7 @@ fmt.Println(fixed)
 
 ## LSP Package
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/lsp`
+### Package: `github.com/aereal/sqlx/pkg/lsp`
 
 The LSP package provides a complete Language Server Protocol implementation for SQL, enabling IDE integration.
 
@@ -1822,7 +1822,7 @@ Parameters:
 import (
     "log"
     "os"
-    "github.com/ajitpratap0/GoSQLX/pkg/lsp"
+    "github.com/aereal/sqlx/pkg/lsp"
 )
 
 func main() {
@@ -1847,7 +1847,7 @@ func main() {
 
 ## MCP Package
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/mcp`
+### Package: `github.com/aereal/sqlx/pkg/mcp`
 
 MCP server exposing all GoSQLX capabilities as Model Context Protocol tools over streamable HTTP.
 
@@ -1897,7 +1897,7 @@ See [MCP Server Guide](/docs/mcp-guide) for complete tool schemas and JSON respo
 
 ## Configuration Package
 
-### Package: `github.com/ajitpratap0/GoSQLX/pkg/config`
+### Package: `github.com/aereal/sqlx/pkg/config`
 
 The configuration package provides unified configuration management for GoSQLX.
 
@@ -2065,13 +2065,13 @@ import (
     "log"
     "time"
 
-    "github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-    "github.com/ajitpratap0/GoSQLX/pkg/sql/security"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter"
-    "github.com/ajitpratap0/GoSQLX/pkg/linter/rules"
-    "github.com/ajitpratap0/GoSQLX/pkg/metrics"
-    "github.com/ajitpratap0/GoSQLX/pkg/config"
+    "github.com/aereal/sqlx/gosqlx"
+    "github.com/aereal/sqlx/sql/ast"
+    "github.com/aereal/sqlx/sql/security"
+    "github.com/aereal/sqlx/pkg/linter"
+    "github.com/aereal/sqlx/pkg/linter/rules"
+    "github.com/aereal/sqlx/pkg/metrics"
+    "github.com/aereal/sqlx/pkg/config"
 )
 
 func main() {
@@ -2315,7 +2315,7 @@ GoSQLX achieves **~80-85% SQL-99 compliance** with comprehensive support for:
 
 ## Additional Resources
 
-- **GitHub Repository**: https://github.com/ajitpratap0/GoSQLX
+- **GitHub Repository**: https://github.com/aereal/sqlx
 - **Documentation**: See `/docs` directory
   - [Getting Started](/docs/getting-started) - Quick start guide
   - [MCP Server Guide](/docs/mcp-guide) - MCP server and AI assistant integration

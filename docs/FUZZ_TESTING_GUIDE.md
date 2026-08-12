@@ -41,7 +41,7 @@ All tokenizer fuzz tests are located in `pkg/sql/tokenizer/tokenizer_fuzz_test.g
 ```
 fuzz: elapsed: 15s, execs: 3066334 (209594/sec), new interesting: 387 (total: 387)
 PASS
-ok  	github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer	16.077s
+ok  	github.com/aereal/sqlx/sql/tokenizer	16.077s
 ```
 
 - `elapsed`: Time spent fuzzing

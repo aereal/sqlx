@@ -306,7 +306,7 @@ tokens2, _ := tkz.Tokenize(sql2)
 **Solution:** Check compatibility
 
 1. Review [SQL_COMPATIBILITY.md](../../docs/SQL_COMPATIBILITY.md) for supported features
-2. File an issue on [GitHub](https://github.com/ajitpratap0/GoSQLX/issues)
+2. File an issue on [GitHub](https://github.com/aereal/sqlx/issues)
 
 ## Next Steps
 
@@ -328,9 +328,9 @@ tokens2, _ := tkz.Tokenize(sql2)
 
 ## Questions?
 
-- **[GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions)** - Ask the community
-- **[GitHub Issues](https://github.com/ajitpratap0/GoSQLX/issues)** - Report problems
-- **[Create an Issue](https://github.com/ajitpratap0/GoSQLX/issues/new)** - Feature requests
+- **[GitHub Discussions](https://github.com/aereal/sqlx/discussions)** - Ask the community
+- **[GitHub Issues](https://github.com/aereal/sqlx/issues)** - Report problems
+- **[Create an Issue](https://github.com/aereal/sqlx/issues/new)** - Feature requests
 
 ---
 

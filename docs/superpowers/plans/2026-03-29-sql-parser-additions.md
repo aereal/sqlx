@@ -51,7 +51,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+	"github.com/aereal/sqlx/gosqlx"
 )
 
 func TestFormat_CreateSequence(t *testing.T) {
@@ -284,8 +284,8 @@ package parser_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 func TestConnectBy_Basic(t *testing.T) {
@@ -430,8 +430,8 @@ package parser_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 func TestSample_Fraction(t *testing.T) {
@@ -560,7 +560,7 @@ package parser_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
+	"github.com/aereal/sqlx/gosqlx"
 )
 
 func TestPivot_Basic(t *testing.T) {

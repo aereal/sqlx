@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- [GoSQLX](https://github.com/ajitpratap0/GoSQLX) installed and available on your `$PATH`
+- [GoSQLX](https://github.com/aereal/sqlx) installed and available on your `$PATH`
 - [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig)
 
 ## Configuration

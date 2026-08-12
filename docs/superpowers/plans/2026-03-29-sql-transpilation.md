@@ -38,8 +38,8 @@ package transpiler_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/transpiler"
 )
 
 func TestTranspile_SameDialect_ReturnsEquivalent(t *testing.T) {
@@ -83,11 +83,11 @@ package transpiler
 import (
 	"fmt"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/formatter"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/parser"
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/tokenizer"
+	"github.com/aereal/sqlx/formatter"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/sql/ast"
+	"github.com/aereal/sqlx/sql/parser"
+	"github.com/aereal/sqlx/sql/tokenizer"
 )
 
 // RewriteRule is a function that mutates an AST statement in place to rewrite
@@ -181,8 +181,8 @@ package transpiler_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/transpiler"
 )
 
 func TestRulesFor_MySQLToPostgres_NonEmpty(t *testing.T) {
@@ -220,8 +220,8 @@ Expected: compile error — `RulesFor` not exported yet.
 package transpiler
 
 import (
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler/rules"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/transpiler/rules"
 )
 
 type dialectPair struct {
@@ -300,8 +300,8 @@ package rules_test
 import (
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/transpiler"
 )
 
 func transpileMyToPg(t *testing.T, sql string) string {
@@ -361,7 +361,7 @@ package rules
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // MySQLAutoIncrementToSerial rewrites INT AUTO_INCREMENT columns to SERIAL (PostgreSQL).
@@ -474,8 +474,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
-	"github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+	"github.com/aereal/sqlx/models"
+	"github.com/aereal/sqlx/transpiler"
 )
 
 func TestPgSerial_ToAutoIncrement(t *testing.T) {
@@ -516,7 +516,7 @@ package rules
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // PgSerialToAutoIncrement rewrites PostgreSQL SERIAL/BIGSERIAL to INT/BIGINT AUTO_INCREMENT.
@@ -590,7 +590,7 @@ package rules
 import (
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/sql/ast"
+	"github.com/aereal/sqlx/sql/ast"
 )
 
 // PgSerialToIntegerPK rewrites SERIAL PRIMARY KEY to INTEGER PRIMARY KEY (SQLite autoincrement).
@@ -668,8 +668,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/models"
 )
 
 func TestGoSQLX_Transpile_BasicSelect(t *testing.T) {
@@ -707,8 +707,8 @@ Add to `pkg/gosqlx/gosqlx.go`:
 ```go
 import (
     // existing imports...
-    "github.com/ajitpratap0/GoSQLX/pkg/models"
-    "github.com/ajitpratap0/GoSQLX/pkg/transpiler"
+    "github.com/aereal/sqlx/models"
+    "github.com/aereal/sqlx/transpiler"
 )
 
 // Transpile converts SQL from one dialect to another.
@@ -758,8 +758,8 @@ import (
 	"os"
 	"strings"
 
-	"github.com/ajitpratap0/GoSQLX/pkg/gosqlx"
-	"github.com/ajitpratap0/GoSQLX/pkg/models"
+	"github.com/aereal/sqlx/gosqlx"
+	"github.com/aereal/sqlx/models"
 	"github.com/spf13/cobra"
 )
 

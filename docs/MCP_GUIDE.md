@@ -116,7 +116,7 @@ Or deploy to Render:
 ### Install via go install (Recommended)
 
 ```bash
-go install github.com/ajitpratap0/GoSQLX/cmd/gosqlx-mcp@latest
+go install github.com/aereal/sqlx/cmd/gosqlx-mcp@latest
 ```
 
 The binary is placed in `$GOPATH/bin`. Make sure that directory is in your `PATH`.
@@ -124,7 +124,7 @@ The binary is placed in `$GOPATH/bin`. Make sure that directory is in your `PATH
 ### Build from Source
 
 ```bash
-git clone https://github.com/ajitpratap0/GoSQLX.git
+git clone https://github.com/aereal/sqlx.git
 cd GoSQLX
 go build -o gosqlx-mcp ./cmd/gosqlx-mcp
 ```
@@ -132,7 +132,7 @@ go build -o gosqlx-mcp ./cmd/gosqlx-mcp
 ### Run without Installing
 
 ```bash
-go run github.com/ajitpratap0/GoSQLX/cmd/gosqlx-mcp@latest
+go run github.com/aereal/sqlx/cmd/gosqlx-mcp@latest
 ```
 
 ---
@@ -656,7 +656,7 @@ When running with `GOSQLX_MCP_AUTH_TOKEN`:
 Import `pkg/mcp` directly to embed the MCP server in your own application:
 
 ```go
-import "github.com/ajitpratap0/GoSQLX/pkg/mcp"
+import "github.com/aereal/sqlx/pkg/mcp"
 
 func main() {
     cfg, err := mcp.LoadConfig()
@@ -787,8 +787,8 @@ The format, security scan, and lint tools operate on the raw SQL string independ
 
 ## Resources
 
-- **Repository**: https://github.com/ajitpratap0/GoSQLX
-- **Issues**: https://github.com/ajitpratap0/GoSQLX/issues
+- **Repository**: https://github.com/aereal/sqlx
+- **Issues**: https://github.com/aereal/sqlx/issues
 - **MCP Specification**: https://modelcontextprotocol.io/specification
 - **mark3labs/mcp-go**: https://github.com/mark3labs/mcp-go
 

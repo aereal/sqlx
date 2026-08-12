@@ -304,8 +304,8 @@ See individual migration guides for code examples and patterns.
 - [Performance Tuning](PERFORMANCE_TUNING.md)
 
 **Help & Community:**
-- [GitHub Discussions](https://github.com/ajitpratap0/GoSQLX/discussions)
-- [Report Issues](https://github.com/ajitpratap0/GoSQLX/issues)
+- [GitHub Discussions](https://github.com/aereal/sqlx/discussions)
+- [Report Issues](https://github.com/aereal/sqlx/issues)
 - [Examples](../examples/)
 
 ---
