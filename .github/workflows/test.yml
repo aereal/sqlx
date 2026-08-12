@@ -49,7 +49,7 @@ jobs:
         run: go mod download
 
       - name: Run tests
-        run: go test -v -race -coverprofile coverage.txt -covermode atomic ./pkg/...
+        run: go test -v -race -coverprofile coverage.txt -covermode atomic ./...
 
   race-check:
     name: Race Detector
@@ -63,13 +63,10 @@ jobs:
           go-version: "1.26"
           cache: true
 
-      - name: Install Task
-        run: go install github.com/go-task/task/v3/cmd/task@latest
-
-      # Use Taskfile so CI matches local `task test:race` (pkg/cbinding excluded -
-      # it requires CGO and is exercised separately in the cbinding-race job).
       - name: Run tests with race detector
-        run: task test:race
+        run: go test -race -timeout 120s ./...
+        env:
+          CGO_ENABLED: '1' # required for -race
 
   benchmark:
     name: Benchmark
@@ -86,9 +83,9 @@ jobs:
 
       - name: Run benchmarks
         run: |
-          go test -run=^$ -bench=. -benchmem -timeout=5m ./pkg/sql/tokenizer/
-          go test -run=^$ -bench=. -benchmem -timeout=5m ./pkg/sql/parser/
-          go test -run=^$ -bench=. -benchmem -timeout=5m ./pkg/sql/ast/
+          go test -run=^$ -bench=. -benchmem -timeout=5m ./sql/tokenizer/
+          go test -run=^$ -bench=. -benchmem -timeout=5m ./sql/parser/
+          go test -run=^$ -bench=. -benchmem -timeout=5m ./sql/ast/
 
   perf-regression:
     name: Performance Regression
@@ -105,7 +102,7 @@ jobs:
 
       - name: Run performance regression tests
         continue-on-error: true
-        run: go test -run TestPerformanceRegression -timeout=5m ./pkg/sql/parser/
+        run: go test -run TestPerformanceRegression -timeout=5m ./sql/parser/
 
   fuzz-regression:
     name: Fuzz Regression
@@ -122,5 +119,5 @@ jobs:
 
       - name: Run fuzz regression (corpus only)
         run: |
-          go test -fuzz=FuzzTokenizer -fuzztime=10s -timeout=2m ./pkg/sql/tokenizer/ || true
-          go test -fuzz=FuzzScanSQL -fuzztime=10s -timeout=2m ./pkg/sql/security/ || true
+          go test -fuzz=FuzzTokenizer -fuzztime=10s -timeout=2m ./sql/tokenizer/ || true
+          go test -fuzz=FuzzScanSQL -fuzztime=10s -timeout=2m ./sql/security/ || true
