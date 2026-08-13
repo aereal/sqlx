@@ -86,6 +86,8 @@ func TestSelectStatementPosition(t *testing.T) {
 
 	assertPosEqual(t, "SELECT.Start", sel.Start, 1, 1)
 	assertPosEqual(t, "SELECT.End", sel.End, 1, 27)
+	assertPosEqual(t, "FROM.Start", sel.From[0].Start, 1, 22)
+	assertPosEqual(t, "FROM.End", sel.From[0].End, 1, 27)
 }
 
 func TestSelectStatementPositionMultiLine(t *testing.T) {
@@ -137,6 +139,8 @@ func TestInsertStatementPosition(t *testing.T) {
 
 	assertPosEqual(t, "INSERT.Start", ins.Start, 1, 1)
 	assertPosEqual(t, "INSERT.End", ins.End, 1, 49)
+	assertPosEqual(t, "INSERT table.Start", ins.Table.Start, 1, 13)
+	assertPosEqual(t, "INSERT table.End", ins.Table.End, 1, 19)
 }
 
 // -----------------------------------------------------------------------------
@@ -157,6 +161,8 @@ func TestUpdateStatementPosition(t *testing.T) {
 
 	assertPosEqual(t, "UPDATE.Start", upd.Start, 1, 1)
 	assertPosEqual(t, "UPDATE.End", upd.End, 1, 43)
+	assertPosEqual(t, "table.Start", upd.Table.Start, 1, 8)
+	assertPosEqual(t, "table.End", upd.Table.End, 1, 14)
 }
 
 // -----------------------------------------------------------------------------

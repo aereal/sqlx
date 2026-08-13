@@ -80,9 +80,16 @@ func (p *Parser) parseFromClause() (tableName string, tables []ast.TableReferenc
 	}
 
 	// First table reference
+	startFrom := p.currentLocation()
 	firstRef, e := p.parseFromTableReference()
 	if e != nil {
 		return "", nil, nil, e
+	}
+	if firstRef.Start.IsZero() {
+		firstRef.Start = startFrom
+	}
+	if firstRef.End.IsZero() {
+		firstRef.End = p.currentLocation()
 	}
 	tableName = firstRef.Name
 
