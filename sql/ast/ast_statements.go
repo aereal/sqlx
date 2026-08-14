@@ -433,7 +433,7 @@ type CreateIndexStatement struct {
 	Unique      bool
 	IfNotExists bool
 	Name        string
-	Table       string
+	Table       TableReference
 	Columns     []IndexColumn
 	Using       string
 	Where       Expression

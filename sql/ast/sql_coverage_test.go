@@ -24,7 +24,7 @@ func covBoolPtr(v bool) *bool { return &v }
 func TestCreateIndexStatement_SQL(t *testing.T) {
 	stmt := &CreateIndexStatement{
 		Name:        "idx_users_email",
-		Table:       "users",
+		Table:       TableReference{Name: "users"},
 		Unique:      true,
 		IfNotExists: true,
 		Using:       "btree",

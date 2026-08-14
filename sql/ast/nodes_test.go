@@ -1397,7 +1397,7 @@ func TestCreateIndexStatement(t *testing.T) {
 			name: "simple CREATE INDEX",
 			stmt: &CreateIndexStatement{
 				Name:    "idx_users_email",
-				Table:   "users",
+				Table:   TableReference{Name: "users"},
 				Columns: []IndexColumn{},
 			},
 			wantLiteral: "CREATE INDEX",
@@ -1407,7 +1407,7 @@ func TestCreateIndexStatement(t *testing.T) {
 			name: "CREATE UNIQUE INDEX",
 			stmt: &CreateIndexStatement{
 				Name:    "idx_unique_email",
-				Table:   "users",
+				Table:   TableReference{Name: "users"},
 				Unique:  true,
 				Columns: []IndexColumn{},
 			},
@@ -1418,7 +1418,7 @@ func TestCreateIndexStatement(t *testing.T) {
 			name: "CREATE INDEX IF NOT EXISTS",
 			stmt: &CreateIndexStatement{
 				Name:        "idx_products_name",
-				Table:       "products",
+				Table:       TableReference{Name: "products"},
 				IfNotExists: true,
 				Columns:     []IndexColumn{},
 			},

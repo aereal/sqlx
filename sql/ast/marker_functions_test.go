@@ -93,7 +93,7 @@ func TestMarkerFunctions_StatementNodes(t *testing.T) {
 		},
 		{
 			name:      "CreateIndexStatement",
-			statement: &CreateIndexStatement{Name: "idx_test", Table: "test"},
+			statement: &CreateIndexStatement{Name: "idx_test", Table: TableReference{Name: "test"}},
 			wantType:  "CREATE INDEX",
 		},
 	}

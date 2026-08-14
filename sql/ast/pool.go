@@ -635,11 +635,12 @@ func PutCreateIndexStatement(stmt *CreateIndexStatement) {
 	}
 	stmt.Columns = stmt.Columns[:0]
 
+	stmt.Table = TableReference{}
+
 	stmt.Where = nil
 	stmt.Unique = false
 	stmt.IfNotExists = false
 	stmt.Name = ""
-	stmt.Table = ""
 	stmt.Using = ""
 
 	createIndexStmtPool.Put(stmt)

@@ -200,7 +200,7 @@ func TestCreateIndexStatementPool(t *testing.T) {
 	t.Run("Fields zeroed after Put", func(t *testing.T) {
 		stmt := GetCreateIndexStatement()
 		stmt.Name = "idx_users_email"
-		stmt.Table = "users"
+		stmt.Table.Name = "users"
 		stmt.Unique = true
 		stmt.IfNotExists = true
 		stmt.Using = "BTREE"
@@ -216,8 +216,8 @@ func TestCreateIndexStatementPool(t *testing.T) {
 		if stmt.Name != "" {
 			t.Errorf("Name not cleared, got %q", stmt.Name)
 		}
-		if stmt.Table != "" {
-			t.Errorf("Table not cleared, got %q", stmt.Table)
+		if stmt.Table.Name != "" {
+			t.Errorf("Table not cleared, got %q", stmt.Table.Name)
 		}
 		if stmt.Unique {
 			t.Error("Unique not cleared")
@@ -1055,7 +1055,7 @@ func BenchmarkCreateIndexStatementPool(b *testing.B) {
 		for i := 0; i < b.N; i++ {
 			stmt := GetCreateIndexStatement()
 			stmt.Name = "idx_email"
-			stmt.Table = "users"
+			stmt.Table.Name = "users"
 			stmt.Unique = true
 			stmt.Columns = append(stmt.Columns, IndexColumn{Column: "email", Direction: "ASC"})
 			stmt.Where = &BinaryExpression{

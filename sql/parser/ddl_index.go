@@ -56,11 +56,11 @@ func (p *Parser) parseCreateIndex(unique bool) (*ast.CreateIndexStatement, error
 	p.advance() // Consume ON
 
 	// Parse table name (supports schema.table qualification and double-quoted identifiers)
-	indexTableName, err := p.parseQualifiedIdentifierString()
+	tableRef, err := p.parseTableReference()
 	if err != nil {
 		return nil, p.expectedError("table name")
 	}
-	stmt.Table = indexTableName
+	stmt.Table = *tableRef
 
 	// Parse optional USING
 	if p.isType(models.TokenTypeUsing) {

@@ -19,10 +19,10 @@
 package parser
 
 import (
-	"github.com/aereal/sqlx/models"
 	"strings"
 	"testing"
 
+	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
 	"github.com/aereal/sqlx/sql/token"
 	"github.com/aereal/sqlx/sql/tokenizer"
@@ -836,8 +836,8 @@ func TestParseCreateIndexCoverage(t *testing.T) {
 		if stmt.Name != "myschema.idx_name" {
 			t.Errorf("expected myschema.idx_name, got %s", stmt.Name)
 		}
-		if stmt.Table != "myschema.users" {
-			t.Errorf("expected myschema.users, got %s", stmt.Table)
+		if stmt.Table.Name != "myschema.users" {
+			t.Errorf("expected myschema.users, got %s", stmt.Table.Name)
 		}
 	})
 

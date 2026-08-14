@@ -430,8 +430,8 @@ func TestParser_CreateIndex(t *testing.T) {
 				t.Errorf("expected index name %q, got %q", tt.indexName, stmt.Name)
 			}
 
-			if stmt.Table != tt.tableName {
-				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table)
+			if stmt.Table.Name != tt.tableName {
+				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table.Name)
 			}
 
 			if stmt.Unique != tt.unique {
@@ -574,8 +574,8 @@ func TestParser_CreateIndex_postgresql(t *testing.T) {
 				t.Errorf("expected index name %q, got %q", tt.indexName, stmt.Name)
 			}
 
-			if stmt.Table != tt.tableName {
-				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table)
+			if stmt.Table.Name != tt.tableName {
+				t.Errorf("expected table name %q, got %q", tt.tableName, stmt.Table.Name)
 			}
 
 			if len(stmt.Columns) != len(tt.columns) {

@@ -711,7 +711,7 @@ func renderCreateIndex(c *ast.CreateIndexStatement, opts ast.FormatOptions) stri
 	sb.WriteString(" ")
 	sb.WriteString(f.kw("ON"))
 	sb.WriteString(" ")
-	sb.WriteString(c.Table)
+	sb.WriteString(c.Table.Name)
 
 	if c.Using != "" {
 		sb.WriteString(" ")

@@ -855,7 +855,7 @@ func (c *CreateIndexStatement) SQL() string {
 	}
 	sb.WriteString(c.Name)
 	sb.WriteString(" ON ")
-	sb.WriteString(c.Table)
+	sb.WriteString(c.Table.Name)
 
 	if c.Using != "" {
 		sb.WriteString(" USING ")

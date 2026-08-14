@@ -490,7 +490,7 @@ func TestRenderCreateIndex_Readable(t *testing.T) {
 		Unique:      true,
 		IfNotExists: true,
 		Name:        "idx_users_email",
-		Table:       "users",
+		Table:       ast.TableReference{Name: "users"},
 		Columns:     []ast.IndexColumn{{Column: "email", Direction: "ASC"}},
 		Using:       "btree",
 	}
@@ -513,7 +513,7 @@ func TestRenderCreateIndex_Readable(t *testing.T) {
 func TestRenderCreateIndex_WithWhere(t *testing.T) {
 	stmt := &ast.CreateIndexStatement{
 		Name:    "idx_active",
-		Table:   "users",
+		Table:   ast.TableReference{Name: "users"},
 		Columns: []ast.IndexColumn{{Column: "id"}},
 		Where:   &ast.BinaryExpression{Left: &ast.Identifier{Name: "active"}, Operator: "=", Right: &ast.LiteralValue{Value: "true"}},
 	}
@@ -533,7 +533,7 @@ func TestRenderCreateIndex_Nil(t *testing.T) {
 func TestRenderCreateIndex_NullsLast(t *testing.T) {
 	stmt := &ast.CreateIndexStatement{
 		Name:    "idx_test",
-		Table:   "t",
+		Table:   ast.TableReference{Name: "t"},
 		Columns: []ast.IndexColumn{{Column: "a", NullsLast: true, Collate: "en_US"}},
 	}
 	result := fmtStmt(stmt, ast.ReadableStyle())
