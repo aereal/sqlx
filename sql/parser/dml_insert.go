@@ -28,7 +28,7 @@ import (
 )
 
 // parseInsertStatement parses an INSERT statement
-func (p *Parser) parseInsertStatement() (ast.Statement, error) {
+func (p *Parser) parseInsertStatement() (*ast.InsertStatement, error) {
 	// We've already consumed the INSERT token in matchType
 
 	// Parse INTO

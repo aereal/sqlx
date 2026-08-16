@@ -653,13 +653,11 @@ func (p *Parser) parseStatement() (ast.Statement, error) {
 		if err != nil {
 			return nil, err
 		}
-		if is, ok := stmt.(*ast.InsertStatement); ok {
-			if is.Start.IsZero() {
-				is.Start = stmtPos
-			}
-			if is.End.IsZero() {
-				is.End = p.currentLocation()
-			}
+		if stmt.Start.IsZero() {
+			stmt.Start = stmtPos
+		}
+		if stmt.End.IsZero() {
+			stmt.End = p.currentLocation()
 		}
 		return stmt, nil
 	case models.TokenTypeUpdate:
