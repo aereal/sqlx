@@ -20,6 +20,7 @@ package parser
 import (
 	"testing"
 
+	"github.com/aereal/sqlx/models"
 	"github.com/aereal/sqlx/sql/ast"
 	"github.com/aereal/sqlx/sql/keywords"
 	"github.com/aereal/sqlx/sql/tokenizer"
@@ -379,6 +380,7 @@ func TestParser_CreateIndex(t *testing.T) {
 		unique      bool
 		ifNotExists bool
 		numColumns  int
+		span        models.Span
 	}{
 		{
 			name:       "simple CREATE INDEX",
@@ -386,6 +388,7 @@ func TestParser_CreateIndex(t *testing.T) {
 			indexName:  "idx_email",
 			tableName:  "users",
 			numColumns: 1,
+			span:       models.Span{Start: models.Location{Line: 1, Column: 1}, End: models.Location{Line: 1, Column: 40}},
 		},
 		{
 			name:       "CREATE UNIQUE INDEX",
@@ -394,6 +397,7 @@ func TestParser_CreateIndex(t *testing.T) {
 			tableName:  "users",
 			unique:     true,
 			numColumns: 1,
+			span:       models.Span{Start: models.Location{Line: 1, Column: 1}, End: models.Location{Line: 1, Column: 47}},
 		},
 		{
 			name:        "CREATE INDEX IF NOT EXISTS",
@@ -402,6 +406,7 @@ func TestParser_CreateIndex(t *testing.T) {
 			tableName:   "users",
 			ifNotExists: true,
 			numColumns:  1,
+			span:        models.Span{Start: models.Location{Line: 1, Column: 1}, End: models.Location{Line: 1, Column: 52}},
 		},
 		{
 			name:       "CREATE INDEX with multiple columns",
@@ -409,6 +414,7 @@ func TestParser_CreateIndex(t *testing.T) {
 			indexName:  "idx_composite",
 			tableName:  "orders",
 			numColumns: 2,
+			span:       models.Span{Start: models.Location{Line: 1, Column: 1}, End: models.Location{Line: 1, Column: 59}},
 		},
 	}
 
@@ -445,6 +451,8 @@ func TestParser_CreateIndex(t *testing.T) {
 			if len(stmt.Columns) != tt.numColumns {
 				t.Errorf("expected %d columns, got %d", tt.numColumns, len(stmt.Columns))
 			}
+
+			assertSpanEqual(t, "CREATE INDEX", tt.span, models.Span{Start: stmt.Start, End: stmt.End})
 		})
 	}
 }
@@ -810,4 +818,20 @@ func TestParser_CreateTable_postgresql_column(t *testing.T) {
 // Helper function to create bool pointer
 func boolPtr(b bool) *bool {
 	return &b
+}
+
+func assertSpanEqual(t *testing.T, label string, want, got models.Span) {
+	t.Helper()
+	assertPosEqual(t, label+": Start", want.Start, got.Start)
+	assertPosEqual(t, label+": End", want.End, got.End)
+}
+
+func assertPosEqual(t *testing.T, label string, want, got models.Location) {
+	t.Helper()
+	if want.Line != got.Line {
+		t.Errorf("%s: Line: want=%d got=%d", label, want.Line, got.Line)
+	}
+	if want.Column != got.Column {
+		t.Errorf("%s: Column: want=%d got=%d", label, want.Column, got.Column)
+	}
 }

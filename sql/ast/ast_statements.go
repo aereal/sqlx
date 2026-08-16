@@ -437,6 +437,7 @@ type CreateIndexStatement struct {
 	Columns     []IndexColumn
 	Using       string
 	Where       Expression
+	Start, End  models.Location
 }
 
 func (c *CreateIndexStatement) statementNode()      {}
