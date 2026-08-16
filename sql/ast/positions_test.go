@@ -141,6 +141,11 @@ func TestInsertStatementPosition(t *testing.T) {
 	assertPosEqual(t, "INSERT.End", ins.End, 1, 49)
 	assertPosEqual(t, "INSERT table.Start", ins.Table.Start, 1, 13)
 	assertPosEqual(t, "INSERT table.End", ins.Table.End, 1, 19)
+	if len(ins.Columns) != 2 {
+		t.Fatalf("expected 2 columns but got %d", len(ins.Columns))
+	}
+	assertColumnExprPos(t, "Columns[0]", ins.Columns[0], models.Location{Line: 1, Column: 20}, models.Location{Line: 1, Column: 22})
+	assertColumnExprPos(t, "Columns[1]", ins.Columns[1], models.Location{Line: 1, Column: 24}, models.Location{Line: 1, Column: 28})
 }
 
 // -----------------------------------------------------------------------------
@@ -534,4 +539,15 @@ func TestArithmeticBinaryExpressionPosition(t *testing.T) {
 	}
 
 	assertPos(t, "BinaryExpression(*).Pos", binExpr.Pos)
+}
+
+func assertColumnExprPos(t *testing.T, label string, expr ast.Expression, wantStart, wantEnd models.Location) {
+	t.Helper()
+	colIdent, ok := expr.(*ast.Identifier)
+	if !ok {
+		t.Errorf("expected *ast.Identifier but got %T", expr)
+		return
+	}
+	assertPosEqual(t, label+": Start", colIdent.Start, wantStart.Line, wantStart.Column)
+	assertPosEqual(t, label+": End", colIdent.End, wantEnd.Line, wantEnd.Column)
 }

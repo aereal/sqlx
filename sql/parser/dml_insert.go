@@ -50,11 +50,11 @@ func (p *Parser) parseInsertStatement() (*ast.InsertStatement, error) {
 
 		for {
 			// Parse column name (supports double-quoted identifiers)
-			if !p.isIdentifier() {
+			col := p.parseIdent()
+			if col == nil {
 				return nil, p.expectedError("column name")
 			}
-			columns = append(columns, &ast.Identifier{Name: p.currentToken.Token.Value})
-			p.advance()
+			columns = append(columns, col)
 
 			// Check if there are more columns
 			if !p.isType(models.TokenTypeComma) {
