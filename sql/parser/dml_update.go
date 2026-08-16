@@ -44,11 +44,10 @@ func (p *Parser) parseUpdateStatement() (ast.Statement, error) {
 	updates := make([]ast.UpdateExpression, 0)
 	for {
 		// Parse column name (supports double-quoted identifiers)
-		if !p.isIdentifier() {
+		columnExpr := p.parseIdent()
+		if columnExpr == nil {
 			return nil, p.expectedError("column name")
 		}
-		columnName := p.currentToken.Token.Value
-		p.advance()
 
 		if !p.isType(models.TokenTypeEq) {
 			return nil, p.expectedError("=")
@@ -79,7 +78,6 @@ func (p *Parser) parseUpdateStatement() (ast.Statement, error) {
 		}
 
 		// Create update expression
-		columnExpr := &ast.Identifier{Name: columnName}
 		updateExpr := ast.UpdateExpression{
 			Column: columnExpr,
 			Value:  expr,

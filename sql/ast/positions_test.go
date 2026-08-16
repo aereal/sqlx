@@ -168,6 +168,8 @@ func TestUpdateStatementPosition(t *testing.T) {
 	assertPosEqual(t, "UPDATE.End", upd.End, 1, 43)
 	assertPosEqual(t, "table.Start", upd.Table.Start, 1, 8)
 	assertPosEqual(t, "table.End", upd.Table.End, 1, 14)
+
+	assertColumnExprPos(t, "Assignments[0].Column", upd.Assignments[0].Column, models.Location{Line: 1, Column: 18}, models.Location{Line: 1, Column: 23})
 }
 
 // -----------------------------------------------------------------------------
