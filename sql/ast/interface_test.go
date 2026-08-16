@@ -848,8 +848,8 @@ func TestUpdateStatementChildren(t *testing.T) {
 			Returning:   []Expression{testIdent},
 		}
 		children := stmt.Children()
-		// With + 1 assignment + 1 from + where + 1 returning = 5
-		if len(children) != 5 {
+		// With + 1 assignment + 1 from + where + 1 returning + 1 table = 5
+		if len(children) != 6 {
 			t.Errorf("Children() returned %d, want 5", len(children))
 		}
 	})

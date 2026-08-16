@@ -286,6 +286,7 @@ func (u UpdateStatement) TokenLiteral() string { return "UPDATE" }
 
 func (u UpdateStatement) Children() []Node {
 	children := make([]Node, 0)
+	children = append(children, u.Table)
 	if u.With != nil {
 		children = append(children, u.With)
 	}
