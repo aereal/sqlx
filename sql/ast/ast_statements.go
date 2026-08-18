@@ -150,6 +150,8 @@ type SelectStatement struct {
 	End       models.Location
 }
 
+var _ Spanned = (*SelectStatement)(nil)
+
 func (s *SelectStatement) statementNode()       {}
 func (s *SelectStatement) queryExpressionNode() {}
 func (s SelectStatement) TokenLiteral() string  { return "SELECT" }
@@ -204,6 +206,8 @@ func (s SelectStatement) Children() []Node {
 	return children
 }
 
+func (s SelectStatement) Span() models.Span { return models.NewSpan(s.Start, s.End) }
+
 // InsertStatement represents an INSERT SQL statement
 type InsertStatement struct {
 	With           *WithClause
@@ -218,6 +222,8 @@ type InsertStatement struct {
 	Start          models.Location // Source position of the INSERT keyword (1-based line and column)
 	End            models.Location
 }
+
+var _ Spanned = (*InsertStatement)(nil)
 
 func (i *InsertStatement) statementNode()      {}
 func (i InsertStatement) TokenLiteral() string { return "INSERT" }
@@ -274,6 +280,8 @@ type UpdateStatement struct {
 	End         models.Location
 }
 
+var _ Spanned = (*UpdateStatement)(nil)
+
 // GetUpdates returns Assignments for backward compatibility.
 //
 // Deprecated: Use Assignments directly instead.
@@ -303,6 +311,8 @@ func (u UpdateStatement) Children() []Node {
 	return children
 }
 
+func (s UpdateStatement) Span() models.Span { return models.NewSpan(s.Start, s.End) }
+
 // CreateTableStatement represents a CREATE TABLE statement
 type CreateTableStatement struct {
 	IfNotExists  bool
@@ -327,6 +337,8 @@ type CreateTableStatement struct {
 	Start, End models.Location
 }
 
+var _ Spanned = (*CreateTableStatement)(nil)
+
 func (c *CreateTableStatement) statementNode()      {}
 func (c CreateTableStatement) TokenLiteral() string { return "CREATE TABLE" }
 func (c CreateTableStatement) Children() []Node {
@@ -346,6 +358,8 @@ func (c CreateTableStatement) Children() []Node {
 	return children
 }
 
+func (s CreateTableStatement) Span() models.Span { return models.NewSpan(s.Start, s.End) }
+
 // DeleteStatement represents a DELETE SQL statement
 type DeleteStatement struct {
 	With      *WithClause
@@ -357,6 +371,8 @@ type DeleteStatement struct {
 	Start     models.Location // Source position of the DELETE keyword (1-based line and column)
 	End       models.Location
 }
+
+var _ Spanned = (*DeleteStatement)(nil)
 
 func (d *DeleteStatement) statementNode()      {}
 func (d DeleteStatement) TokenLiteral() string { return "DELETE" }
@@ -375,6 +391,8 @@ func (d DeleteStatement) Children() []Node {
 	children = append(children, nodifyExpressions(d.Returning)...)
 	return children
 }
+
+func (s DeleteStatement) Span() models.Span { return models.NewSpan(s.Start, s.End) }
 
 // AlterTableStatement represents an ALTER TABLE statement.
 //
@@ -441,6 +459,8 @@ type CreateIndexStatement struct {
 	Start, End  models.Location
 }
 
+var _ Spanned = (*CreateIndexStatement)(nil)
+
 func (c *CreateIndexStatement) statementNode()      {}
 func (c CreateIndexStatement) TokenLiteral() string { return "CREATE INDEX" }
 func (c CreateIndexStatement) Children() []Node {
@@ -453,6 +473,8 @@ func (c CreateIndexStatement) Children() []Node {
 	}
 	return children
 }
+
+func (c *CreateIndexStatement) Span() models.Span { return models.NewSpan(c.Start, c.End) }
 
 // MergeStatement represents a MERGE statement (SQL:2003 F312)
 // Syntax: MERGE INTO target USING source ON condition
@@ -770,6 +792,7 @@ type CreateDomainStatement struct {
 }
 
 var _ Statement = (*CreateDomainStatement)(nil)
+var _ Spanned = (*CreateDomainStatement)(nil)
 
 func (CreateDomainStatement) statementNode()       {}
 func (CreateDomainStatement) TokenLiteral() string { return "CREATE" }
@@ -786,6 +809,8 @@ func (s *CreateDomainStatement) Children() []Node {
 	}
 	return children
 }
+
+func (s CreateDomainStatement) Span() models.Span { return models.NewSpan(s.Start, s.End) }
 
 type CreateTypeStatement interface {
 	Statement
@@ -1001,6 +1026,7 @@ type SetStatement struct {
 }
 
 var _ Statement = (*SetStatement)(nil)
+var _ Spanned = (*SetStatement)(nil)
 
 func (SetStatement) statementNode() {}
 
@@ -1013,3 +1039,5 @@ func (s *SetStatement) Children() []Node {
 	}
 	return children
 }
+
+func (s SetStatement) Span() models.Span { return models.NewSpan(s.Start, s.End) }

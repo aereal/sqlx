@@ -152,6 +152,8 @@ type TableReference struct {
 	Start, End     models.Location
 }
 
+var _ Spanned = (*TableReference)(nil)
+
 func (t *TableReference) statementNode() {}
 func (t TableReference) TokenLiteral() string {
 	if t.Name != "" {
@@ -184,6 +186,8 @@ func (t TableReference) Children() []Node {
 	}
 	return nodes
 }
+
+func (t TableReference) Span() models.Span { return models.NewSpan(t.Start, t.End) }
 
 // OrderByExpression represents an ORDER BY clause element with direction and NULL ordering
 type OrderByExpression struct {

@@ -73,27 +73,6 @@ func (a *AST) Span() models.Span {
 	return UnionSpans(spans)
 }
 
-// spanInfo stores source location information for AST nodes
-var spanInfo = make(map[any]models.Span)
-
-// SetSpan sets the source location span for an AST node
-func SetSpan(node any, span models.Span) {
-	spanInfo[node] = span
-}
-
-// GetSpan gets the source location span for an AST node
-func GetSpan(node any) models.Span {
-	if span, ok := spanInfo[node]; ok {
-		return span
-	}
-	return models.EmptySpan()
-}
-
-// Span returns the source location span for the SelectStatement
-func (s *SelectStatement) Span() models.Span {
-	return GetSpan(s)
-}
-
 // Span returns the source location span for the InsertStatement
 func (i *InsertStatement) Span() models.Span {
 	spans := make([]models.Span, 0)
@@ -131,16 +110,6 @@ func (i *InsertStatement) Span() models.Span {
 	}
 
 	return UnionSpans(spans)
-}
-
-// Span returns the source location span for the UpdateStatement
-func (u *UpdateStatement) Span() models.Span {
-	return GetSpan(u)
-}
-
-// Span returns the source location span for the DeleteStatement
-func (d *DeleteStatement) Span() models.Span {
-	return GetSpan(d)
 }
 
 // Span returns the source location span for expressions

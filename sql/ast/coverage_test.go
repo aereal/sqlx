@@ -292,19 +292,6 @@ func TestSpanMethods(t *testing.T) {
 		}
 	})
 
-	t.Run("SelectStatement with SetSpan", func(t *testing.T) {
-		sel := &SelectStatement{}
-		testSpan := models.Span{
-			Start: models.Location{Line: 1, Column: 1},
-			End:   models.Location{Line: 1, Column: 20},
-		}
-		SetSpan(sel, testSpan)
-		span := sel.Span()
-		if span.Start.Line != 1 || span.End.Column != 20 {
-			t.Errorf("expected set span, got %+v", span)
-		}
-	})
-
 	t.Run("InsertStatement span with columns and values", func(t *testing.T) {
 		insert := &InsertStatement{
 			Table: TableReference{Name: "users"},
@@ -460,18 +447,6 @@ func TestSpanMethods(t *testing.T) {
 		span := fn.Span()
 		_ = span // Should not panic
 	})
-}
-
-// TestGetSpanUnregistered tests GetSpan with unregistered nodes
-func TestGetSpanUnregistered(t *testing.T) {
-	node := &Identifier{Name: "unregistered"}
-	span := GetSpan(node)
-
-	// Should return empty span
-	if span.Start.Line != 0 || span.Start.Column != 0 ||
-		span.End.Line != 0 || span.End.Column != 0 {
-		t.Errorf("expected empty span for unregistered node, got %+v", span)
-	}
 }
 
 // TestUnionSpansEmpty tests UnionSpans with empty slice

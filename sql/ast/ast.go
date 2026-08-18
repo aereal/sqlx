@@ -118,9 +118,13 @@ type Identifier struct {
 	End   models.Location
 }
 
+var _ Spanned = (*Identifier)(nil)
+
 func (i *Identifier) expressionNode()     {}
 func (i Identifier) TokenLiteral() string { return i.Name }
 func (i Identifier) Children() []Node     { return nil }
+
+func (i Identifier) Span() models.Span { return models.NewSpan(i.Start, i.End) }
 
 // LiteralValue represents a literal value in SQL
 type LiteralValue struct {

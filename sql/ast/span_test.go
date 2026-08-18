@@ -153,80 +153,17 @@ func TestUnionSpans(t *testing.T) {
 	}
 }
 
-// Test AST.Span()
-func TestAST_Span(t *testing.T) {
-	t.Run("empty AST", func(t *testing.T) {
-		ast := &AST{
-			Statements: []Statement{},
-		}
-		span := ast.Span()
-		if span != models.EmptySpan() {
-			t.Errorf("Empty AST span should be EmptySpan, got %+v", span)
-		}
-	})
-
-	t.Run("AST with statements", func(t *testing.T) {
-		// Create statements with spans
-		stmt1 := &SelectStatement{}
-		SetSpan(stmt1, models.Span{
-			Start: models.Location{Line: 1, Column: 1},
-			End:   models.Location{Line: 1, Column: 20},
-		})
-
-		stmt2 := &InsertStatement{
-			Columns: []Expression{},
-			Values:  [][]Expression{},
-		}
-		SetSpan(stmt2, models.Span{
-			Start: models.Location{Line: 3, Column: 1},
-			End:   models.Location{Line: 3, Column: 30},
-		})
-
-		ast := &AST{
-			Statements: []Statement{stmt1, stmt2},
-		}
-
-		// Just call Span() to ensure it works
-		_ = ast.Span()
-	})
-}
-
-// Test SetSpan and GetSpan global functions
-func TestSetSpanGetSpan(t *testing.T) {
-	t.Run("set and get span", func(t *testing.T) {
-		stmt := &SelectStatement{}
-		testSpan := models.Span{
-			Start: models.Location{Line: 5, Column: 10},
-			End:   models.Location{Line: 5, Column: 50},
-		}
-
-		SetSpan(stmt, testSpan)
-		gotSpan := GetSpan(stmt)
-
-		if gotSpan != testSpan {
-			t.Errorf("GetSpan() = %+v, want %+v", gotSpan, testSpan)
-		}
-	})
-
-	t.Run("get span for unset node", func(t *testing.T) {
-		stmt := &UpdateStatement{}
-		span := GetSpan(stmt)
-
-		if span != models.EmptySpan() {
-			t.Errorf("GetSpan for unset node should return EmptySpan, got %+v", span)
-		}
-	})
-}
-
 // Test SelectStatement.Span()
 func TestSelectStatement_Span(t *testing.T) {
-	stmt := &SelectStatement{}
 	testSpan := models.Span{
 		Start: models.Location{Line: 2, Column: 5},
 		End:   models.Location{Line: 2, Column: 25},
 	}
+	stmt := &SelectStatement{
+		Start: testSpan.Start,
+		End:   testSpan.End,
+	}
 
-	SetSpan(stmt, testSpan)
 	gotSpan := stmt.Span()
 
 	if gotSpan != testSpan {
@@ -237,17 +174,9 @@ func TestSelectStatement_Span(t *testing.T) {
 // Test InsertStatement.Span()
 func TestInsertStatement_Span(t *testing.T) {
 	t.Run("with columns and values", func(t *testing.T) {
-		col := &Identifier{Name: "id"}
-		SetSpan(col, models.Span{
-			Start: models.Location{Line: 1, Column: 10},
-			End:   models.Location{Line: 1, Column: 12},
-		})
+		col := &Identifier{Name: "id", Start: models.Location{Line: 1, Column: 10}, End: models.Location{Line: 1, Column: 12}}
 
 		val := &LiteralValue{Value: "test"}
-		SetSpan(val, models.Span{
-			Start: models.Location{Line: 1, Column: 20},
-			End:   models.Location{Line: 1, Column: 26},
-		})
 
 		stmt := &InsertStatement{
 			Columns: []Expression{col},
@@ -259,11 +188,7 @@ func TestInsertStatement_Span(t *testing.T) {
 	})
 
 	t.Run("with returning clause", func(t *testing.T) {
-		ret := &Identifier{Name: "id"}
-		SetSpan(ret, models.Span{
-			Start: models.Location{Line: 2, Column: 30},
-			End:   models.Location{Line: 2, Column: 32},
-		})
+		ret := &Identifier{Name: "id", Start: models.Location{Line: 2, Column: 30}, End: models.Location{Line: 2, Column: 32}}
 
 		stmt := &InsertStatement{
 			Columns:   []Expression{},
@@ -278,13 +203,12 @@ func TestInsertStatement_Span(t *testing.T) {
 
 // Test UpdateStatement.Span()
 func TestUpdateStatement_Span(t *testing.T) {
-	stmt := &UpdateStatement{}
 	testSpan := models.Span{
 		Start: models.Location{Line: 3, Column: 1},
 		End:   models.Location{Line: 3, Column: 40},
 	}
+	stmt := &UpdateStatement{Start: testSpan.Start, End: testSpan.End}
 
-	SetSpan(stmt, testSpan)
 	gotSpan := stmt.Span()
 
 	if gotSpan != testSpan {
@@ -294,13 +218,12 @@ func TestUpdateStatement_Span(t *testing.T) {
 
 // Test DeleteStatement.Span()
 func TestDeleteStatement_Span(t *testing.T) {
-	stmt := &DeleteStatement{}
 	testSpan := models.Span{
 		Start: models.Location{Line: 4, Column: 1},
 		End:   models.Location{Line: 4, Column: 30},
 	}
+	stmt := &DeleteStatement{Start: testSpan.Start, End: testSpan.End}
 
-	SetSpan(stmt, testSpan)
 	gotSpan := stmt.Span()
 
 	if gotSpan != testSpan {
@@ -311,17 +234,9 @@ func TestDeleteStatement_Span(t *testing.T) {
 // Test BinaryExpression.Span()
 func TestBinaryExpression_Span(t *testing.T) {
 	t.Run("with left and right", func(t *testing.T) {
-		left := &Identifier{Name: "x"}
-		SetSpan(left, models.Span{
-			Start: models.Location{Line: 1, Column: 5},
-			End:   models.Location{Line: 1, Column: 6},
-		})
+		left := &Identifier{Name: "x", Start: models.Location{Line: 1, Column: 5}, End: models.Location{Line: 1, Column: 6}}
 
 		right := &LiteralValue{Value: "10"}
-		SetSpan(right, models.Span{
-			Start: models.Location{Line: 1, Column: 10},
-			End:   models.Location{Line: 1, Column: 12},
-		})
 
 		expr := &BinaryExpression{
 			Left:     left,
@@ -347,11 +262,7 @@ func TestBinaryExpression_Span(t *testing.T) {
 // Test UnaryExpression.Span()
 func TestUnaryExpression_Span(t *testing.T) {
 	t.Run("with expression", func(t *testing.T) {
-		inner := &Identifier{Name: "value"}
-		SetSpan(inner, models.Span{
-			Start: models.Location{Line: 2, Column: 10},
-			End:   models.Location{Line: 2, Column: 15},
-		})
+		inner := &Identifier{Name: "value", Start: models.Location{Line: 2, Column: 10}, End: models.Location{Line: 2, Column: 15}}
 
 		expr := &UnaryExpression{
 			Operator: Not,
@@ -377,10 +288,6 @@ func TestUnaryExpression_Span(t *testing.T) {
 func TestCastExpression_Span(t *testing.T) {
 	t.Run("with expression", func(t *testing.T) {
 		inner := &LiteralValue{Value: "123"}
-		SetSpan(inner, models.Span{
-			Start: models.Location{Line: 3, Column: 5},
-			End:   models.Location{Line: 3, Column: 8},
-		})
 
 		expr := &CastExpression{
 			Expr: inner,
@@ -405,17 +312,9 @@ func TestCastExpression_Span(t *testing.T) {
 // Test FunctionCall.Span()
 func TestFunctionCall_Span(t *testing.T) {
 	t.Run("with arguments", func(t *testing.T) {
-		arg1 := &Identifier{Name: "col1"}
-		SetSpan(arg1, models.Span{
-			Start: models.Location{Line: 4, Column: 10},
-			End:   models.Location{Line: 4, Column: 14},
-		})
+		arg1 := &Identifier{Name: "col1", Start: models.Location{Line: 4, Column: 10}, End: models.Location{Line: 4, Column: 14}}
 
-		arg2 := &Identifier{Name: "col2"}
-		SetSpan(arg2, models.Span{
-			Start: models.Location{Line: 4, Column: 16},
-			End:   models.Location{Line: 4, Column: 20},
-		})
+		arg2 := &Identifier{Name: "col2", Start: models.Location{Line: 4, Column: 16}, End: models.Location{Line: 4, Column: 20}}
 
 		fn := &FunctionCall{
 			Name:      "MAX",
