@@ -121,6 +121,26 @@ func TestSelectStatementPositionMultiLine(t *testing.T) {
 	}
 }
 
+func TestSelectStatementPosition_multiple_tables(t *testing.T) {
+	tree := parseWithPositions(t, "SELECT users.id, orders.id FROM users, orders")
+
+	if len(tree.Statements) != 1 {
+		t.Fatalf("expected 1 statement, got %d", len(tree.Statements))
+	}
+
+	sel, ok := tree.Statements[0].(*ast.SelectStatement)
+	if !ok {
+		t.Fatalf("expected *ast.SelectStatement, got %T", tree.Statements[0])
+	}
+
+	assertPosEqual(t, "SELECT.Start", sel.Start, 1, 1)
+	assertPosEqual(t, "SELECT.End", sel.End, 1, 46)
+	assertPosEqual(t, "FROM[0].Start", sel.From[0].Start, 1, 33)
+	assertPosEqual(t, "FROM[0].End", sel.From[0].End, 1, 38)
+	assertPosEqual(t, "FROM[1].Start", sel.From[1].Start, 1, 40)
+	assertPosEqual(t, "FROM[1].End", sel.From[1].End, 1, 46)
+}
+
 // -----------------------------------------------------------------------------
 // TestInsertStatementPosition verifies INSERT statement position
 // -----------------------------------------------------------------------------

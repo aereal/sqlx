@@ -107,10 +107,14 @@ func (p *Parser) parseFromClause() (tableName string, tables []ast.TableReferenc
 	// Additional comma-separated table references (implicit cross joins)
 	for p.isType(models.TokenTypeComma) {
 		p.advance()
+		start := p.currentLocation()
 		ref, e2 := p.parseFromTableReference()
 		if e2 != nil {
 			return "", nil, nil, e2
 		}
+		end := p.currentLocation()
+		ref.Start = start
+		ref.End = end
 		tables = append(tables, ref)
 	}
 
