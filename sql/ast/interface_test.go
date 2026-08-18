@@ -918,9 +918,9 @@ func TestCreateIndexStatementChildren(t *testing.T) {
 			Where:   testExpr,
 		}
 		children := stmt.Children()
-		// 2 columns + where = 3
-		if len(children) != 3 {
-			t.Errorf("Children() returned %d, want 3", len(children))
+		// 2 columns + where + table = 4
+		if len(children) != 4 {
+			t.Errorf("Children() returned %d, want 4", len(children))
 		}
 	})
 
@@ -929,8 +929,8 @@ func TestCreateIndexStatementChildren(t *testing.T) {
 			Columns: []IndexColumn{{Column: "id"}},
 		}
 		children := stmt.Children()
-		if len(children) != 1 {
-			t.Errorf("Children() returned %d, want 1", len(children))
+		if len(children) != 2 {
+			t.Errorf("Children() returned %d, want 2", len(children))
 		}
 	})
 }

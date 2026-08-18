@@ -471,6 +471,7 @@ func (c CreateIndexStatement) Children() []Node {
 	if c.Where != nil {
 		children = append(children, c.Where)
 	}
+	children = append(children, c.Table)
 	return children
 }
 
